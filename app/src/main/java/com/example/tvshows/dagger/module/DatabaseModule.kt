@@ -1,8 +1,8 @@
 package com.example.tvshows.dagger.module
 
 import android.content.Context
-import com.example.tvshows.database.DaoSeasons
-import com.example.tvshows.database.DaoShows
+import com.example.tvshows.database.SeasonsDao
+import com.example.tvshows.database.ShowsDao
 import com.example.tvshows.database.TVShowsDatabase
 import dagger.Module
 import dagger.Provides
@@ -21,13 +21,13 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesDaoShows(database: TVShowsDatabase): DaoShows {
-        return database.getDaoShows()
+    fun providesShowsDao(database: TVShowsDatabase): ShowsDao {
+        return database.getShowsDao()
     }
 
     @Singleton
     @Provides
-    fun providesDaoSeasons(database: TVShowsDatabase): DaoSeasons {
-        return database.getDaoSeasons()
+    fun providesSeasonsDao(database: TVShowsDatabase): SeasonsDao {
+        return database.getSeasonsDao()
     }
 }

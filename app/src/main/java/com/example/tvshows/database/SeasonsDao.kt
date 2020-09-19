@@ -7,7 +7,7 @@ import androidx.room.Query
 import io.reactivex.Single
 
 @Dao
-interface DaoSeasons {
+interface SeasonsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(repos: List<Season>)

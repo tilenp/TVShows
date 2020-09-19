@@ -13,8 +13,8 @@ import com.example.tvshows.utilities.DATABASE_NAME
 )
 abstract class TVShowsDatabase : RoomDatabase() {
 
-    abstract fun getDaoShows(): DaoShows
-    abstract fun getDaoSeasons(): DaoSeasons
+    abstract fun getShowsDao(): ShowsDao
+    abstract fun getSeasonsDao(): SeasonsDao
 
     companion object {
 

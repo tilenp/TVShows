@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface DaoShows {
+interface ShowsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(repos: List<Show>)
