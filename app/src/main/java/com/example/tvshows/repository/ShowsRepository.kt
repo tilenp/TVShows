@@ -19,8 +19,8 @@ class ShowsRepository @Inject constructor(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = true,
-                maxSize = 30,
-                prefetchDistance = 5,
+                maxSize = 250,
+                prefetchDistance = 20,
                 initialLoadSize = 40),
             remoteMediator = showsRemoteMediator,
             pagingSourceFactory = { showsDao.getShows() }
