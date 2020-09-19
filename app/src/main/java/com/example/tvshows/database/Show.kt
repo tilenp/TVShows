@@ -8,6 +8,6 @@ data class Show(
     @PrimaryKey
     var id: Int,
     var image: String,
-    var rating: Int,
+    var rating: Float,
     var summary: String
 )
