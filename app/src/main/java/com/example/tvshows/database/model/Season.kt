@@ -1,4 +1,4 @@
-package com.example.tvshows.database
+package com.example.tvshows.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

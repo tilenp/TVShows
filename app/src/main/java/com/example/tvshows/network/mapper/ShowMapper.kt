@@ -1,7 +1,7 @@
 package com.example.tvshows.network.mapper
 
 import com.example.tvshows.network.remoteModel.RemoteShow
-import com.example.tvshows.database.Show
+import com.example.tvshows.database.model.Show
 import javax.inject.Inject
 
 class ShowMapper @Inject constructor(): Mapper<RemoteShow, Show> {

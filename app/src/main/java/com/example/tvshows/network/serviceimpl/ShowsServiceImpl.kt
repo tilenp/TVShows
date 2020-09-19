@@ -1,6 +1,6 @@
 package com.example.tvshows.network.serviceimpl
 
-import com.example.tvshows.database.Show
+import com.example.tvshows.database.model.Show
 import com.example.tvshows.network.api.ShowsApi
 import com.example.tvshows.network.mapper.Mapper
 import com.example.tvshows.network.remoteModel.RemoteShow

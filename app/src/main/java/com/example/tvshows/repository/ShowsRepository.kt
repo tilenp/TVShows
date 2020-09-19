@@ -4,8 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
-import com.example.tvshows.database.ShowsDao
-import com.example.tvshows.database.Show
+import com.example.tvshows.database.dao.ShowsDao
+import com.example.tvshows.database.model.Show
 import com.example.tvshows.repository.paging.ShowsRemoteMediator
 import io.reactivex.Flowable
 import javax.inject.Inject

@@ -1,8 +1,8 @@
 package com.example.tvshows.dagger.module
 
 import android.content.Context
-import com.example.tvshows.database.SeasonsDao
-import com.example.tvshows.database.ShowsDao
+import com.example.tvshows.database.dao.SeasonsDao
+import com.example.tvshows.database.dao.ShowsDao
 import com.example.tvshows.database.TVShowsDatabase
 import dagger.Module
 import dagger.Provides

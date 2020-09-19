@@ -1,9 +1,10 @@
-package com.example.tvshows.database
+package com.example.tvshows.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.tvshows.database.model.Season
 import io.reactivex.Single
 
 @Dao

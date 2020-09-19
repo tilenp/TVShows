@@ -1,6 +1,6 @@
 package com.example.tvshows.repository.service
 
-import com.example.tvshows.database.Show
+import com.example.tvshows.database.model.Show
 import io.reactivex.Single
 
 interface ShowsService {
