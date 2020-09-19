@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tvshows.dagger.MyViewModelFactory
 import com.example.tvshows.dagger.ViewModelKey
-import com.example.tvshows.shows.ShowsViewModel
+import com.example.tvshows.ui.showslist.ShowsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

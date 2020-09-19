@@ -1,4 +1,4 @@
-package com.example.tvshows
+package com.example.tvshows.ui.showslist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
-import com.example.tvshows.shows.ShowsViewModel
-import com.example.tvshows.ui.ShowsAdapter
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

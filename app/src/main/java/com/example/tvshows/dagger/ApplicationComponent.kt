@@ -1,7 +1,7 @@
 package com.example.tvshows.dagger
 
 import android.content.Context
-import com.example.tvshows.MainActivity
+import com.example.tvshows.ui.showslist.MainActivity
 import com.example.tvshows.dagger.module.*
 import dagger.BindsInstance
 import dagger.Component

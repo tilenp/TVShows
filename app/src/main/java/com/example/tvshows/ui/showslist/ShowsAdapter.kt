@@ -1,4 +1,4 @@
-package com.example.tvshows.ui
+package com.example.tvshows.ui.showslist
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
