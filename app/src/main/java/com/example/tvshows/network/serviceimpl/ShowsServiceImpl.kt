@@ -13,7 +13,7 @@ class ShowsServiceImpl @Inject constructor(
     private val mapper: Mapper<RemoteShow, Show>
 ): ShowsService {
 
-    override fun getMovies(page: Int): Single<List<Show>> {
+    override fun getShows(page: Int): Single<List<Show>> {
         return showsApi.getShows(page)
             .map { shows -> shows.map { mapper.map(it) } }
     }

@@ -5,13 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.tvshows.database.model.Season
+import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
 interface SeasonsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(repos: List<Season>)
+    fun insertAll(repos: List<Season>): Completable
 
     @Query("SELECT * " +
             "FROM Season " +

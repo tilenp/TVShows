@@ -6,12 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.tvshows.database.dao.SeasonsDao
 import com.example.tvshows.database.dao.ShowsDao
+import com.example.tvshows.database.model.RemoteKeys
 import com.example.tvshows.database.model.Season
 import com.example.tvshows.database.model.Show
 import com.example.tvshows.utilities.DATABASE_NAME
 
 @Database(
-    entities = [Show::class, Season::class],
+    entities = [Show::class, RemoteKeys::class, Season::class],
     version = 1,
     exportSchema = false
 )
