@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [ApplicationModule::class, ViewModelModule::class])
+@Component(modules = [DatabaseModule::class, ViewModelModule::class])
 interface ApplicationComponent {
 
     @Component.Factory
