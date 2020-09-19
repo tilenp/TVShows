@@ -1,7 +1,9 @@
-package com.example.tvshows.dagger
+package com.example.tvshows.dagger.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tvshows.dagger.MyViewModelFactory
+import com.example.tvshows.dagger.ViewModelKey
 import com.example.tvshows.shows.ShowsViewModel
 import dagger.Binds
 import dagger.Module

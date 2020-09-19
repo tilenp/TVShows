@@ -1,4 +1,4 @@
-package com.example.tvshows.dagger
+package com.example.tvshows.dagger.module
 
 import android.content.Context
 import com.example.tvshows.database.DaoSeasons

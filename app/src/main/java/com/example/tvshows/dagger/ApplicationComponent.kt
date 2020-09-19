@@ -3,7 +3,9 @@ package com.example.tvshows.dagger
 import android.content.Context
 import com.example.tvshows.MainActivity
 import com.example.tvshows.dagger.module.ApiModule
+import com.example.tvshows.dagger.module.DatabaseModule
 import com.example.tvshows.dagger.module.ServiceModule
+import com.example.tvshows.dagger.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 
