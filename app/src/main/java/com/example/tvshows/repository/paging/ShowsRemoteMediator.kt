@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxRemoteMediator
 import com.example.tvshows.database.TVShowsDatabase
-import com.example.tvshows.database.model.RemoteKeys
+import com.example.tvshows.database.model.PagingKeys
 import com.example.tvshows.database.model.Show
 import com.example.tvshows.repository.service.ShowsService
 import io.reactivex.Single
@@ -60,39 +60,39 @@ class ShowsRemoteMediator @Inject constructor(
         }
     }
 
-    private fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): RemoteKeys? {
+    private fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.showId?.let { id ->
-                database.getShowsDao().getRemoteKeysForShowId(id)
+                database.getPagingKeysDao().getPagingKeysForElementId(id)
             }
         }
     }
 
-    private fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): RemoteKeys? {
+    private fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
-            database.getShowsDao().getRemoteKeysForShowId(show.showId)
+            database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
-    private fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): RemoteKeys? {
+    private fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
-            database.getShowsDao().getRemoteKeysForShowId(show.showId)
+            database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
     private fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowsWrapper): ShowsWrapper {
         database.runInTransaction {
             if (loadType == LoadType.REFRESH) {
-                database.getShowsDao().deleteRemoteKeys()
+                database.getPagingKeysDao().deletePagingKeys()
                 database.getShowsDao().deleteShows()
             }
 
             val prevKey = if (page == STARTING_PAGE) null else page - 1
             val nextKey = if (wrapper.endOfPaginationReached) null else page + 1
             val keys = wrapper.shows.map {
-                RemoteKeys(showId = it.showId, prevKey = prevKey, nextKey = nextKey)
+                PagingKeys(elementId = it.showId, prevKey = prevKey, nextKey = nextKey)
             }
-            database.getShowsDao().insertRemoteKeys(keys)
+            database.getPagingKeysDao().insertPagingKeys(keys)
             database.getShowsDao().insertShows(wrapper.shows)
         }
         return wrapper

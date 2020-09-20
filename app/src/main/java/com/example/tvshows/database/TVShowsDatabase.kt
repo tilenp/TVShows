@@ -5,15 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.tvshows.database.dao.PagingKeysDao
 import com.example.tvshows.database.dao.SeasonsDao
 import com.example.tvshows.database.dao.ShowsDao
-import com.example.tvshows.database.model.RemoteKeys
+import com.example.tvshows.database.model.PagingKeys
 import com.example.tvshows.database.model.Season
 import com.example.tvshows.database.model.Show
 import com.example.tvshows.utilities.DATABASE_NAME
 
 @Database(
-    entities = [Show::class, RemoteKeys::class, Season::class],
+    entities = [Show::class, PagingKeys::class, Season::class],
     version = 1,
     exportSchema = false
 )
@@ -21,6 +22,7 @@ import com.example.tvshows.utilities.DATABASE_NAME
 abstract class TVShowsDatabase : RoomDatabase() {
 
     abstract fun getShowsDao(): ShowsDao
+    abstract fun getPagingKeysDao(): PagingKeysDao
     abstract fun getSeasonsDao(): SeasonsDao
 
     companion object {

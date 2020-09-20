@@ -1,43 +1,22 @@
 package com.example.tvshows.database.dao
 
 import androidx.paging.PagingSource
-import androidx.room.*
-import com.example.tvshows.database.model.RemoteKeys
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.tvshows.database.model.Show
 
 
 @Dao
-abstract class ShowsDao {
+interface ShowsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertShows(shows: List<Show>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertRemoteKeys(remoteKeys: List<RemoteKeys>)
-
-    @Transaction
-    open fun insertShowsAndRemoteKeys(
-        clearShows: Boolean,
-        remoteKeys: List<RemoteKeys>,
-        shows: List<Show>
-    ) {
-        if (clearShows) {
-            deleteRemoteKeys()
-            deleteShows()
-        }
-        insertRemoteKeys(remoteKeys)
-        insertShows(shows)
-    }
+    fun insertShows(shows: List<Show>)
 
     @Query("SELECT * FROM Show ORDER BY id ASC")
-    abstract fun getShows(): PagingSource<Int, Show>
-
-    @Query("SELECT * FROM RemoteKeys WHERE RemoteKeys.showId = :showId")
-    abstract fun getRemoteKeysForShowId(showId: Long): RemoteKeys?
+    fun getShows(): PagingSource<Int, Show>
 
     @Query("DELETE FROM Show")
-    abstract fun deleteShows()
-
-    @Query("DELETE FROM RemoteKeys")
-    abstract fun deleteRemoteKeys()
+    fun deleteShows()
 }

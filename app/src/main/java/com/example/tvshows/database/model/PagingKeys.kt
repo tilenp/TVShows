@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class RemoteKeys(
+data class PagingKeys(
     @PrimaryKey
-    val showId: Long,
+    val elementId: Long,
     val prevKey: Int?,
     val nextKey: Int?
 )
