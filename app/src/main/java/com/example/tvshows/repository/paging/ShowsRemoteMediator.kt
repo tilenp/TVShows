@@ -24,38 +24,60 @@ class ShowsRemoteMediator @Inject constructor(
         state: PagingState<Int, Show>
     ): Single<MediatorResult> {
         return Single.just(loadType)
-            .subscribeOn(Schedulers.io())
-            .map {
-                when (it) {
-                    LoadType.REFRESH -> {
-                        val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                        remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE
-                    }
-                    LoadType.PREPEND -> {
-                        val remoteKeys = getRemoteKeyForFirstItem(state)
-                            ?: throw InvalidObjectException("Result is empty")
-
-                        remoteKeys.prevKey ?: INVALID_PAGE
-                    }
-                    LoadType.APPEND -> {
-                        val remoteKeys = getRemoteKeyForLastItem(state)
-                            ?: throw InvalidObjectException("Result is empty")
-
-                        remoteKeys.nextKey ?: INVALID_PAGE
-                    }
-                }
-            }
+            .map { calculatePage(loadType, state) }
             .flatMap { page ->
                 if (page == INVALID_PAGE) {
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
                     showsService.getShows(page = page)
                         .map { shows -> updateDatabase(page, loadType, shows) }
-                        .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it.isEmpty()) }
+                        .map { MediatorResult.Success(endOfPaginationReached = it.isEmpty()) as MediatorResult }
                         .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
             .onErrorReturn { MediatorResult.Error(it) }
+            .subscribeOn(Schedulers.io())
+    }
+
+    private fun calculatePage(loadType: LoadType, state: PagingState<Int, Show>): Int {
+        return when (loadType) {
+            LoadType.REFRESH -> {
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE
+            }
+            LoadType.PREPEND -> {
+                val remoteKeys = getRemoteKeyForFirstItem(state)
+                    ?: throw InvalidObjectException("Result is empty")
+
+                remoteKeys.prevKey ?: INVALID_PAGE
+            }
+            LoadType.APPEND -> {
+                val remoteKeys = getRemoteKeyForLastItem(state)
+                    ?: throw InvalidObjectException("Result is empty")
+
+                remoteKeys.nextKey ?: INVALID_PAGE
+            }
+        }
+    }
+
+    private fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): RemoteKeys? {
+        return state.anchorPosition?.let { position ->
+            state.closestItemToPosition(position)?.id?.let { id ->
+                database.getShowsDao().getRemoteKeysForShowId(id)
+            }
+        }
+    }
+
+    private fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): RemoteKeys? {
+        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
+            database.getShowsDao().getRemoteKeysForShowId(show.id)
+        }
+    }
+
+    private fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): RemoteKeys? {
+        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
+            database.getShowsDao().getRemoteKeysForShowId(show.id)
+        }
     }
 
     private fun updateDatabase(page: Int, loadType: LoadType, shows: List<Show>): List<Show> {
@@ -67,26 +89,6 @@ class ShowsRemoteMediator @Inject constructor(
         }
         database.getShowsDao().insertShowsAndRemoteKeys(clearShows, keys, shows)
         return shows
-    }
-
-    private fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): RemoteKeys? {
-        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
-            database.getShowsDao().getRemoteKeysForShowId(show.id)
-        }
-    }
-
-    private fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): RemoteKeys? {
-        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
-            database.getShowsDao().getRemoteKeysForShowId(show.id)
-        }
-    }
-
-    private fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): RemoteKeys? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
-                database.getShowsDao().getRemoteKeysForShowId(id)
-            }
-        }
     }
 
     companion object {
