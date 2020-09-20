@@ -22,7 +22,7 @@ class ShowsAdapter : PagingDataAdapter<Show, RecyclerView.ViewHolder>(REPO_COMPA
     companion object {
         private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Show>() {
             override fun areItemsTheSame(oldItem: Show, newItem: Show): Boolean =
-                oldItem.id == newItem.id
+                oldItem.showId == newItem.showId
 
             override fun areContentsTheSame(oldItem: Show, newItem: Show): Boolean =
                 oldItem == newItem

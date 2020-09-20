@@ -29,7 +29,7 @@ abstract class ShowsDao {
         insertShows(shows)
     }
 
-    @Query("SELECT * FROM Show")
+    @Query("SELECT * FROM Show ORDER BY id ASC")
     abstract fun getShows(): PagingSource<Int, Show>
 
     @Query("SELECT * FROM RemoteKeys WHERE RemoteKeys.showId = :showId")
