@@ -1,9 +1,9 @@
 package com.example.tvshows.network.remoteModel
 
 data class RemoteShow(
-    val id: Int?,
+    val id: Long?,
     val name: String?,
-    val rating: RemoteRating?,
-    val image: RemoteImage?,
-    val summary: String?
+    val voteAverage: Float?,
+    val posterPath: String?,
+    val overview: String?
 )

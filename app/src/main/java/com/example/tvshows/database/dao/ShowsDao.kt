@@ -33,7 +33,7 @@ abstract class ShowsDao {
     abstract fun getShows(): PagingSource<Int, Show>
 
     @Query("SELECT * FROM RemoteKeys WHERE RemoteKeys.showId = :showId")
-    abstract fun getRemoteKeysForShowId(showId: Int): RemoteKeys?
+    abstract fun getRemoteKeysForShowId(showId: Long): RemoteKeys?
 
     @Query("DELETE FROM Show")
     abstract fun deleteShows()

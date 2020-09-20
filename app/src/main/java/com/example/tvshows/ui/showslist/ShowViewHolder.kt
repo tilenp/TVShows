@@ -6,13 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvshows.R
 import com.example.tvshows.database.model.Show
 import com.example.tvshows.databinding.ViewHolderShowBinding
+import com.squareup.picasso.Picasso
 
 class ShowViewHolder(
     private val binding: ViewHolderShowBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(show: Show) {
-        binding.showImageUrl.text = show.image
+        Picasso
+            .with(binding.imageView.context)
+            .load(show.imagePath?.medium)
+            .into(binding.imageView)
     }
 
     companion object {

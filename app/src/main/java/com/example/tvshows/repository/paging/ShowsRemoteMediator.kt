@@ -24,14 +24,14 @@ class ShowsRemoteMediator @Inject constructor(
         state: PagingState<Int, Show>
     ): Single<MediatorResult> {
         return Single.just(loadType)
-            .map { calculatePage(loadType, state) }
+            .map { calculatePage(it, state) }
             .flatMap { page ->
                 if (page == INVALID_PAGE) {
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
                     showsService.getShows(page = page)
                         .map { shows -> updateDatabase(page, loadType, shows) }
-                        .map { MediatorResult.Success(endOfPaginationReached = it.isEmpty()) as MediatorResult }
+                        .map { shows -> MediatorResult.Success(endOfPaginationReached = shows.endOfPaginationReached) as MediatorResult }
                         .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
@@ -80,19 +80,40 @@ class ShowsRemoteMediator @Inject constructor(
         }
     }
 
-    private fun updateDatabase(page: Int, loadType: LoadType, shows: List<Show>): List<Show> {
-        val clearShows = loadType == LoadType.REFRESH
+    private fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowsWrapper): ShowsWrapper {
+        database.beginTransaction()
+
+        try {
+            if (loadType == LoadType.REFRESH) {
+                database.getShowsDao().deleteRemoteKeys()
+                database.getShowsDao().deleteShows()
+            }
+
+            val prevKey = if (page == 1) null else page - 1
+            val nextKey = if (wrapper.endOfPaginationReached) null else page + 1
+            val keys = wrapper.shows.map {
+                RemoteKeys(showId = it.id, prevKey = prevKey, nextKey = nextKey)
+            }
+            database.getShowsDao().insertRemoteKeys(keys)
+            database.getShowsDao().insertShows(wrapper.shows)
+            database.setTransactionSuccessful()
+
+        } finally {
+            database.endTransaction()
+        }
+
+        /*val clearShows = loadType == LoadType.REFRESH
         val prevKey = if (page == STARTING_PAGE) null else page - 1
-        val nextKey = if (shows.isEmpty()) null else page + 1
-        val keys = shows.map {
+        val nextKey = if (wrapper.endOfPaginationReached) null else page + 1
+        val keys = wrapper.shows.map {
             RemoteKeys(showId = it.id, prevKey = prevKey, nextKey = nextKey)
         }
-        database.getShowsDao().insertShowsAndRemoteKeys(clearShows, keys, shows)
-        return shows
+        database.getShowsDao().insertShowsAndRemoteKeys(clearShows, keys, wrapper.shows)*/
+        return wrapper
     }
 
     companion object {
-        private const val STARTING_PAGE = 0
+        private const val STARTING_PAGE = 1
         private const val INVALID_PAGE = -1
     }
 }

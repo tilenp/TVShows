@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.tvshows.database.dao.SeasonsDao
 import com.example.tvshows.database.dao.ShowsDao
 import com.example.tvshows.database.model.RemoteKeys
@@ -16,6 +17,7 @@ import com.example.tvshows.utilities.DATABASE_NAME
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converter::class)
 abstract class TVShowsDatabase : RoomDatabase() {
 
     abstract fun getShowsDao(): ShowsDao

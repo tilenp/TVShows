@@ -1,8 +1,8 @@
 package com.example.tvshows.repository.service
 
-import com.example.tvshows.database.model.Show
+import com.example.tvshows.repository.paging.ShowsWrapper
 import io.reactivex.Single
 
 interface ShowsService {
-    fun getShows(page: Int): Single<List<Show>>
+    fun getShows(page: Int): Single<ShowsWrapper>
 }

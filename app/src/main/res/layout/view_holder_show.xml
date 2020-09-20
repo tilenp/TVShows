@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    android:paddingBottom="20sp">
+    android:paddingTop="5dp"
+    android:paddingBottom="5sp">
 
-    <TextView
-        android:id="@+id/show_image_url"
+    <ImageView
+        android:id="@+id/image_View"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="17sp"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

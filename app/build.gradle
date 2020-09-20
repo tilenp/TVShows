@@ -64,6 +64,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime:3.0.0-alpha06"
     implementation "androidx.paging:paging-rxjava2:3.0.0-alpha06"
 
+    /** Picasso **/
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
     /** RecyclerView **/
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
