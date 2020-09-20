@@ -8,6 +8,7 @@ data class Show(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     var showId: Long,
+    var name: String,
     var imagePath: ImagePath?,
     var rating: Float,
     var summary: String

@@ -10,6 +10,7 @@ class ShowMapper @Inject constructor() : Mapper<RemoteShow, Show> {
     override fun map(objectToMap: RemoteShow): Show {
         return Show(
             showId = objectToMap.id ?: 0,
+            name = objectToMap.name ?: "",
             imagePath = objectToMap.posterPath?.let { ImagePath(it) },
             rating = objectToMap.voteAverage ?: 0f,
             summary = objectToMap.overview ?: ""

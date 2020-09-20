@@ -13,10 +13,13 @@ class ShowViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(show: Show) {
-        Picasso
-            .with(binding.imageView.context)
-            .load(show.imagePath?.medium)
-            .into(binding.imageView)
+        with(binding) {
+            Picasso
+                .with(imageView.context)
+                .load(show.imagePath?.medium)
+                .into(imageView)
+            textView.text = show.name
+        }
     }
 
     companion object {

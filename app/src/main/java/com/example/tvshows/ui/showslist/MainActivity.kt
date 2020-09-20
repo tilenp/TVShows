@@ -3,7 +3,7 @@ package com.example.tvshows.ui.showslist
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
 import io.reactivex.disposables.CompositeDisposable
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        binding.showsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.showsRecyclerView.layoutManager  = GridLayoutManager(this, 2)
         binding.showsRecyclerView.adapter = adapter
         compositeDisposable.add(
             viewModel.getShows()
