@@ -17,10 +17,11 @@ class ShowsRepository @Inject constructor(
     fun getShows(): Flowable<PagingData<Show>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 40,
+                pageSize = 20,
                 enablePlaceholders = true,
-                prefetchDistance = 10,
-                initialLoadSize = 80),
+                maxSize = 30,
+                prefetchDistance = 5,
+                initialLoadSize = 40),
             remoteMediator = showsRemoteMediator,
             pagingSourceFactory = { showsDao.getShows() }
         ).flowable

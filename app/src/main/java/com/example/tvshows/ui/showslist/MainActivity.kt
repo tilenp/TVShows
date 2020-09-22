@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
+import com.example.tvshows.ui.showslist.adapter.LoadingAdapter
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -37,7 +38,9 @@ class MainActivity : AppCompatActivity() {
     private fun setUpRecyclerView() {
         val numberOfColumns = resources.getInteger(R.integer.grid_columns)
         binding.showsRecyclerView.layoutManager  = GridLayoutManager(this, numberOfColumns)
-        binding.showsRecyclerView.adapter = adapter
+        binding.showsRecyclerView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingAdapter()
+        )
         compositeDisposable.add(
             viewModel.getShows()
                 .subscribe({
