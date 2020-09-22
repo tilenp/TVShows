@@ -31,8 +31,8 @@ class ShowsRemoteMediator @Inject constructor(
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
                     showsService.getShows(page = page)
-                        .map { shows -> updateDatabase(page, loadType, shows) }
-                        .map { shows -> MediatorResult.Success(endOfPaginationReached = shows.endOfPaginationReached) as MediatorResult }
+                        .map { showsWrapper -> updateDatabase(page, loadType, showsWrapper) }
+                        .map { showsWrapper -> MediatorResult.Success(endOfPaginationReached = showsWrapper.endOfPaginationReached) as MediatorResult }
                         .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
@@ -40,7 +40,8 @@ class ShowsRemoteMediator @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
-    private fun calculatePage(loadType: LoadType, state: PagingState<Int, Show>): Int {
+    @VisibleForTesting
+    fun calculatePage(loadType: LoadType, state: PagingState<Int, Show>): Int {
         return when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -61,7 +62,8 @@ class ShowsRemoteMediator @Inject constructor(
         }
     }
 
-    private fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
+    @VisibleForTesting
+    fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.showId?.let { id ->
                 database.getPagingKeysDao().getPagingKeysForElementId(id)

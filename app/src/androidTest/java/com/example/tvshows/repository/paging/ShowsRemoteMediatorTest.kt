@@ -12,13 +12,16 @@ import com.example.tvshows.database.dao.ShowsDao
 import com.example.tvshows.database.model.ImagePath
 import com.example.tvshows.database.model.PagingKeys
 import com.example.tvshows.database.model.Show
+import com.example.tvshows.repository.paging.ShowsRemoteMediator.Companion.INVALID_PAGE
 import com.example.tvshows.repository.paging.ShowsRemoteMediator.Companion.STARTING_PAGE
 import com.example.tvshows.repository.service.ShowsService
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
+import java.io.InvalidObjectException
 
 @RunWith(AndroidJUnit4::class)
 class ShowsRemoteMediatorTest {
@@ -84,30 +87,132 @@ class ShowsRemoteMediatorTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Before
-    fun setUp() {
+    private fun setConditions(
+        pagingKeysForElementId: PagingKeys? = null
+    ) {
         `when`(database.getPagingKeysDao()).thenReturn(pagingKeysDao)
         `when`(database.getShowsDao()).thenReturn(showsDao)
         `when`(database.runInTransaction(any())).thenAnswer { (it.arguments.first() as Runnable).run() }
+        `when`(pagingKeysDao.getPagingKeysForElementId(ArgumentMatchers.anyLong())).thenReturn(pagingKeysForElementId)
         showMediator = ShowsRemoteMediator(showsService = showsService, database = database)
     }
 
     @Test
-    fun paging_keys_for_the_element_closest_to_the_current_position_are_correct() {
+    fun when_load_type_is_refresh_and_anchor_position_is_null_page_is_correct() {
         // arrange
-        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 0, pagingConfig, 0)
-
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = null, nextKey = null)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), null, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
         // act
-        showMediator.getRemoteKeyForFirstItem(state = state)
+        val resultPage = showMediator.calculatePage(loadType = LoadType.REFRESH, state = state)
 
         // assert
-        verify(pagingKeysDao, times(1)).getPagingKeysForElementId(show1.showId)
+        assertEquals(STARTING_PAGE, resultPage)
+    }
+
+    @Test
+    fun when_load_type_is_refresh_and_anchor_position_is_not_null_page_is_correct() {
+        // arrange
+        val nextKey = 2
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = null, nextKey = nextKey)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
+        // act
+        val resultPage = showMediator.calculatePage(loadType = LoadType.REFRESH, state = state)
+
+        // assert
+        assertEquals(1, resultPage)
+    }
+
+    @Test(expected = InvalidObjectException::class)
+    fun when_load_type_is_prepend_and_pagingKeys_is_null_InvalidObjectException_is_thrown() {
+        // arrange
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = null)
+
+        // act
+        showMediator.calculatePage(loadType = LoadType.PREPEND, state = state)
+    }
+
+    @Test
+    fun when_load_type_is_prepend_and_pagingKeys_is_not_null_page_is_correct() {
+        // arrange
+        val prevKey = 1
+        val nextKey = 2
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
+
+        // act
+        val resultPage = showMediator.calculatePage(loadType = LoadType.PREPEND, state = state)
+
+        // assert
+        assertEquals(prevKey, resultPage)
+    }
+
+    @Test
+    fun when_load_type_is_prepend_and_prevKey_is_null_page_is_invalid() {
+        // arrange
+        val prevKey = null
+        val nextKey = 2
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
+
+        // act
+        val resultPage = showMediator.calculatePage(loadType = LoadType.PREPEND, state = state)
+
+        // assert
+        assertEquals(INVALID_PAGE, resultPage)
+    }
+
+    @Test(expected = InvalidObjectException::class)
+    fun when_load_type_is_append_and_pagingKeys_is_null_InvalidObjectException_is_thrown() {
+        // arrange
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = null)
+
+        // act
+        showMediator.calculatePage(loadType = LoadType.APPEND, state = state)
+    }
+
+    @Test
+    fun when_load_type_is_append_and_pagingKeys_is_not_null_page_is_correct() {
+        // arrange
+        val prevKey = 1
+        val nextKey = 2
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
+
+        // act
+        val resultPage = showMediator.calculatePage(loadType = LoadType.APPEND, state = state)
+
+        // assert
+        assertEquals(nextKey, resultPage)
+    }
+
+    @Test
+    fun when_load_type_is_append_and_nextKey_is_null_page_is_invalid() {
+        // arrange
+        val prevKey = 1
+        val nextKey = null
+        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions(pagingKeysForElementId = pagingKeys)
+
+        // act
+        val resultPage = showMediator.calculatePage(loadType = LoadType.APPEND, state = state)
+
+        // assert
+        assertEquals(INVALID_PAGE, resultPage)
     }
 
     @Test
     fun paging_keys_for_the_first_item_are_correct() {
         // arrange
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 0, pagingConfig, 0)
+        setConditions()
 
         // act
         showMediator.getRemoteKeyForFirstItem(state = state)
@@ -120,6 +225,7 @@ class ShowsRemoteMediatorTest {
     fun paging_keys_for_the_last_item_are_correct() {
         // arrange
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 0, pagingConfig, 0)
+        setConditions()
 
         // act
         showMediator.getRemoteKeyForLastItem(state = state)
@@ -130,6 +236,9 @@ class ShowsRemoteMediatorTest {
 
     @Test
     fun when_load_type_is_refresh_paging_keys_are_deleted() {
+        // assert
+        setConditions()
+
         // act
         val showsWrapper = ShowsWrapper(false, emptyList())
         showMediator.updateDatabase(1, LoadType.REFRESH, showsWrapper)
@@ -140,6 +249,9 @@ class ShowsRemoteMediatorTest {
 
     @Test
     fun when_load_type_is_refresh_shows_are_deleted() {
+        // assert
+        setConditions()
+
         // act
         val showsWrapper = ShowsWrapper(false, emptyList())
         showMediator.updateDatabase(1, LoadType.REFRESH, showsWrapper)
@@ -150,6 +262,9 @@ class ShowsRemoteMediatorTest {
 
     @Test
     fun when_page_is_starting_page_keys_are_stored_correctly() {
+        // assert
+        setConditions()
+
         // arrange
         val showsWrapper = ShowsWrapper(false, listOf(show1))
         val pagingKeys = PagingKeys(
@@ -175,6 +290,7 @@ class ShowsRemoteMediatorTest {
             prevKey = page - 1,
             nextKey = null
         )
+        setConditions()
 
         // act
         showMediator.updateDatabase(page, LoadType.REFRESH, showsWrapper)
@@ -187,6 +303,7 @@ class ShowsRemoteMediatorTest {
     fun shows_are_stored_correctly() {
         // arrange
         val showsWrapper = ShowsWrapper(false, listOf(show1, show2))
+        setConditions()
 
         // act
         showMediator.updateDatabase(STARTING_PAGE, LoadType.REFRESH, showsWrapper)
