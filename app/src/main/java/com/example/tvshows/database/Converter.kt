@@ -11,7 +11,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun toImage(url: String?): ImagePath? {
+    fun toImagePath(url: String?): ImagePath? {
         return url?.let { ImagePath(it) }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tvshows.repository.paging
 
+import androidx.annotation.VisibleForTesting
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -68,19 +69,22 @@ class ShowsRemoteMediator @Inject constructor(
         }
     }
 
-    private fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
+    @VisibleForTesting
+    fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
-    private fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): PagingKeys? {
+    @VisibleForTesting
+    fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
-    private fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowsWrapper): ShowsWrapper {
+    @VisibleForTesting
+    fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowsWrapper): ShowsWrapper {
         database.runInTransaction {
             if (loadType == LoadType.REFRESH) {
                 database.getPagingKeysDao().deletePagingKeys()
@@ -99,7 +103,7 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     companion object {
-        private const val STARTING_PAGE = 1
-        private const val INVALID_PAGE = -1
+        @VisibleForTesting const val STARTING_PAGE = 1
+        @VisibleForTesting const val INVALID_PAGE = -1
     }
 }
