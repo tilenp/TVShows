@@ -2,6 +2,7 @@ package com.example.tvshows.ui.showslist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,13 +48,15 @@ class MainActivity : AppCompatActivity() {
         )
 
         adapter.addLoadStateListener { loadState ->
-            val errorState = loadState.source.refresh as? LoadState.Error
-                ?: loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
-                ?: loadState.refresh as? LoadState.Error
-                ?: loadState.append as? LoadState.Error
-                ?: loadState.prepend as? LoadState.Error
-            errorState?.let { errorHandler.handleError(it.error) }
+            val itemsAvailable = adapter.itemCount > 0
+            binding.showsRecyclerView.isVisible = itemsAvailable
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading && !itemsAvailable
+            val errorState = loadState.mediator?.refresh as? LoadState.Error
+                ?: loadState.mediator?.append as? LoadState.Error
+                ?: loadState.mediator?.prepend as? LoadState.Error
+            errorState?.let {
+                errorHandler.handleError(it.error)
+            }
         }
 
         compositeDisposable.add(
