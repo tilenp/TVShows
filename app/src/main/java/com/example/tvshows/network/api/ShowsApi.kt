@@ -1,11 +1,9 @@
 package com.example.tvshows.network.api
 
-import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.example.tvshows.network.remoteModel.RemoteShow
+import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.example.tvshows.utilities.API_KEY
 import com.example.tvshows.utilities.BASE_URL
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,23 +22,23 @@ interface ShowsApi {
     ): Single<RemoteWrapper<List<RemoteShow>>>
 
     companion object {
-        fun create(): ShowsApi {
-            val logger = HttpLoggingInterceptor()
-            logger.level = HttpLoggingInterceptor.Level.BASIC
+        fun create(
+            logger: HttpLoggingInterceptor,
+            client: OkHttpClient,
+            callAdapterFactory: RxJava2CallAdapterFactory,
+            converterFactory: GsonConverterFactory
+        ): ShowsApi {
+            logger.level = HttpLoggingInterceptor.Level.BODY
 
-            val client = OkHttpClient.Builder()
+            client.newBuilder()
                 .addInterceptor(logger)
                 .build()
-
-            val gson = GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create()
 
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(callAdapterFactory)
+                .addConverterFactory(converterFactory)
                 .build()
                 .create(ShowsApi::class.java)
         }
