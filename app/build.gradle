@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 30
@@ -62,6 +63,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.23.0'
     androidTestImplementation "org.mockito:mockito-android:2.23.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+
+    /** Navigation **/
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
 
     /** OkHttp **/
     implementation "com.squareup.okhttp3:logging-interceptor:4.3.1"

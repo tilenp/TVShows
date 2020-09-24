@@ -13,7 +13,7 @@ interface PagingKeysDao {
     fun insertPagingKeys(pagingKeys: List<PagingKeys>)
 
     @Query("SELECT * FROM PagingKeys WHERE PagingKeys.elementId = :elementId")
-    fun getPagingKeysForElementId(elementId: Long): PagingKeys?
+    fun getPagingKeysForElementId(elementId: Int): PagingKeys?
 
     @Query("DELETE FROM PagingKeys")
     fun deletePagingKeys()

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/showsFragment">
+
+    <fragment
+        android:id="@+id/showsFragment"
+        android:name="com.example.tvshows.ui.showslist.ShowsFragment"
+        android:label="@string/TVShows">
+        <action
+            android:id="@+id/action_showsFragment_to_showDetailsFragment"
+            app:destination="@id/showDetailsFragment">
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/showDetailsFragment"
+        android:name="com.example.tvshows.ui.showslist.ShowDetailsFragment"
+        android:label="{title}">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+</navigation>

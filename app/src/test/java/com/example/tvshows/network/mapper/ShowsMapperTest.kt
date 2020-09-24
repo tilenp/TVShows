@@ -16,8 +16,8 @@ class ShowsMapperTest {
     private val showMapper: ShowMapper = mock()
     private lateinit var mapper: ShowsMapper
 
-    private val id1 = 1L
-    private val id2 = 2L
+    private val id1 = 1
+    private val id2 = 2
     private val name1 = "name1"
     private val name2 = "name2"
     private val voteAverage1 = 2F

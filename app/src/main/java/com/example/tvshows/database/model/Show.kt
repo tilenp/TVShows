@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Show(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    var showId: Long,
+    var showId: Int,
     var name: String,
     var imagePath: ImagePath?,
     var rating: Float,

@@ -10,7 +10,7 @@ class ShowMapperTest {
 
     private val mapper = ShowMapper()
 
-    private val id = 1L
+    private val id = 1
     private val name = "name"
     private val voteAverage = 2F
     private val posterPath = "posterPath"

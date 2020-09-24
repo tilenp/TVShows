@@ -32,10 +32,10 @@ class ShowsRemoteMediatorTest {
     private val database: TVShowsDatabase = mock(TVShowsDatabase::class.java)
     private lateinit var showMediator: ShowsRemoteMediator
 
-    private val id1 = 1L
-    private val id2 = 2L
-    private val id3 = 3L
-    private val id4 = 4L
+    private val id1 = 1
+    private val id2 = 2
+    private val id3 = 3
+    private val id4 = 4
     private val name1 = "name1"
     private val name2 = "name2"
     private val name3 = "name3"
@@ -93,14 +93,14 @@ class ShowsRemoteMediatorTest {
         `when`(database.getPagingKeysDao()).thenReturn(pagingKeysDao)
         `when`(database.getShowsDao()).thenReturn(showsDao)
         `when`(database.runInTransaction(any())).thenAnswer { (it.arguments.first() as Runnable).run() }
-        `when`(pagingKeysDao.getPagingKeysForElementId(ArgumentMatchers.anyLong())).thenReturn(pagingKeysForElementId)
+        `when`(pagingKeysDao.getPagingKeysForElementId(ArgumentMatchers.anyInt())).thenReturn(pagingKeysForElementId)
         showMediator = ShowsRemoteMediator(showsService = showsService, database = database)
     }
 
     @Test
     fun when_load_type_is_refresh_and_anchor_position_is_null_page_is_correct() {
         // arrange
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = null, nextKey = null)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = null, nextKey = null)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), null, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
         // act
@@ -114,7 +114,7 @@ class ShowsRemoteMediatorTest {
     fun when_load_type_is_refresh_and_anchor_position_is_not_null_page_is_correct() {
         // arrange
         val nextKey = 2
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = null, nextKey = nextKey)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = null, nextKey = nextKey)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
         // act
@@ -139,7 +139,7 @@ class ShowsRemoteMediatorTest {
         // arrange
         val prevKey = 1
         val nextKey = 2
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = prevKey, nextKey = nextKey)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
 
@@ -155,7 +155,7 @@ class ShowsRemoteMediatorTest {
         // arrange
         val prevKey = null
         val nextKey = 2
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = prevKey, nextKey = nextKey)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
 
@@ -181,7 +181,7 @@ class ShowsRemoteMediatorTest {
         // arrange
         val prevKey = 1
         val nextKey = 2
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = prevKey, nextKey = nextKey)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
 
@@ -197,7 +197,7 @@ class ShowsRemoteMediatorTest {
         // arrange
         val prevKey = 1
         val nextKey = null
-        val pagingKeys = PagingKeys(elementId = 1L, prevKey = prevKey, nextKey = nextKey)
+        val pagingKeys = PagingKeys(elementId = 1, prevKey = prevKey, nextKey = nextKey)
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
         setConditions(pagingKeysForElementId = pagingKeys)
 

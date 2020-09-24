@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 data class Season(
     @PrimaryKey
     var id: Int,
-    var showId: String,
+    var showId: Int,
     var seasonNumber: Int,
     var image: Int,
     var numberOfEpisodes: Int

@@ -22,8 +22,8 @@ class PagingKysDaoTest {
 
     private lateinit var database: TVShowsDatabase
     private lateinit var pagingKeysDao: PagingKeysDao
-    private val elementId1 = 1L
-    private val elementId2 = 2L
+    private val elementId1 = 1
+    private val elementId2 = 2
     private val prevKey1 = 1
     private val prevKey2 = 2
     private val nextKey1 = 3
