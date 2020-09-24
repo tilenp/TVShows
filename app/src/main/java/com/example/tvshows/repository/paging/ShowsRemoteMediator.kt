@@ -44,17 +44,17 @@ class ShowsRemoteMediator @Inject constructor(
     fun calculatePage(loadType: LoadType, state: PagingState<Int, Show>): Int {
         return when (loadType) {
             LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                val remoteKeys = getPagingKeysClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE
             }
             LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val remoteKeys = getPagingKeysForFirstItem(state)
                     ?: throw InvalidObjectException("Result is empty")
 
                 remoteKeys.prevKey ?: INVALID_PAGE
             }
             LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
+                val remoteKeys = getPagingKeysForLastItem(state)
                     ?: throw InvalidObjectException("Result is empty")
 
                 remoteKeys.nextKey ?: INVALID_PAGE
@@ -63,7 +63,7 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     @VisibleForTesting
-    fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.showId?.let { id ->
                 database.getPagingKeysDao().getPagingKeysForElementId(id)
@@ -72,14 +72,14 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     @VisibleForTesting
-    fun getRemoteKeyForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
     @VisibleForTesting
-    fun getRemoteKeyForLastItem(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysForLastItem(state: PagingState<Int, Show>): PagingKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }

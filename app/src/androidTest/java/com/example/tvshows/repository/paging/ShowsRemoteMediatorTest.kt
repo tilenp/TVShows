@@ -209,13 +209,26 @@ class ShowsRemoteMediatorTest {
     }
 
     @Test
+    fun paging_keys_for_the_closest_to_current_position_are_correct() {
+        // arrange
+        val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 1, pagingConfig, 0)
+        setConditions()
+
+        // act
+        showMediator.getPagingKeysClosestToCurrentPosition(state = state)
+
+        // assert
+        verify(pagingKeysDao, times(1)).getPagingKeysForElementId(show2.showId)
+    }
+
+    @Test
     fun paging_keys_for_the_first_item_are_correct() {
         // arrange
         val state: PagingState<Int, Show> = PagingState(listOf(page1, page2), 0, pagingConfig, 0)
         setConditions()
 
         // act
-        showMediator.getRemoteKeyForFirstItem(state = state)
+        showMediator.getPagingKeysForFirstItem(state = state)
 
         // assert
         verify(pagingKeysDao, times(1)).getPagingKeysForElementId(show1.showId)
@@ -228,7 +241,7 @@ class ShowsRemoteMediatorTest {
         setConditions()
 
         // act
-        showMediator.getRemoteKeyForLastItem(state = state)
+        showMediator.getPagingKeysForLastItem(state = state)
 
         // assert
         verify(pagingKeysDao, times(1)).getPagingKeysForElementId(show4.showId)

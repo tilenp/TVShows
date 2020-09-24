@@ -53,7 +53,7 @@ class ShowMapperTest {
         val result = mapper.map(remoteShow)
 
         // assert
-        Assert.assertEquals(0L, result.showId)
+        Assert.assertEquals(0, result.showId)
         Assert.assertEquals("", result.name)
         Assert.assertEquals(0F, result.rating)
         Assert.assertEquals(null, result.imagePath?.medium)

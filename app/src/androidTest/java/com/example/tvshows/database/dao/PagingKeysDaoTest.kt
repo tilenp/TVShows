@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class PagingKysDaoTest {
+class PagingKeysDaoTest {
 
     private lateinit var database: TVShowsDatabase
     private lateinit var pagingKeysDao: PagingKeysDao
