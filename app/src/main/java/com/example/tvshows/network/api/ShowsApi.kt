@@ -24,13 +24,12 @@ interface ShowsApi {
     companion object {
         fun create(
             logger: HttpLoggingInterceptor,
-            client: OkHttpClient,
             callAdapterFactory: RxJava2CallAdapterFactory,
             converterFactory: GsonConverterFactory
         ): ShowsApi {
-            logger.level = HttpLoggingInterceptor.Level.BODY
+            logger.level = HttpLoggingInterceptor.Level.BASIC
 
-            client.newBuilder()
+            val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
 

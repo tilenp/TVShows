@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,12 +18,6 @@ class ApiModule {
     @Provides
     fun providesLoggerInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
-    }
-
-    @Singleton
-    @Provides
-    fun providesOkHttpClient(): OkHttpClient {
-        return OkHttpClient()
     }
 
     @Singleton
@@ -51,10 +44,9 @@ class ApiModule {
     @Provides
     fun providesShowsApi(
         logger: HttpLoggingInterceptor,
-        client: OkHttpClient,
         callAdapterFactory: RxJava2CallAdapterFactory,
         converterFactory: GsonConverterFactory
     ): ShowsApi {
-        return ShowsApi.create(logger, client, callAdapterFactory, converterFactory)
+        return ShowsApi.create(logger, callAdapterFactory, converterFactory)
     }
 }
