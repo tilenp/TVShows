@@ -35,7 +35,7 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowsViewModel::class.java)
     }
 
     override fun onDestroyView() {

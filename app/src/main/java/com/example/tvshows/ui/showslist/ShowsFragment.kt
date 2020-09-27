@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
@@ -51,9 +50,7 @@ class ShowsFragment : Fragment(), OnShowClick {
     }
 
     private fun setUpViewModel() {
-        val owner = findNavController().getViewModelStoreOwner(R.id.nav_graph)
-        val viewModelProvider = ViewModelProvider(owner, viewModelFactory)
-        viewModel = viewModelProvider.get(ShowsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowsViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {
