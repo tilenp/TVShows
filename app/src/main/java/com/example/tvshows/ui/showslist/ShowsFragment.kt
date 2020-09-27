@@ -22,7 +22,8 @@ import javax.inject.Inject
 
 class ShowsFragment : Fragment(), OnShowClick {
 
-    private var binding: FragmentShowsBinding? = null
+    private var _binding: FragmentShowsBinding? = null
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -43,10 +44,11 @@ class ShowsFragment : Fragment(), OnShowClick {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentShowsBinding.inflate(inflater, container, false)
+        _binding = FragmentShowsBinding.inflate(inflater, container, false)
+        val view = binding.root
         setUpViewModel()
         setUpRecyclerView()
-        return binding?.root
+        return view
     }
 
     private fun setUpViewModel() {
@@ -55,24 +57,22 @@ class ShowsFragment : Fragment(), OnShowClick {
 
     private fun setUpRecyclerView() {
         adapter = ShowsAdapter(this)
-        binding?.let {
-            with(it) {
-                val numberOfColumns = resources.getInteger(R.integer.grid_columns)
-                showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
-                showsRecyclerView.adapter = adapter.withLoadStateFooter(
-                    footer = LoadingAdapter()
-                )
+        with(binding) {
+            val numberOfColumns = resources.getInteger(R.integer.grid_columns)
+            showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
+            showsRecyclerView.adapter = adapter.withLoadStateFooter(
+                footer = LoadingAdapter()
+            )
 
-                adapter.addLoadStateListener { loadState ->
-                    val itemsAvailable = adapter.itemCount > 0
-                    showsRecyclerView.isVisible = itemsAvailable
-                    progressBar.isVisible = loadState.source.refresh is LoadState.Loading && !itemsAvailable
-                    val errorState = loadState.mediator?.refresh as? LoadState.Error
-                        ?: loadState.mediator?.append as? LoadState.Error
-                        ?: loadState.mediator?.prepend as? LoadState.Error
-                    errorState?.let { loadStateError ->
-                        errorHandler.handleError(loadStateError.error)
-                    }
+            adapter.addLoadStateListener { loadState ->
+                val itemsAvailable = adapter.itemCount > 0
+                showsRecyclerView.isVisible = itemsAvailable
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading && !itemsAvailable
+                val errorState = loadState.mediator?.refresh as? LoadState.Error
+                    ?: loadState.mediator?.append as? LoadState.Error
+                    ?: loadState.mediator?.prepend as? LoadState.Error
+                errorState?.let { loadStateError ->
+                    errorHandler.handleError(loadStateError.error)
                 }
             }
         }
@@ -98,7 +98,7 @@ class ShowsFragment : Fragment(), OnShowClick {
     }
 
     override fun onDestroyView() {
-        binding = null
+        _binding = null
         super.onDestroyView()
     }
 }

@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 class ShowDetailsFragment : Fragment() {
 
-    private var binding: FragmentShowDetailsBinding? = null
+    private var _binding: FragmentShowDetailsBinding? = null
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -29,9 +30,10 @@ class ShowDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
         setUpViewModel()
-        return binding.root
+        return view
     }
 
     private fun setUpViewModel() {
@@ -39,7 +41,7 @@ class ShowDetailsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        binding = null
+        _binding = null
         super.onDestroyView()
     }
 }
