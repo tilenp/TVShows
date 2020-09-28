@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -53,6 +52,7 @@ class ShowsFragment : Fragment(), OnShowClick {
 
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowsViewModel::class.java)
+        viewModel.setCurrentTag(tag)
     }
 
     private fun setUpRecyclerView() {
@@ -94,7 +94,7 @@ class ShowsFragment : Fragment(), OnShowClick {
     }
 
     override fun showClicked(showId: Int) {
-        Toast.makeText(requireContext(), showId.toString(), Toast.LENGTH_LONG).show()
+        viewModel.onShowSelected(showId = showId)
     }
 
     override fun onDestroyView() {

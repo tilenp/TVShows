@@ -18,7 +18,7 @@ class ShowDetailsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ShowsViewModel
+    private lateinit var viewModel: ShowDetailsViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,11 +33,17 @@ class ShowDetailsFragment : Fragment() {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
         setUpViewModel()
+        setUpUI()
         return view
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowDetailsViewModel::class.java)
+        viewModel.setCurrentTag(tag)
+    }
+
+    private fun setUpUI() {
+
     }
 
     override fun onDestroyView() {
