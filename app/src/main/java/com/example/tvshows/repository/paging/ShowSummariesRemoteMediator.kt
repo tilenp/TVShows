@@ -7,22 +7,22 @@ import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxRemoteMediator
 import com.example.tvshows.database.TVShowsDatabase
 import com.example.tvshows.database.model.PagingKeys
-import com.example.tvshows.database.model.Show
-import com.example.tvshows.repository.service.ShowsService
+import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.repository.service.ShowSummariesWrapperService
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class ShowsRemoteMediator @Inject constructor(
-    private val showsService: ShowsService,
+class ShowSummariesRemoteMediator @Inject constructor(
+    private val showSummariesWrapperService: ShowSummariesWrapperService,
     private val database: TVShowsDatabase
-) : RxRemoteMediator<Int, Show>() {
+) : RxRemoteMediator<Int, ShowSummary>() {
 
     override fun loadSingle(
         loadType: LoadType,
-        state: PagingState<Int, Show>
+        state: PagingState<Int, ShowSummary>
     ): Single<MediatorResult> {
         return Single.just(loadType)
             .map { calculatePage(it, state) }
@@ -30,9 +30,9 @@ class ShowsRemoteMediator @Inject constructor(
                 if (page == INVALID_PAGE) {
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
-                    showsService.getShows(page = page)
-                        .map { showsWrapper -> updateDatabase(page, loadType, showsWrapper) }
-                        .map { showsWrapper -> MediatorResult.Success(endOfPaginationReached = showsWrapper.endOfPaginationReached) as MediatorResult }
+                    showSummariesWrapperService.getShowSummariesWrapper(page = page)
+                        .map { wrapper -> updateDatabase(page, loadType, wrapper) }
+                        .map { wrapper -> MediatorResult.Success(endOfPaginationReached = wrapper.endOfPaginationReached) as MediatorResult }
                         .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
@@ -41,7 +41,7 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     @VisibleForTesting
-    fun calculatePage(loadType: LoadType, state: PagingState<Int, Show>): Int {
+    fun calculatePage(loadType: LoadType, state: PagingState<Int, ShowSummary>): Int {
         return when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getPagingKeysClosestToCurrentPosition(state)
@@ -63,7 +63,7 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     @VisibleForTesting
-    fun getPagingKeysClosestToCurrentPosition(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysClosestToCurrentPosition(state: PagingState<Int, ShowSummary>): PagingKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.showId?.let { id ->
                 database.getPagingKeysDao().getPagingKeysForElementId(id)
@@ -72,34 +72,34 @@ class ShowsRemoteMediator @Inject constructor(
     }
 
     @VisibleForTesting
-    fun getPagingKeysForFirstItem(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysForFirstItem(state: PagingState<Int, ShowSummary>): PagingKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
     @VisibleForTesting
-    fun getPagingKeysForLastItem(state: PagingState<Int, Show>): PagingKeys? {
+    fun getPagingKeysForLastItem(state: PagingState<Int, ShowSummary>): PagingKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { show ->
             database.getPagingKeysDao().getPagingKeysForElementId(show.showId)
         }
     }
 
     @VisibleForTesting
-    fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowsWrapper): ShowsWrapper {
+    fun updateDatabase(page: Int, loadType: LoadType, wrapper: ShowSummariesWrapper): ShowSummariesWrapper {
         database.runInTransaction {
             if (loadType == LoadType.REFRESH) {
                 database.getPagingKeysDao().deletePagingKeys()
-                database.getShowsDao().deleteShows()
+                database.getShowSummaryDao().deleteSummaries()
             }
 
             val prevKey = if (page == STARTING_PAGE) null else page - 1
             val nextKey = if (wrapper.endOfPaginationReached) null else page + 1
-            val keys = wrapper.shows.map {
+            val keys = wrapper.showSummaries.map {
                 PagingKeys(elementId = it.showId, prevKey = prevKey, nextKey = nextKey)
             }
             database.getPagingKeysDao().insertPagingKeys(keys)
-            database.getShowsDao().insertShows(wrapper.shows)
+            database.getShowSummaryDao().insertShowSummaries(wrapper.showSummaries)
         }
         return wrapper
     }

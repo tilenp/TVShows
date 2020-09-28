@@ -1,8 +1,8 @@
 package com.example.tvshows.network.mapper
 
 import com.example.tvshows.database.model.ImagePath
-import com.example.tvshows.database.model.Show
-import com.example.tvshows.network.remoteModel.RemoteShow
+import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturnConsecutively
@@ -11,10 +11,10 @@ import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert
 import org.junit.Test
 
-class ShowsMapperTest {
+class ShowSummariesWrapperMapperTest {
 
-    private val showMapper: ShowMapper = mock()
-    private lateinit var mapper: ShowsMapper
+    private val showSummaryMapper: ShowSummaryMapper = mock()
+    private lateinit var wrapperMapper: ShowSummariesWrapperMapper
 
     private val id1 = 1
     private val id2 = 2
@@ -28,17 +28,17 @@ class ShowsMapperTest {
     private val overview2 = "overview1"
 
     private fun setConditions(
-        shows: List<Show>
+        showSummaries: List<ShowSummary>
     ) {
-        whenever(showMapper.map(any())).doReturnConsecutively(shows)
-        mapper = ShowsMapper(showMapper)
+        whenever(showSummaryMapper.map(any())).doReturnConsecutively(showSummaries)
+        wrapperMapper = ShowSummariesWrapperMapper(showSummaryMapper)
     }
 
     @Test
     fun remote_object_is_mapped_correctly() {
         // arrange
         val shows = getShows()
-        setConditions(shows = shows)
+        setConditions(showSummaries = shows)
 
         // act
         val totalPages = 2
@@ -48,23 +48,23 @@ class ShowsMapperTest {
             page = page,
             results = getRemoteShows()
         )
-        val result = mapper.map(remoteWrapper)
+        val result = wrapperMapper.map(remoteWrapper)
 
         Assert.assertFalse(result.endOfPaginationReached)
-        result.shows.forEachIndexed { index, show ->
-            Assert.assertEquals(show, result.shows[index])
+        result.showSummaries.forEachIndexed { index, show ->
+            Assert.assertEquals(show, result.showSummaries[index])
         }
     }
 
-    private fun getShows(): List<Show> {
-        val show1 = Show(
+    private fun getShows(): List<ShowSummary> {
+        val show1 = ShowSummary(
             showId = id1,
             name = name1,
             rating = voteAverage1,
             imagePath = ImagePath(posterPath1),
             summary = overview1
         )
-        val show2 = Show(
+        val show2 = ShowSummary(
             showId = id2,
             name = name2,
             rating = voteAverage2,
@@ -74,15 +74,15 @@ class ShowsMapperTest {
         return listOf(show1, show2)
     }
 
-    private fun getRemoteShows(): List<RemoteShow> {
-        val remoteShow1 = RemoteShow(
+    private fun getRemoteShows(): List<RemoteShowSummary> {
+        val remoteShow1 = RemoteShowSummary(
             id = id1,
             name = name1,
             voteAverage = voteAverage1,
             posterPath = posterPath1,
             overview = overview1
         )
-        val remoteShow2 = RemoteShow(
+        val remoteShow2 = RemoteShowSummary(
             id = id2,
             name = name2,
             voteAverage = voteAverage2,

@@ -2,7 +2,7 @@ package com.example.tvshows.dagger.module
 
 import android.content.Context
 import com.example.tvshows.database.dao.SeasonsDao
-import com.example.tvshows.database.dao.ShowsDao
+import com.example.tvshows.database.dao.ShowSummaryDao
 import com.example.tvshows.database.TVShowsDatabase
 import com.example.tvshows.database.dao.PagingKeysDao
 import dagger.Module
@@ -22,8 +22,8 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesShowsDao(database: TVShowsDatabase): ShowsDao {
-        return database.getShowsDao()
+    fun providesShowSummaryDao(database: TVShowsDatabase): ShowSummaryDao {
+        return database.getShowSummaryDao()
     }
 
     @Singleton

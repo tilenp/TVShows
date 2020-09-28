@@ -19,7 +19,7 @@ import com.example.tvshows.ui.showslist.callback.OnShowClick
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class ShowsFragment : Fragment(), OnShowClick {
+class ShowSummariesFragment : Fragment(), OnShowClick {
 
     private var _binding: FragmentShowsBinding? = null
     private val binding get() = _binding!!
@@ -29,8 +29,8 @@ class ShowsFragment : Fragment(), OnShowClick {
 
     @Inject
     lateinit var errorHandler: ErrorHandler
-    private lateinit var viewModel: ShowsViewModel
-    private lateinit var adapter: ShowsAdapter
+    private lateinit var viewModel: ShowSummariesViewModel
+    private lateinit var adapter: ShowSummariesAdapter
     private val compositeDisposable = CompositeDisposable()
 
     override fun onAttach(context: Context) {
@@ -51,12 +51,12 @@ class ShowsFragment : Fragment(), OnShowClick {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowSummariesViewModel::class.java)
         viewModel.setCurrentTag(tag)
     }
 
     private fun setUpRecyclerView() {
-        adapter = ShowsAdapter(this)
+        adapter = ShowSummariesAdapter(this)
         with(binding) {
             val numberOfColumns = resources.getInteger(R.integer.grid_columns)
             showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
@@ -81,7 +81,7 @@ class ShowsFragment : Fragment(), OnShowClick {
     override fun onStart() {
         super.onStart()
         compositeDisposable.add(
-            viewModel.getShows()
+            viewModel.getShowSummaries()
                 .subscribe({
                     adapter.submitData(lifecycle, it)
                 }, {})

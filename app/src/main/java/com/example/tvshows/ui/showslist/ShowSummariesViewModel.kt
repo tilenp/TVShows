@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
-import com.example.tvshows.database.model.Show
-import com.example.tvshows.repository.ShowsRepository
+import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.repository.ShowSummariesRepository
 import com.example.tvshows.ui.EventAggregator
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-class ShowsViewModel @Inject constructor(
-    private val showsRepository: ShowsRepository,
+class ShowSummariesViewModel @Inject constructor(
+    private val showSummariesRepository: ShowSummariesRepository,
     private val eventAggregator: EventAggregator
 ): ViewModel() {
 
@@ -19,9 +19,9 @@ class ShowsViewModel @Inject constructor(
         currentTag?.let { eventAggregator.setCurrentTag(it) }
     }
 
-    fun getShows(): Flowable<PagingData<Show>> {
-        return showsRepository
-            .getShows()
+    fun getShowSummaries(): Flowable<PagingData<ShowSummary>> {
+        return showSummariesRepository
+            .getShowSummaries()
             .cachedIn(viewModelScope)
     }
 

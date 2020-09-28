@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
-import com.example.tvshows.ui.showslist.ConfigurationViewModel.Companion.SHOWS_FRAGMENT
+import com.example.tvshows.ui.showslist.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
 import com.example.tvshows.ui.showslist.ConfigurationViewModel.Companion.SHOW_DETAILS_FRAGMENT
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setInitialFragment() {
-        val fragment = supportFragmentManager.findFragmentByTag(SHOWS_FRAGMENT)
+        val fragment = supportFragmentManager.findFragmentByTag(SHOW_SUMMARIES_FRAGMENT)
         if (fragment == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.container, ShowsFragment(), SHOWS_FRAGMENT)
+                .add(R.id.container, ShowSummariesFragment(), SHOW_SUMMARIES_FRAGMENT)
                 .commit()
         }
     }

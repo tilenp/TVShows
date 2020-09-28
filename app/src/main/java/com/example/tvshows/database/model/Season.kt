@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [ForeignKey(
-        entity = Show::class,
+        entity = ShowSummary::class,
         parentColumns = ["id"],
         childColumns = ["showId"],
         onDelete = ForeignKey.CASCADE
@@ -18,7 +18,7 @@ data class Season(
     @PrimaryKey
     var id: Int,
     var showId: Int,
+    var name: String,
     var seasonNumber: Int,
-    var image: Int,
-    var numberOfEpisodes: Int
+    var image: Int
 )

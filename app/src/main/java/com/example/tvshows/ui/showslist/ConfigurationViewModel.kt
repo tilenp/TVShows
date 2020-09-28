@@ -29,7 +29,7 @@ class ConfigurationViewModel @Inject constructor(
         compositeDisposable.add(
             eventAggregator.observeSelectedShowId()
                 .subscribe({
-                    setFragmentOnShowSelected()
+                    setFragmentOnShowIdSelected()
                 }, {})
         )
     }
@@ -40,7 +40,7 @@ class ConfigurationViewModel @Inject constructor(
         }
     }
 
-    private fun setFragmentOnShowSelected() {
+    private fun setFragmentOnShowIdSelected() {
         showDetailsSubject.onNext(isPortrait())
     }
 
@@ -82,7 +82,7 @@ class ConfigurationViewModel @Inject constructor(
     }
 
     companion object {
-        const val SHOWS_FRAGMENT = "shows_fragment"
+        const val SHOW_SUMMARIES_FRAGMENT = "show_summaries_fragment"
         const val SHOW_DETAILS_FRAGMENT = "show_details_fragment"
     }
 }

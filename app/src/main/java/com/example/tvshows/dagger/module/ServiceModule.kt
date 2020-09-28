@@ -1,7 +1,7 @@
 package com.example.tvshows.dagger.module
 
-import com.example.tvshows.network.serviceimpl.ShowsServiceImpl
-import com.example.tvshows.repository.service.ShowsService
+import com.example.tvshows.network.serviceimpl.ShowSummariesWrapperServiceImpl
+import com.example.tvshows.repository.service.ShowSummariesWrapperService
 import dagger.Binds
 import dagger.Module
 
@@ -9,5 +9,5 @@ import dagger.Module
 interface ServiceModule {
 
     @Binds
-    fun bindShowsService(showsServiceImpl: ShowsServiceImpl): ShowsService
+    fun bindShowSummariesWrapperService(showSummariesWrapperServiceImpl: ShowSummariesWrapperServiceImpl): ShowSummariesWrapperService
 }

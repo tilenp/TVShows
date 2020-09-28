@@ -6,7 +6,7 @@ import com.example.tvshows.dagger.MyViewModelFactory
 import com.example.tvshows.dagger.ViewModelKey
 import com.example.tvshows.ui.showslist.ConfigurationViewModel
 import com.example.tvshows.ui.showslist.ShowDetailsViewModel
-import com.example.tvshows.ui.showslist.ShowsViewModel
+import com.example.tvshows.ui.showslist.ShowSummariesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -27,8 +27,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ShowsViewModel::class)
-    abstract fun bindShowsViewModel(viewModel: ShowsViewModel): ViewModel
+    @ViewModelKey(ShowSummariesViewModel::class)
+    abstract fun bindShowsViewModel(viewModel: ShowSummariesViewModel): ViewModel
 
     @Binds
     @IntoMap

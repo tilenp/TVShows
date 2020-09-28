@@ -1,6 +1,6 @@
 package com.example.tvshows.network.api
 
-import com.example.tvshows.network.remoteModel.RemoteShow
+import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.example.tvshows.utilities.API_KEY
 import com.example.tvshows.utilities.BASE_URL
@@ -16,10 +16,10 @@ import retrofit2.http.Query
 interface ShowsApi {
 
     @GET("3/discover/tv?sort_by=popularity.desc")
-    fun getShows(
+    fun getShowSummaries(
         @Query("api_key") apiKey: String = API_KEY,
         @Query("page") page: Int
-    ): Single<RemoteWrapper<List<RemoteShow>>>
+    ): Single<RemoteWrapper<List<RemoteShowSummary>>>
 
     companion object {
         fun create(

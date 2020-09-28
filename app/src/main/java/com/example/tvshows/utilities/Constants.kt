@@ -2,7 +2,7 @@ package com.example.tvshows.utilities
 
 /** API **/
 const val BASE_URL = "https://api.themoviedb.org/"
-const val API_KEY = "21440930b1350cd8b4d28accce3a4799"
+const val API_KEY = "your_api_key"
 
 /** image **/
 const val IMAGE_URL = "https://image.tmdb.org/t/p"

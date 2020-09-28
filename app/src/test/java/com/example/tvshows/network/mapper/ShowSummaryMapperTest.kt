@@ -1,14 +1,14 @@
 package com.example.tvshows.network.mapper
 
-import com.example.tvshows.network.remoteModel.RemoteShow
+import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.utilities.IMAGE_URL
 import com.example.tvshows.utilities.MEDIUM
 import org.junit.Assert
 import org.junit.Test
 
-class ShowMapperTest {
+class ShowSummaryMapperTest {
 
-    private val mapper = ShowMapper()
+    private val mapper = ShowSummaryMapper()
 
     private val id = 1
     private val name = "name"
@@ -19,7 +19,7 @@ class ShowMapperTest {
     @Test
     fun complete_remote_object_is_mapped_correctly() {
         // arrange
-        val remoteShow = RemoteShow(
+        val remoteShow = RemoteShowSummary(
             id = id,
             name = name,
             voteAverage = voteAverage,
@@ -41,7 +41,7 @@ class ShowMapperTest {
     @Test
     fun incomplete_remote_object_is_mapped_correctly() {
         // arrange
-        val remoteShow = RemoteShow(
+        val remoteShow = RemoteShowSummary(
             id = null,
             name = null,
             voteAverage = null,
