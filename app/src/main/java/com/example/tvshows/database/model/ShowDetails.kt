@@ -13,8 +13,7 @@ import androidx.room.*
 data class  ShowDetails @JvmOverloads constructor(
     @PrimaryKey
     var showId: Int,
-    var rating: Float,
-    var ratingCount: Int,
+    @Ignore var genres: List<Genre> = emptyList(),
     var summary: String,
     @Ignore var seasons: List<Season> = emptyList()
 )

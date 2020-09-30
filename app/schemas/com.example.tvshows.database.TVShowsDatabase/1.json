@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "69eee5a346f9ec965e97be2cb509cbbe",
+    "identityHash": "eef9b332b50c5d370e06e4d0c01b8780",
     "entities": [
       {
         "tableName": "ShowSummary",
@@ -85,23 +85,11 @@
       },
       {
         "tableName": "ShowDetails",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`showId` INTEGER NOT NULL, `rating` REAL NOT NULL, `ratingCount` INTEGER NOT NULL, `summary` TEXT NOT NULL, PRIMARY KEY(`showId`), FOREIGN KEY(`showId`) REFERENCES `ShowSummary`(`showId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`showId` INTEGER NOT NULL, `summary` TEXT NOT NULL, PRIMARY KEY(`showId`), FOREIGN KEY(`showId`) REFERENCES `ShowSummary`(`showId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "showId",
             "columnName": "showId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rating",
-            "columnName": "rating",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "ratingCount",
-            "columnName": "ratingCount",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -119,6 +107,59 @@
           "autoGenerate": false
         },
         "indices": [],
+        "foreignKeys": [
+          {
+            "table": "ShowSummary",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "showId"
+            ],
+            "referencedColumns": [
+              "showId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Genre",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `showId` INTEGER NOT NULL, `name` TEXT NOT NULL, FOREIGN KEY(`showId`) REFERENCES `ShowSummary`(`showId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showId",
+            "columnName": "showId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Genre_showId",
+            "unique": false,
+            "columnNames": [
+              "showId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Genre_showId` ON `${TABLE_NAME}` (`showId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "ShowSummary",
@@ -202,7 +243,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69eee5a346f9ec965e97be2cb509cbbe')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eef9b332b50c5d370e06e4d0c01b8780')"
     ]
   }
 }

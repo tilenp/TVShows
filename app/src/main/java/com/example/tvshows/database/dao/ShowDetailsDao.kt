@@ -12,7 +12,7 @@ import io.reactivex.Observable
 interface ShowDetailsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShowDetails(showDetails: ShowDetails): Completable
+    fun insertShowDetails(showDetails: ShowDetails)
 
     @Query("SELECT * FROM ShowDetails WHERE ShowDetails.showId = :showId")
     fun getShowDetails(showId: Int): Observable<ShowDetails>

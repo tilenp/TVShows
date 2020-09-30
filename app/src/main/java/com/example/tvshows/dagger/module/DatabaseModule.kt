@@ -41,4 +41,10 @@ class DatabaseModule {
     fun providesSeasonsDao(database: TVShowsDatabase): SeasonsDao {
         return database.getSeasonsDao()
     }
+
+    @Singleton
+    @Provides
+    fun providesGenreDao(database: TVShowsDatabase): GenreDao {
+        return database.getGenreDao()
+    }
 }

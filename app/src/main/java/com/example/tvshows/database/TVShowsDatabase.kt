@@ -10,7 +10,7 @@ import com.example.tvshows.database.model.*
 import com.example.tvshows.utilities.DATABASE_NAME
 
 @Database(
-    entities = [ShowSummary::class, PagingKeys::class, ShowDetails::class, Season::class],
+    entities = [ShowSummary::class, PagingKeys::class, ShowDetails::class, Genre::class, Season::class],
     version = 1,
     exportSchema = true
 )
@@ -21,6 +21,7 @@ abstract class TVShowsDatabase : RoomDatabase() {
     abstract fun getPagingKeysDao(): PagingKeysDao
     abstract fun getShowDetailsDao(): ShowDetailsDao
     abstract fun getSeasonsDao(): SeasonsDao
+    abstract fun getGenreDao(): GenreDao
 
     companion object {
 
