@@ -8,17 +8,17 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [ForeignKey(
         entity = ShowSummary::class,
-        parentColumns = ["id"],
+        parentColumns = ["showId"],
         childColumns = ["showId"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index("showId")]
+    indices = [Index(value = ["showId"])]
 )
 data class Season(
     @PrimaryKey
     var id: Int,
-    var showId: Int,
+    var showId: Int = 0,
     var name: String,
     var seasonNumber: Int,
-    var image: Int
+    var imagePath: ImagePath?
 )

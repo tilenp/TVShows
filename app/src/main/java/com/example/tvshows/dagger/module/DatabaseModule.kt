@@ -1,10 +1,8 @@
 package com.example.tvshows.dagger.module
 
 import android.content.Context
-import com.example.tvshows.database.dao.SeasonsDao
-import com.example.tvshows.database.dao.ShowSummaryDao
 import com.example.tvshows.database.TVShowsDatabase
-import com.example.tvshows.database.dao.PagingKeysDao
+import com.example.tvshows.database.dao.*
 import dagger.Module
 import dagger.Provides
 
@@ -30,6 +28,12 @@ class DatabaseModule {
     @Provides
     fun providesPagingKeysDao(database: TVShowsDatabase): PagingKeysDao {
         return database.getPagingKeysDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providesShowDetailsDao(database: TVShowsDatabase): ShowDetailsDao {
+        return database.getShowDetailsDao()
     }
 
     @Singleton

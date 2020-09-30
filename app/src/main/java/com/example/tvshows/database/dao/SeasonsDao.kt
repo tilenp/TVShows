@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface SeasonsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(seasons: List<Season>): Completable
+    fun insertSeasons(seasons: List<Season>): Completable
 
     @Query("SELECT * " +
             "FROM Season " +
