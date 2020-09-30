@@ -5,9 +5,11 @@ import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.model.ShowSummary
 import com.example.tvshows.repository.ShowDetailsRepository
 import com.example.tvshows.ui.EventAggregator
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class ShowDetailsViewModel @Inject constructor(
@@ -15,6 +17,7 @@ class ShowDetailsViewModel @Inject constructor(
     private val showDetailsRepository: ShowDetailsRepository
 ) : ViewModel() {
 
+    private val errorSubject = PublishSubject.create<Throwable>()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -25,7 +28,11 @@ class ShowDetailsViewModel @Inject constructor(
         compositeDisposable.add(
             eventAggregator.observeSelectedShowId()
                 .observeOn(Schedulers.io())
-                .flatMapCompletable { showId -> showDetailsRepository.updateShowDetails(showId = showId) }
+                .flatMapCompletable { showId ->
+                    showDetailsRepository.updateShowDetails(showId = showId)
+                        .doOnError { error -> errorSubject.onNext(error) }
+                        .onErrorResumeNext { Completable.complete() }
+                }
                 .subscribe({
                     System.out.println("db success")
                 }, {
@@ -46,6 +53,10 @@ class ShowDetailsViewModel @Inject constructor(
     fun getShowDetails(): Observable<ShowDetails> {
         return eventAggregator.observeSelectedShowId()
             .switchMap { showId -> showDetailsRepository.getShowDetails(showId = showId) }
+    }
+
+    fun getErrors(): Observable<Throwable> {
+        return errorSubject
     }
 
     override fun onCleared() {

@@ -11,6 +11,7 @@ import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.model.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
+import com.example.tvshows.ui.ErrorHandler
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +25,8 @@ class ShowDetailsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var errorHandler: ErrorHandler
     private lateinit var viewModel: ShowDetailsViewModel
     private val compositeDisposable = CompositeDisposable()
 
@@ -74,9 +77,15 @@ class ShowDetailsFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ showDetails ->
                     updateDetailsPart(showDetails)
-                }, {
-                    System.out.println("db error")
-                })
+                }, {})
+        )
+
+        compositeDisposable.add(
+            viewModel.getErrors()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ error ->
+                    errorHandler.handleError(error)
+                }, {})
         )
     }
 
