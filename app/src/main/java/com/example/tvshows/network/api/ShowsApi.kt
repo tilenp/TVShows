@@ -35,7 +35,7 @@ interface ShowsApi {
             callAdapterFactory: RxJava2CallAdapterFactory,
             converterFactory: GsonConverterFactory
         ): ShowsApi {
-            logger.level = HttpLoggingInterceptor.Level.BODY
+            logger.level = HttpLoggingInterceptor.Level.BASIC
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

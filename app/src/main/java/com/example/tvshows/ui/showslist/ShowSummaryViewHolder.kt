@@ -17,7 +17,7 @@ class ShowSummaryViewHolder(
     private lateinit var showSummary: ShowSummary
 
     init {
-        binding.root.setOnClickListener { onShowClick.showClicked(showId = showSummary.showId) }
+        binding.root.setOnClickListener { onShowClick.showClicked(showSummary.showId) }
     }
 
     fun bind(showSummary: ShowSummary) {

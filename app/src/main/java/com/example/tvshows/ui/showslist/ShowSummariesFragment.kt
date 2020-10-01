@@ -94,7 +94,7 @@ class ShowSummariesFragment : Fragment(), OnShowClick {
     }
 
     override fun showClicked(showId: Int) {
-        viewModel.onShowSelected(showId = showId)
+        viewModel.onShowSelected(showId)
     }
 
     override fun onDestroyView() {

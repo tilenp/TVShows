@@ -20,8 +20,6 @@ abstract class TVShowsDatabase : RoomDatabase() {
     abstract fun getShowSummaryDao(): ShowSummaryDao
     abstract fun getPagingKeysDao(): PagingKeysDao
     abstract fun getShowDetailsDao(): ShowDetailsDao
-    abstract fun getSeasonsDao(): SeasonsDao
-    abstract fun getGenreDao(): GenreDao
 
     companion object {
 

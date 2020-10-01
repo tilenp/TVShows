@@ -29,7 +29,7 @@ class ShowDetailsViewModel @Inject constructor(
             eventAggregator.observeSelectedShowId()
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { showId ->
-                    showDetailsRepository.updateShowDetails(showId = showId)
+                    showDetailsRepository.updateShowDetails(showId)
                         .doOnError { error -> errorSubject.onNext(error) }
                         .onErrorResumeNext { Completable.complete() }
                 }
@@ -47,12 +47,12 @@ class ShowDetailsViewModel @Inject constructor(
 
     fun getShowSummary(): Observable<ShowSummary> {
         return eventAggregator.observeSelectedShowId()
-            .switchMap { showId -> showDetailsRepository.getShowSummary(showId = showId) }
+            .switchMap { showId -> showDetailsRepository.getShowSummary(showId) }
     }
 
     fun getShowDetails(): Observable<ShowDetails> {
         return eventAggregator.observeSelectedShowId()
-            .switchMap { showId -> showDetailsRepository.getShowDetails(showId = showId) }
+            .switchMap { showId -> showDetailsRepository.getShowDetails(showId) }
     }
 
     fun getErrors(): Observable<Throwable> {

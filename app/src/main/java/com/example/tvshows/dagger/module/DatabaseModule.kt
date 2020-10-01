@@ -35,16 +35,4 @@ class DatabaseModule {
     fun providesShowDetailsDao(database: TVShowsDatabase): ShowDetailsDao {
         return database.getShowDetailsDao()
     }
-
-    @Singleton
-    @Provides
-    fun providesSeasonsDao(database: TVShowsDatabase): SeasonsDao {
-        return database.getSeasonsDao()
-    }
-
-    @Singleton
-    @Provides
-    fun providesGenreDao(database: TVShowsDatabase): GenreDao {
-        return database.getGenreDao()
-    }
 }
