@@ -1,4 +1,4 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
-import com.example.tvshows.ui.showslist.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
-import com.example.tvshows.ui.showslist.ConfigurationViewModel.Companion.SHOW_DETAILS_FRAGMENT
+import com.example.tvshows.ui.showdetails.ShowDetailsFragment
+import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
+import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_DETAILS_FRAGMENT
+import com.example.tvshows.ui.showslist.ShowSummariesFragment
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

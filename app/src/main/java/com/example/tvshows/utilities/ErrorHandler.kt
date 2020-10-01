@@ -1,4 +1,4 @@
-package com.example.tvshows.ui
+package com.example.tvshows.utilities
 
 import android.content.Context
 import android.widget.Toast

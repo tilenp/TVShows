@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tvshows.dagger.MyViewModelFactory
 import com.example.tvshows.dagger.ViewModelKey
-import com.example.tvshows.ui.showslist.ConfigurationViewModel
-import com.example.tvshows.ui.showslist.ShowDetailsViewModel
+import com.example.tvshows.ui.ConfigurationViewModel
+import com.example.tvshows.ui.showdetails.ShowDetailsViewModel
 import com.example.tvshows.ui.showslist.ShowSummariesViewModel
 import dagger.Binds
 import dagger.Module

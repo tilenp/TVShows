@@ -1,4 +1,4 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui.showslist.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

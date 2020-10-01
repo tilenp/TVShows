@@ -1,4 +1,4 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui.showdetails
 
 import androidx.lifecycle.ViewModel
 import com.example.tvshows.database.model.ShowDetails

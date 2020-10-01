@@ -1,4 +1,4 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui.showdetails.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvshows.R
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.databinding.ViewHolderSeasonBinding
-import com.example.tvshows.ui.showslist.callback.OnSeasonClick
+import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
 import com.squareup.picasso.Picasso
 
 class SeasonViewHolder(

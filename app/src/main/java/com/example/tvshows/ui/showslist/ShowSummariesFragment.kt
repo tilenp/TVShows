@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.FragmentShowsBinding
-import com.example.tvshows.ui.ErrorHandler
+import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.ui.showslist.adapter.LoadingAdapter
+import com.example.tvshows.ui.showslist.adapter.ShowSummariesAdapter
 import com.example.tvshows.ui.showslist.callback.OnShowClick
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject

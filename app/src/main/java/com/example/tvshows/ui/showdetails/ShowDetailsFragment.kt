@@ -1,4 +1,4 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui.showdetails
 
 import android.content.Context
 import android.os.Bundle
@@ -15,8 +15,9 @@ import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
-import com.example.tvshows.ui.ErrorHandler
-import com.example.tvshows.ui.showslist.callback.OnSeasonClick
+import com.example.tvshows.utilities.ErrorHandler
+import com.example.tvshows.ui.showdetails.adapter.SeasonsAdapter
+import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
 import com.example.tvshows.utilities.commaFormat
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers

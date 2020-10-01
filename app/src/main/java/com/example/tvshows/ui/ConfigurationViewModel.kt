@@ -1,8 +1,7 @@
-package com.example.tvshows.ui.showslist
+package com.example.tvshows.ui
 
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModel
-import com.example.tvshows.ui.EventAggregator
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject

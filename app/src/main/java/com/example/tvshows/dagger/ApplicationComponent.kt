@@ -2,8 +2,8 @@ package com.example.tvshows.dagger
 
 import android.content.Context
 import com.example.tvshows.dagger.module.*
-import com.example.tvshows.ui.showslist.MainActivity
-import com.example.tvshows.ui.showslist.ShowDetailsFragment
+import com.example.tvshows.ui.MainActivity
+import com.example.tvshows.ui.showdetails.ShowDetailsFragment
 import com.example.tvshows.ui.showslist.ShowSummariesFragment
 import dagger.BindsInstance
 import dagger.Component
