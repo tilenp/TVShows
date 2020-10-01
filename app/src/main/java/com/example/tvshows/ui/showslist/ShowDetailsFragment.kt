@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.tvshows.dagger.MyApplication
-import com.example.tvshows.database.model.ShowDetails
+import com.example.tvshows.database.model.Genre
+import com.example.tvshows.database.model.ShowContent
 import com.example.tvshows.database.model.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
 import com.example.tvshows.ui.ErrorHandler
+import com.example.tvshows.utilities.commaFormat
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -76,7 +78,8 @@ class ShowDetailsFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ showDetails ->
-                    updateDetailsPart(showDetails)
+                    updateGenres(showDetails.genres)
+                    updateShowContent(showDetails.showContent)
                 }, {})
         )
 
@@ -99,11 +102,12 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun updateDetailsPart(showDetails: ShowDetails) {
-        with(binding) {
-            genreTextView.text = showDetails.genres.firstOrNull()?.name
-            summaryTextView.text = showDetails.showContent.summary
-        }
+    private fun updateGenres(genres: List<Genre>) {
+        binding.genreTextView.text = genres.commaFormat()
+    }
+
+    private fun updateShowContent(showContent: ShowContent) {
+        binding.summaryTextView.text = showContent.summary
     }
 
     override fun onStop() {

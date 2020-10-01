@@ -19,4 +19,8 @@ data class Genre (
     val id: Long = 0,
     var showId: Int = 0,
     val name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
