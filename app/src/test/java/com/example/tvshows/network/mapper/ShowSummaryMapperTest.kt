@@ -4,6 +4,7 @@ import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.utilities.IMAGE_URL
 import com.example.tvshows.utilities.MEDIUM
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ShowSummaryMapperTest {
@@ -12,9 +13,7 @@ class ShowSummaryMapperTest {
 
     private val id = 1
     private val name = "name"
-    private val voteAverage = 2F
     private val posterPath = "posterPath"
-    private val overview = "overview"
 
     @Test
     fun complete_remote_object_is_mapped_correctly() {
@@ -22,20 +21,16 @@ class ShowSummaryMapperTest {
         val remoteShow = RemoteShowSummary(
             id = id,
             name = name,
-            voteAverage = voteAverage,
-            posterPath = posterPath,
-            overview = overview
+            posterPath = posterPath
         )
 
         // act
         val result = mapper.map(remoteShow)
 
         // assert
-        Assert.assertEquals(id, result.showId)
-        Assert.assertEquals(name, result.name)
-        Assert.assertEquals(voteAverage, result.rating)
-        Assert.assertEquals("$IMAGE_URL$MEDIUM$posterPath", result.imagePath?.medium)
-        Assert.assertEquals(overview, result.summary)
+        assertEquals(id, result.showId)
+        assertEquals(name, result.name)
+        assertEquals("$IMAGE_URL$MEDIUM$posterPath", result.imagePath?.medium)
     }
 
     @Test
@@ -44,19 +39,15 @@ class ShowSummaryMapperTest {
         val remoteShow = RemoteShowSummary(
             id = null,
             name = null,
-            voteAverage = null,
-            posterPath = null,
-            overview = null
+            posterPath = null
         )
 
         // act
         val result = mapper.map(remoteShow)
 
         // assert
-        Assert.assertEquals(0, result.showId)
-        Assert.assertEquals("", result.name)
-        Assert.assertEquals(0F, result.rating)
-        Assert.assertEquals(null, result.imagePath?.medium)
-        Assert.assertEquals("", result.summary)
+        assertEquals(0, result.showId)
+        assertEquals("", result.name)
+        assertEquals(null, result.imagePath?.medium)
     }
 }
