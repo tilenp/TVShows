@@ -17,7 +17,7 @@ class ShowDetailsRepository @Inject constructor(
 
     fun updateShowDetails(showId: Int): Completable {
         return showDetailsService.getShowDetails(showId = showId)
-            .flatMapCompletable { showDetails -> updateDatabase(showDetails) }
+            .flatMapCompletable { showDetails -> database.getShowDetailsDao().insertShowDetails(showDetails) }
     }
 
     private fun updateDatabase(showDetails: ShowDetails): Completable {
@@ -36,12 +36,6 @@ class ShowDetailsRepository @Inject constructor(
     }
 
     fun getShowDetails(showId: Int): Observable<ShowDetails> {
-        return Observable.combineLatest(
-            database.getShowDetailsDao().getShowDetails(showId),
-            database.getGenreDao().getGenres(showId),
-            BiFunction { showDetails: ShowDetails, genres: List<Genre> ->
-                showDetails.also { it.genres = genres }
-            }
-        )
+        return database.getShowDetailsDao().getShowDetails(showId)
     }
 }

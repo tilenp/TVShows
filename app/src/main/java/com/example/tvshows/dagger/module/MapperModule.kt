@@ -1,9 +1,6 @@
 package com.example.tvshows.dagger.module
 
-import com.example.tvshows.database.model.Genre
-import com.example.tvshows.database.model.Season
-import com.example.tvshows.database.model.ShowDetails
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.model.*
 import com.example.tvshows.network.mapper.*
 import com.example.tvshows.network.remoteModel.*
 import com.example.tvshows.repository.paging.ShowSummariesWrapper
@@ -28,6 +25,12 @@ class MapperModule {
 
     @Singleton
     @Provides
+    fun providesShowContentMapper(): Mapper<RemoteShowDetails, ShowContent> {
+        return ShowContentMapper()
+    }
+
+    @Singleton
+    @Provides
     fun providesGenreMapper(): Mapper<RemoteGenre, Genre> {
         return GenreMapper()
     }
@@ -41,9 +44,10 @@ class MapperModule {
     @Singleton
     @Provides
     fun providesShowDetailsMapper(
+        showContentMapper: Mapper<RemoteShowDetails, ShowContent>,
         genreMapper: Mapper<RemoteGenre, Genre>,
         seasonMapper: Mapper<RemoteSeason, Season>
     ): Mapper<RemoteShowDetails, ShowDetails> {
-        return ShowDetailsMapper(genreMapper, seasonMapper)
+        return ShowDetailsMapper(showContentMapper, genreMapper, seasonMapper)
     }
 }

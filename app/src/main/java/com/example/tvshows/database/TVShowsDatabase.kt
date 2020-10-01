@@ -10,7 +10,7 @@ import com.example.tvshows.database.model.*
 import com.example.tvshows.utilities.DATABASE_NAME
 
 @Database(
-    entities = [ShowSummary::class, PagingKeys::class, ShowDetails::class, Genre::class, Season::class],
+    entities = [ShowSummary::class, PagingKeys::class, ShowContent::class, Genre::class, Season::class],
     version = 1,
     exportSchema = true
 )

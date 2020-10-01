@@ -102,7 +102,7 @@ class ShowDetailsFragment : Fragment() {
     private fun updateDetailsPart(showDetails: ShowDetails) {
         with(binding) {
             genreTextView.text = showDetails.genres.firstOrNull()?.name
-            summaryTextView.text = showDetails.summary
+            summaryTextView.text = showDetails.showContent.summary
         }
     }
 

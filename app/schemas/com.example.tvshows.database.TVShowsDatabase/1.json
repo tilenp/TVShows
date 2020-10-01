@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eef9b332b50c5d370e06e4d0c01b8780",
+    "identityHash": "fc4861f841a583e91fd2807072432df5",
     "entities": [
       {
         "tableName": "ShowSummary",
@@ -84,7 +84,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "ShowDetails",
+        "tableName": "ShowContent",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`showId` INTEGER NOT NULL, `summary` TEXT NOT NULL, PRIMARY KEY(`showId`), FOREIGN KEY(`showId`) REFERENCES `ShowSummary`(`showId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
@@ -243,7 +243,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eef9b332b50c5d370e06e4d0c01b8780')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc4861f841a583e91fd2807072432df5')"
     ]
   }
 }

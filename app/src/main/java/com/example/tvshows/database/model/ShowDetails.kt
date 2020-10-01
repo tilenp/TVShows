@@ -1,19 +1,18 @@
 package com.example.tvshows.database.model
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Relation
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = ShowSummary::class,
-        parentColumns = ["showId"],
-        childColumns = ["showId"],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
-data class  ShowDetails @JvmOverloads constructor(
-    @PrimaryKey
-    var showId: Int,
-    @Ignore var genres: List<Genre> = emptyList(),
-    var summary: String,
-    @Ignore var seasons: List<Season> = emptyList()
+data class ShowDetails(
+    @Embedded val showContent: ShowContent,
+    @Relation(
+        parentColumn = "showId",
+        entityColumn = "showId"
+    )
+    val genres: List<Genre>,
+    @Relation(
+        parentColumn = "showId",
+        entityColumn = "showId"
+    )
+    val seasons: List<Season>
 )
