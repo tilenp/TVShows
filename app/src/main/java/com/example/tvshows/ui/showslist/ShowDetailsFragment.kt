@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.database.model.Genre
+import com.example.tvshows.database.model.Season
 import com.example.tvshows.database.model.ShowContent
 import com.example.tvshows.database.model.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
 import com.example.tvshows.ui.ErrorHandler
+import com.example.tvshows.ui.showslist.callback.OnSeasonClick
 import com.example.tvshows.utilities.commaFormat
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +24,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ShowDetailsFragment : Fragment() {
+class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     private var _binding: FragmentShowDetailsBinding? = null
     private val binding get() = _binding!!
@@ -31,6 +35,8 @@ class ShowDetailsFragment : Fragment() {
     lateinit var errorHandler: ErrorHandler
     private lateinit var viewModel: ShowDetailsViewModel
     private val compositeDisposable = CompositeDisposable()
+
+    private lateinit var seasonsAdapter: SeasonsAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,7 +61,11 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun setUpUI() {
-
+        seasonsAdapter = SeasonsAdapter(this)
+        binding.seasonsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = seasonsAdapter
+        }
     }
 
     override fun onStart() {
@@ -80,6 +90,7 @@ class ShowDetailsFragment : Fragment() {
                 .subscribe({ showDetails ->
                     updateGenres(showDetails.genres)
                     updateShowContent(showDetails.showContent)
+                    updateSeasons(showDetails.seasons)
                 }, {})
         )
 
@@ -108,6 +119,17 @@ class ShowDetailsFragment : Fragment() {
 
     private fun updateShowContent(showContent: ShowContent) {
         binding.summaryTextView.text = showContent.summary
+    }
+
+    private fun updateSeasons(seasons: List<Season>) {
+        if (seasons.isNotEmpty()) {
+            binding.seasonsTextView.visibility = View.VISIBLE
+        }
+        seasonsAdapter.setSeasons(seasons)
+    }
+
+    override fun onSeasonClick(seasonName: String) {
+        Toast.makeText(context, seasonName, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {

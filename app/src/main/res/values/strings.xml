@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TVShows</string>
     <string name="TVShows">TV Shows</string>
+    <string name="Seasons">Seasons</string>
 </resources>
