@@ -40,45 +40,29 @@ class ShowSummariesRemoteMediatorTest {
     private val name2 = "name2"
     private val name3 = "name3"
     private val name4 = "name4"
-    private val voteAverage1 = 2F
-    private val voteAverage2 = 3F
-    private val voteAverage3 = 4F
-    private val voteAverage4 = 5F
     private val posterPath1 = "posterPath1"
     private val posterPath2 = "posterPath2"
     private val posterPath3 = "posterPath3"
     private val posterPath4 = "posterPath4"
-    private val overview1 = "overview1"
-    private val overview2 = "overview2"
-    private val overview3 = "overview3"
-    private val overview4 = "overview4"
     private val show1 = ShowSummary(
         showId = id1,
         name = name1,
-        rating = voteAverage1,
-        imagePath = ImagePath(posterPath1),
-        summary = overview1
+        imagePath = ImagePath(posterPath1)
     )
     private val show2 = ShowSummary(
         showId = id2,
         name = name2,
-        rating = voteAverage2,
-        imagePath = ImagePath(posterPath2),
-        summary = overview2
+        imagePath = ImagePath(posterPath2)
     )
     private val show3 = ShowSummary(
         showId = id3,
         name = name3,
-        rating = voteAverage3,
-        imagePath = ImagePath(posterPath3),
-        summary = overview3
+        imagePath = ImagePath(posterPath3)
     )
     private val show4 = ShowSummary(
         showId = id4,
         name = name4,
-        rating = voteAverage4,
-        imagePath = ImagePath(posterPath4),
-        summary = overview4
+        imagePath = ImagePath(posterPath4)
     )
     private val page1 = PagingSource.LoadResult.Page(listOf(show1, show2), null, 2)
     private val page2 = PagingSource.LoadResult.Page(listOf(show3, show4), 1, 3)
