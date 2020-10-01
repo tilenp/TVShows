@@ -1,7 +1,7 @@
 package com.example.tvshows.network.mapper
 
 import com.example.tvshows.database.model.ImagePath
-import com.example.tvshows.database.model.Season
+import com.example.tvshows.database.table.Season
 import com.example.tvshows.network.remoteModel.RemoteSeason
 
 class SeasonMapper: Mapper<RemoteSeason, Season> {

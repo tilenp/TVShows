@@ -1,9 +1,10 @@
-package com.example.tvshows.database.model
+package com.example.tvshows.database.table
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.tvshows.database.model.ImagePath
 
 @Entity(
     foreignKeys = [ForeignKey(

@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
 import com.example.tvshows.database.dao.ShowSummaryDao
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator
 import io.reactivex.Flowable
 import javax.inject.Inject

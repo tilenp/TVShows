@@ -6,8 +6,8 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxRemoteMediator
 import com.example.tvshows.database.TVShowsDatabase
-import com.example.tvshows.database.model.PagingKeys
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.PagingKeys
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.service.ShowSummariesWrapperService
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

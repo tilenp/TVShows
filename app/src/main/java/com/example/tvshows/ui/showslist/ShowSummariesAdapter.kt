@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.ui.showslist.callback.OnShowClick
 
 class ShowSummariesAdapter(

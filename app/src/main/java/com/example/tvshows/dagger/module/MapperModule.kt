@@ -1,6 +1,7 @@
 package com.example.tvshows.dagger.module
 
-import com.example.tvshows.database.model.*
+import com.example.tvshows.database.model.ShowDetails
+import com.example.tvshows.database.table.*
 import com.example.tvshows.network.mapper.*
 import com.example.tvshows.network.remoteModel.*
 import com.example.tvshows.repository.paging.ShowSummariesWrapper

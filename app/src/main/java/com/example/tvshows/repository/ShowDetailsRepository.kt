@@ -3,7 +3,7 @@ package com.example.tvshows.repository
 import com.example.tvshows.database.dao.ShowDetailsDao
 import com.example.tvshows.database.dao.ShowSummaryDao
 import com.example.tvshows.database.model.ShowDetails
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.service.ShowDetailsService
 import io.reactivex.Completable
 import io.reactivex.Observable

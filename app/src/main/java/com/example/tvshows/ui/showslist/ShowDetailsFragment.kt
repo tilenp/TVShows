@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tvshows.dagger.MyApplication
-import com.example.tvshows.database.model.Genre
-import com.example.tvshows.database.model.Season
-import com.example.tvshows.database.model.ShowContent
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.Genre
+import com.example.tvshows.database.table.Season
+import com.example.tvshows.database.table.ShowContent
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
 import com.example.tvshows.ui.ErrorHandler
 import com.example.tvshows.ui.showslist.callback.OnSeasonClick

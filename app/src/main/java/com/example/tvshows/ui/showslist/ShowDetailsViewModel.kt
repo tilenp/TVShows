@@ -2,7 +2,7 @@ package com.example.tvshows.ui.showslist
 
 import androidx.lifecycle.ViewModel
 import com.example.tvshows.database.model.ShowDetails
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.ShowDetailsRepository
 import com.example.tvshows.ui.EventAggregator
 import io.reactivex.Completable

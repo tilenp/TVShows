@@ -1,6 +1,6 @@
 package com.example.tvshows.network.mapper
 
-import com.example.tvshows.database.model.ShowContent
+import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.network.remoteModel.RemoteShowDetails
 
 class ShowContentMapper: Mapper<RemoteShowDetails, ShowContent> {

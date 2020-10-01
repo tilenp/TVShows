@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.tvshows.database.dao.*
-import com.example.tvshows.database.model.*
+import com.example.tvshows.database.table.*
 import com.example.tvshows.utilities.DATABASE_NAME
 
 @Database(

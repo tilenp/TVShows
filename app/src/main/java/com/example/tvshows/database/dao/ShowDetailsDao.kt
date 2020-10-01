@@ -1,9 +1,9 @@
 package com.example.tvshows.database.dao
 
 import androidx.room.*
-import com.example.tvshows.database.model.Genre
-import com.example.tvshows.database.model.Season
-import com.example.tvshows.database.model.ShowContent
+import com.example.tvshows.database.table.Genre
+import com.example.tvshows.database.table.Season
+import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.model.ShowDetails
 import io.reactivex.Completable
 import io.reactivex.Observable

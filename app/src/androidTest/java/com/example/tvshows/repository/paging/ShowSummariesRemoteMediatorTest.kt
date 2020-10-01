@@ -10,8 +10,8 @@ import com.example.tvshows.database.TVShowsDatabase
 import com.example.tvshows.database.dao.PagingKeysDao
 import com.example.tvshows.database.dao.ShowSummaryDao
 import com.example.tvshows.database.model.ImagePath
-import com.example.tvshows.database.model.PagingKeys
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.PagingKeys
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator.Companion.INVALID_PAGE
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator.Companion.STARTING_PAGE
 import com.example.tvshows.repository.service.ShowSummariesWrapperService

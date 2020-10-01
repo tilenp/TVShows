@@ -2,7 +2,7 @@ package com.example.tvshows.ui.showslist
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tvshows.database.model.Season
+import com.example.tvshows.database.table.Season
 import com.example.tvshows.ui.showslist.callback.OnSeasonClick
 
 class SeasonsAdapter(

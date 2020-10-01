@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.ShowSummariesRepository
 import com.example.tvshows.ui.EventAggregator
 import io.reactivex.Flowable

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvshows.R
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.ViewHolderShowBinding
 import com.example.tvshows.ui.showslist.callback.OnShowClick
 import com.squareup.picasso.Picasso

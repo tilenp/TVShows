@@ -1,8 +1,8 @@
 package com.example.tvshows.network.mapper
 
-import com.example.tvshows.database.model.Genre
-import com.example.tvshows.database.model.Season
-import com.example.tvshows.database.model.ShowContent
+import com.example.tvshows.database.table.Genre
+import com.example.tvshows.database.table.Season
+import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.network.remoteModel.RemoteGenre
 import com.example.tvshows.network.remoteModel.RemoteSeason

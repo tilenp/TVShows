@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.tvshows.database.TVShowsDatabase
-import com.example.tvshows.database.model.PagingKeys
+import com.example.tvshows.database.table.PagingKeys
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.junit.After

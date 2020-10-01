@@ -1,6 +1,6 @@
 package com.example.tvshows.network.mapper
 
-import com.example.tvshows.database.model.ShowSummary
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.example.tvshows.repository.paging.ShowSummariesWrapper
