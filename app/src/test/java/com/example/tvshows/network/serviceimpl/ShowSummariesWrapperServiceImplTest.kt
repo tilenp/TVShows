@@ -31,8 +31,8 @@ class ShowSummariesWrapperServiceImplTest {
     @Test
     fun service_returns_mapped_data() {
         // arrange
-        val remoteWrapperSummary: RemoteWrapper<List<RemoteShowSummary>> = RemoteWrapper(totalPages = 0, page = 0, results = emptyList())
-        val showWrapper = ShowSummariesWrapper(true, emptyList())
+        val remoteWrapperSummary: RemoteWrapper<List<RemoteShowSummary>> = mock()
+        val showWrapper: ShowSummariesWrapper = mock()
         setConditions(remoteWrapperSummary = remoteWrapperSummary, showWrapper = showWrapper)
 
         //act
@@ -40,5 +40,6 @@ class ShowSummariesWrapperServiceImplTest {
             .test()
             .assertValue(showWrapper)
             .assertComplete()
+            .dispose()
     }
 }
