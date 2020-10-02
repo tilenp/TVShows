@@ -27,97 +27,110 @@ class ConfigurationViewModelTest {
     @Test
     fun when_showId_is_selected_in_portrait_mode_detailsFragment_is_shown() {
         // arrange
-        viewModel.initData(orientation =  Configuration.ORIENTATION_PORTRAIT, isTablet =  false)
-        val showDetailsFragmentObserver =  viewModel.showDetailsObservable().test()
+        viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = false)
+        val showDetailsFragmentObserver = viewModel.showDetailsObservable().test()
 
         // act
         showSelectedSubject.onNext(showId)
 
         // assert
-        showDetailsFragmentObserver.assertValue(true)
+        showDetailsFragmentObserver
+            .assertValue(true)
+            .dispose()
     }
 
     @Test
     fun when_showId_is_selected_in_landscape_mode_on_phone_detailsFragment_is_shown() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = false)
-        val showDetailsFragmentObserver =  viewModel.showDetailsObservable().test()
+        val showDetailsFragmentObserver = viewModel.showDetailsObservable().test()
 
         // act
         showSelectedSubject.onNext(showId)
 
         // assert
-        showDetailsFragmentObserver.assertValue(true)
+        showDetailsFragmentObserver
+            .assertValue(true)
+            .dispose()
     }
 
     @Test
     fun when_showId_is_selected_in_landscape_mode_on_tablet_detailsFragment_is_not_shown() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = true)
-        val showDetailsFragmentObserver =  viewModel.showDetailsObservable().test()
+        val showDetailsFragmentObserver = viewModel.showDetailsObservable().test()
 
         // act
         showSelectedSubject.onNext(showId)
 
         // assert
-        showDetailsFragmentObserver.assertNoValues()
+        showDetailsFragmentObserver
+            .assertNoValues()
+            .dispose()
     }
 
     @Test
-    fun when_detailsFragment_is_shown_in_portrait_mode_on_phone_and_orientation_changes_back_stack_is_not_popped () {
+    fun when_detailsFragment_is_shown_in_portrait_mode_on_phone_and_orientation_changes_back_stack_is_not_popped() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = false)
         currentTagSubject.onNext(SHOW_DETAILS_FRAGMENT)
-        val popBackStackObserver =  viewModel.popBackStackObservable().test()
+        val popBackStackObserver = viewModel.popBackStackObservable().test()
 
         // act
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = false)
 
         // assert
-        popBackStackObserver.assertNoValues()
+        popBackStackObserver
+            .assertNoValues()
+            .dispose()
     }
 
     @Test
-    fun when_detailsFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_back_stack_is_popped () {
+    fun when_detailsFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_back_stack_is_popped() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = true)
         currentTagSubject.onNext(SHOW_DETAILS_FRAGMENT)
-        val popBackStackObserver =  viewModel.popBackStackObservable().test()
+        val popBackStackObserver = viewModel.popBackStackObservable().test()
 
         // act
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = true)
 
         // assert
-        popBackStackObserver.assertValue(true)
+        popBackStackObserver
+            .assertValue(true)
+            .dispose()
     }
 
     @Test
-    fun when_showSummariesFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_to_landscape_and_back_to_portrait_showSummariesFragment_is_shown () {
+    fun when_showSummariesFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_to_landscape_and_back_to_portrait_showSummariesFragment_is_shown() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = true)
-        val showDetailsFragmentObserver =  viewModel.showDetailsObservable().test()
+        val showDetailsFragmentObserver = viewModel.showDetailsObservable().test()
 
         // act
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = true)
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = true)
 
         // assert
-        showDetailsFragmentObserver.assertNoValues()
+        showDetailsFragmentObserver
+            .assertNoValues()
+            .dispose()
     }
 
     @Test
-    fun when_detailsFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_to_landscape_and_back_to_portrait_detailsFragment_is_shown () {
+    fun when_detailsFragment_is_shown_in_portrait_mode_on_tablet_and_orientation_changes_to_landscape_and_back_to_portrait_detailsFragment_is_shown() {
         // arrange
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = true)
         currentTagSubject.onNext(SHOW_DETAILS_FRAGMENT)
-        val showDetailsFragmentObserver =  viewModel.showDetailsObservable().test()
+        val showDetailsFragmentObserver = viewModel.showDetailsObservable().test()
 
         // act
         viewModel.initData(orientation = Configuration.ORIENTATION_LANDSCAPE, isTablet = true)
         viewModel.initData(orientation = Configuration.ORIENTATION_PORTRAIT, isTablet = true)
 
         // assert
-        showDetailsFragmentObserver.assertValue(true)
+        showDetailsFragmentObserver
+            .assertValue(true)
+            .dispose()
     }
-
 }

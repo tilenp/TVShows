@@ -44,7 +44,9 @@ class ShowDetailsViewModelTest {
         showSelectedSubject.onNext(showId)
 
         // assert
-        errorObserver.assertValue(error)
+        errorObserver
+            .assertValue(error)
+            .dispose()
     }
 
     @Test
@@ -81,7 +83,9 @@ class ShowDetailsViewModelTest {
         showSelectedSubject.onNext(showId)
 
         // assert
-        showSummaryObserver.assertValue(showSummary)
+        showSummaryObserver
+            .assertValue(showSummary)
+            .dispose()
     }
 
     @Test
@@ -94,6 +98,8 @@ class ShowDetailsViewModelTest {
         showSelectedSubject.onNext(showId)
 
         // assert
-        showDetailsObserver.assertValue(showDetails)
+        showDetailsObserver
+            .assertValue(showDetails)
+            .dispose()
     }
 }
