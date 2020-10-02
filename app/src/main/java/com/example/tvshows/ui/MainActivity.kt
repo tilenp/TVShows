@@ -10,6 +10,8 @@ import com.example.tvshows.ui.showdetails.ShowDetailsFragment
 import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
 import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_DETAILS_FRAGMENT
 import com.example.tvshows.ui.showslist.ShowSummariesFragment
+import com.example.tvshows.utilities.isTablet
+import com.example.tvshows.utilities.orientation
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -50,7 +52,10 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         initObservers()
-        viewModel.setOrientation(resources.configuration.orientation)
+        viewModel.initData(
+            orientation = orientation(),
+            isTablet = isTablet()
+        )
     }
 
     private fun initObservers() {

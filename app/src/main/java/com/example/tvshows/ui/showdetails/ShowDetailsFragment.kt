@@ -15,14 +15,13 @@ import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
-import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.ui.showdetails.adapter.SeasonsAdapter
 import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
+import com.example.tvshows.utilities.ErrorHandler
+import com.example.tvshows.utilities.SchedulerProvider
 import com.example.tvshows.utilities.commaFormat
 import com.squareup.picasso.Picasso
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ShowDetailsFragment : Fragment(), OnSeasonClick {
@@ -34,6 +33,8 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var errorHandler: ErrorHandler
+    @Inject
+    lateinit var schedulerProvider: SchedulerProvider
     private lateinit var viewModel: ShowDetailsViewModel
     private val compositeDisposable = CompositeDisposable()
 
@@ -77,8 +78,8 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
     private fun updateUI() {
         compositeDisposable.add(
             viewModel.getShowSummary()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .subscribe({ showSummary ->
                     updateSummaryPart(showSummary)
                 }, {})
@@ -86,8 +87,8 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
         compositeDisposable.add(
             viewModel.getShowDetails()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .subscribe({ showDetails ->
                     updateGenres(showDetails.genres)
                     updateShowContent(showDetails.showContent)
@@ -97,7 +98,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
         compositeDisposable.add(
             viewModel.getErrors()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(schedulerProvider.main())
                 .subscribe({ error ->
                     errorHandler.handleError(error)
                 }, {})

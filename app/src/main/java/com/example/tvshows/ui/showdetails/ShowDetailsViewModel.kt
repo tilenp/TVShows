@@ -5,16 +5,17 @@ import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.ShowDetailsRepository
 import com.example.tvshows.ui.EventAggregator
+import com.example.tvshows.utilities.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class ShowDetailsViewModel @Inject constructor(
     private val eventAggregator: EventAggregator,
-    private val showDetailsRepository: ShowDetailsRepository
+    private val showDetailsRepository: ShowDetailsRepository,
+    private val schedulerProvider: SchedulerProvider
 ) : ViewModel() {
 
     private val errorSubject = PublishSubject.create<Throwable>()
@@ -27,7 +28,7 @@ class ShowDetailsViewModel @Inject constructor(
     private fun updateShowDetails() {
         compositeDisposable.add(
             eventAggregator.observeSelectedShowId()
-                .observeOn(Schedulers.io())
+                .observeOn(schedulerProvider.io())
                 .flatMapCompletable { showId ->
                     showDetailsRepository.updateShowDetails(showId)
                         .doOnError { error -> errorSubject.onNext(error) }

@@ -1,6 +1,7 @@
 package com.example.tvshows.ui
 
 import android.content.res.Configuration
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -14,6 +15,7 @@ class ConfigurationViewModel @Inject constructor(
     private val showDetailsSubject = PublishSubject.create<Boolean>()
     private val popBackStackSubject = PublishSubject.create<Boolean>()
     private var orientation: Int? = null
+    private var isTablet: Boolean = false
     private var lastPortraitTag: String? = null
     private val compositeDisposable = CompositeDisposable()
 
@@ -40,25 +42,30 @@ class ConfigurationViewModel @Inject constructor(
     }
 
     private fun setFragmentOnShowIdSelected() {
-        showDetailsSubject.onNext(isPortrait())
+        showDetailsSubject.onNext(shouldSetFragmentOnShowIdSelected())
     }
 
-    fun setOrientation(orientation: Int) {
+    private fun shouldSetFragmentOnShowIdSelected(): Boolean {
+        return isPortrait() or !isTablet
+    }
+
+    fun initData(orientation: Int, isTablet: Boolean) {
         this.orientation = orientation
-        updateFragment()
+        this.isTablet = isTablet
+        setFragmentOnInitData()
     }
 
-    private fun updateFragment() {
+    private fun setFragmentOnInitData() {
         showDetailsSubject.onNext(shouldShowDetails())
         popBackStackSubject.onNext(shouldPopBackStack())
     }
 
     private fun shouldShowDetails(): Boolean {
-        return isPortrait() && lastPortraitTag == SHOW_DETAILS_FRAGMENT
+        return isTablet && isPortrait() && lastPortraitTag == SHOW_DETAILS_FRAGMENT
     }
 
     private fun shouldPopBackStack(): Boolean {
-        return !isPortrait() && lastPortraitTag == SHOW_DETAILS_FRAGMENT
+        return isTablet && !isPortrait() && lastPortraitTag == SHOW_DETAILS_FRAGMENT
     }
 
     private fun isPortrait(): Boolean {
@@ -81,7 +88,7 @@ class ConfigurationViewModel @Inject constructor(
     }
 
     companion object {
-        const val SHOW_SUMMARIES_FRAGMENT = "show_summaries_fragment"
-        const val SHOW_DETAILS_FRAGMENT = "show_details_fragment"
+        @VisibleForTesting const val SHOW_SUMMARIES_FRAGMENT = "show_summaries_fragment"
+        @VisibleForTesting const val SHOW_DETAILS_FRAGMENT = "show_details_fragment"
     }
 }

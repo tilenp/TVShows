@@ -13,6 +13,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     ApiModule::class,
+    ApplicationModule::class,
     DatabaseModule::class,
     MapperModule::class,
     ServiceModule::class,

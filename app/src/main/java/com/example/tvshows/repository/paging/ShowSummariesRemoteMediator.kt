@@ -9,15 +9,16 @@ import com.example.tvshows.database.TVShowsDatabase
 import com.example.tvshows.database.table.PagingKeys
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.service.ShowSummariesWrapperService
+import com.example.tvshows.utilities.SchedulerProvider
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class ShowSummariesRemoteMediator @Inject constructor(
     private val showSummariesWrapperService: ShowSummariesWrapperService,
-    private val database: TVShowsDatabase
+    private val database: TVShowsDatabase,
+    private val schedulerProvider: SchedulerProvider
 ) : RxRemoteMediator<Int, ShowSummary>() {
 
     override fun loadSingle(
@@ -37,7 +38,7 @@ class ShowSummariesRemoteMediator @Inject constructor(
                 }
             }
             .onErrorReturn { MediatorResult.Error(it) }
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(schedulerProvider.io())
     }
 
     @VisibleForTesting

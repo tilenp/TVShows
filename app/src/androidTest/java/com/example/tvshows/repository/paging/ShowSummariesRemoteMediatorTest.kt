@@ -15,6 +15,7 @@ import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator.Companion.INVALID_PAGE
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator.Companion.STARTING_PAGE
 import com.example.tvshows.repository.service.ShowSummariesWrapperService
+import com.example.tvshows.utilities.TestSchedulerProvider
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -78,7 +79,7 @@ class ShowSummariesRemoteMediatorTest {
         `when`(database.getShowSummaryDao()).thenReturn(showSummaryDao)
         `when`(database.runInTransaction(any())).thenAnswer { (it.arguments.first() as Runnable).run() }
         `when`(pagingKeysDao.getPagingKeysForElementId(ArgumentMatchers.anyInt())).thenReturn(pagingKeysForElementId)
-        showMediator = ShowSummariesRemoteMediator(showSummariesWrapperService = showSummariesWrapperService, database = database)
+        showMediator = ShowSummariesRemoteMediator(showSummariesWrapperService = showSummariesWrapperService, database = database, schedulerProvider = TestSchedulerProvider())
     }
 
     @Test
