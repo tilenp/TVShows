@@ -6,7 +6,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class ErrorHandler @Inject constructor(
+class ErrorHandler constructor(
     private val context: Context
 ) {
 
