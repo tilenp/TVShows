@@ -2,7 +2,9 @@ package com.example.tvshows.ui.showdetails
 
 import android.os.Build
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
@@ -87,15 +89,32 @@ class ShowDetailsFragmentTest {
     }
 
     @Test
-    fun when_showSummary_is_emitted_show_name_is_set() {
+    fun when_show_is_not_selected_yet_state_is_correct() {
+        scenario().onFragment {fragment ->
+            // arrange
+            val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
+
+            // assert
+            assertEquals(true, selectShowTextView?.isVisible)
+            assertEquals(false, showDetailsContainer?.isVisible)
+        }
+    }
+
+    @Test
+    fun when_showSummary_is_emitted_showSummary_is_set() {
         scenario().onFragment { fragment ->
             // arrange
+            val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
             val nameTextView = fragment.view?.findViewById<TextView>(R.id.name_text_view)
 
             // act
             showSummarySubject.onNext(showSummary)
 
             // assert
+            assertEquals(false, selectShowTextView?.isVisible)
+            assertEquals(true, showDetailsContainer?.isVisible)
             assertEquals(showName, nameTextView?.text?.toString())
         }
     }
@@ -104,6 +123,8 @@ class ShowDetailsFragmentTest {
     fun when_showDetails_is_emitted_show_details_are_set() {
         scenario().onFragment { fragment ->
             // arrange
+            val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
             val genreTextView = fragment.view?.findViewById<TextView>(R.id.genre_text_view)
             val summaryTextView = fragment.view?.findViewById<TextView>(R.id.summary_text_view)
             val seasonsTextView = fragment.view?.findViewById<TextView>(R.id.seasons_text_view)
@@ -113,6 +134,8 @@ class ShowDetailsFragmentTest {
             showDetailsSubject.onNext(showDetails)
 
             // assert
+            assertEquals(false, selectShowTextView?.isVisible)
+            assertEquals(true, showDetailsContainer?.isVisible)
             assertEquals(genresString, genreTextView?.text?.toString())
             assertEquals(summary, summaryTextView?.text?.toString())
             assertEquals(View.VISIBLE, seasonsTextView?.visibility)
