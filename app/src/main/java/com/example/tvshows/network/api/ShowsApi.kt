@@ -1,9 +1,9 @@
 package com.example.tvshows.network.api
 
+import com.example.tvshows.network.interceptor.ShowsAuthorizationInterceptor
 import com.example.tvshows.network.remoteModel.RemoteShowDetails
 import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.network.remoteModel.RemoteWrapper
-import com.example.tvshows.utilities.API_KEY
 import com.example.tvshows.utilities.BASE_URL
 import io.reactivex.Single
 import okhttp3.OkHttpClient
@@ -19,14 +19,12 @@ interface ShowsApi {
 
     @GET("3/discover/tv?sort_by=popularity.desc")
     fun getShowSummaries(
-        @Query("api_key") apiKey: String = API_KEY,
         @Query("page") page: Int
     ): Single<RemoteWrapper<List<RemoteShowSummary>>>
 
     @GET("3/tv/{tv_id}")
     fun getShowDetails(
-        @Path("tv_id") showId: Int,
-        @Query("api_key") apiKey: String = API_KEY
+        @Path("tv_id") showId: Int
     ): Single<RemoteShowDetails>
 
     companion object {
@@ -39,6 +37,7 @@ interface ShowsApi {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
+                .addInterceptor(ShowsAuthorizationInterceptor())
                 .build()
 
             return Retrofit.Builder()

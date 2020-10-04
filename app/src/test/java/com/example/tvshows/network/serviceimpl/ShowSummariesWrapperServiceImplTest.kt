@@ -5,7 +5,6 @@ import com.example.tvshows.network.mapper.Mapper
 import com.example.tvshows.network.remoteModel.RemoteShowSummary
 import com.example.tvshows.network.remoteModel.RemoteWrapper
 import com.example.tvshows.repository.paging.ShowSummariesWrapper
-import com.example.tvshows.utilities.API_KEY
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
@@ -23,7 +22,7 @@ class ShowSummariesWrapperServiceImplTest {
         remoteWrapperSummary: RemoteWrapper<List<RemoteShowSummary>>,
         showWrapper: ShowSummariesWrapper
     ) {
-        whenever(showsApi.getShowSummaries(API_KEY, page)).thenReturn(Single.just(remoteWrapperSummary))
+        whenever(showsApi.getShowSummaries(page = page)).thenReturn(Single.just(remoteWrapperSummary))
         whenever(mapper.map(remoteWrapperSummary)).thenReturn(showWrapper)
         showSummariesWrapperServiceImpl = ShowSummariesWrapperServiceImpl(showsApi, mapper)
     }

@@ -4,7 +4,6 @@ import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.network.api.ShowsApi
 import com.example.tvshows.network.mapper.Mapper
 import com.example.tvshows.network.remoteModel.RemoteShowDetails
-import com.example.tvshows.utilities.API_KEY
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -23,7 +22,7 @@ class ShowDetailsServiceImplTest {
         remoteShowDetails: RemoteShowDetails,
         showDetails: ShowDetails
     ) {
-        whenever(showsApi.getShowDetails(showId = showId, apiKey = API_KEY)).thenReturn(Single.just(remoteShowDetails))
+        whenever(showsApi.getShowDetails(showId = showId)).thenReturn(Single.just(remoteShowDetails))
         whenever(mapper.map(any())).thenReturn(showDetails)
         showDetailsServiceImpl = ShowDetailsServiceImpl(showsApi, mapper)
     }
