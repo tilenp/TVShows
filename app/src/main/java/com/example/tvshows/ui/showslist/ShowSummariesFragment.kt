@@ -16,11 +16,12 @@ import com.example.tvshows.databinding.FragmentShowsBinding
 import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.ui.showslist.adapter.LoadingAdapter
 import com.example.tvshows.ui.showslist.adapter.ShowSummariesAdapter
+import com.example.tvshows.ui.showslist.callback.OnRetryClick
 import com.example.tvshows.ui.showslist.callback.OnShowClick
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class ShowSummariesFragment : Fragment(), OnShowClick {
+class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private var _binding: FragmentShowsBinding? = null
     private val binding get() = _binding!!
@@ -62,13 +63,12 @@ class ShowSummariesFragment : Fragment(), OnShowClick {
             val numberOfColumns = resources.getInteger(R.integer.grid_columns)
             showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
             showsRecyclerView.adapter = adapter.withLoadStateFooter(
-                footer = LoadingAdapter()
+                footer = LoadingAdapter(this@ShowSummariesFragment)
             )
 
             adapter.addLoadStateListener { loadState ->
-                val itemsAvailable = adapter.itemCount > 0
-                showsRecyclerView.isVisible = itemsAvailable
-                progressBar.isVisible = loadState.source.refresh is LoadState.Loading && !itemsAvailable
+                val noItems = adapter.itemCount == 0
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading && noItems
                 val errorState = loadState.mediator?.refresh as? LoadState.Error
                     ?: loadState.mediator?.append as? LoadState.Error
                     ?: loadState.mediator?.prepend as? LoadState.Error
@@ -96,6 +96,10 @@ class ShowSummariesFragment : Fragment(), OnShowClick {
 
     override fun showClicked(showId: Int) {
         viewModel.onShowSelected(showId)
+    }
+
+    override fun retry() {
+        adapter.retry()
     }
 
     override fun onDestroyView() {

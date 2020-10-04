@@ -13,7 +13,7 @@ class ShowSummariesAdapter(
 ) : PagingDataAdapter<ShowSummary, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ShowSummaryViewHolder.create(parent, onShowClick)
+        return ShowSummaryViewHolder.create(parent = parent, onShowClick = onShowClick)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
