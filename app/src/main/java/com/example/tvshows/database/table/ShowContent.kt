@@ -14,6 +14,6 @@ import androidx.room.PrimaryKey
 )
 data class ShowContent(
     @PrimaryKey
-    var showId: Int,
-    var summary: String
+    var showId: Int = 0,
+    var summary: String = ""
 )

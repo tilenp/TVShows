@@ -7,15 +7,15 @@ import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 
 data class ShowDetails(
-    @Embedded val showContent: ShowContent,
+    @Embedded val showContent: ShowContent = ShowContent(),
     @Relation(
         parentColumn = "showId",
         entityColumn = "showId"
     )
-    val genres: List<Genre>,
+    val genres: List<Genre> = emptyList(),
     @Relation(
         parentColumn = "showId",
         entityColumn = "showId"
     )
-    val seasons: List<Season>
+    val seasons: List<Season> = emptyList()
 )

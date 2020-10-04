@@ -9,7 +9,7 @@ import com.example.tvshows.database.model.ImagePath
 data class ShowSummary(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    var showId: Int,
-    var name: String,
-    var imagePath: ImagePath?
+    var showId: Int = 0,
+    var name: String = "",
+    var imagePath: ImagePath? = null
 )
