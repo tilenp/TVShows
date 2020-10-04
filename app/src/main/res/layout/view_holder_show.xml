@@ -9,16 +9,17 @@
         android:id="@+id/image_View"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_margin="3dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        tools:ignore="ContentDescription"
-        android:layout_margin="3dp"/>
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/text_view"
+        style="@style/ContentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp" />
 
 </LinearLayout>
