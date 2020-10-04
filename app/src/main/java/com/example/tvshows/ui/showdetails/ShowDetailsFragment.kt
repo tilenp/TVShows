@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,6 +82,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .subscribe({ showSummary ->
+                    setContentVisibility()
                     updateSummaryPart(showSummary)
                 }, {})
         )
@@ -90,6 +92,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .subscribe({ showDetails ->
+                    setContentVisibility()
                     updateGenres(showDetails.genres)
                     updateShowContent(showDetails.showContent)
                     updateSeasons(showDetails.seasons)
@@ -103,6 +106,13 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
                     errorHandler.handleError(error)
                 }, {})
         )
+    }
+
+    private fun setContentVisibility() {
+        with(binding) {
+            selectShowTextView.isVisible = false
+            showDetailsContainer.isVisible = true
+        }
     }
 
     private fun updateSummaryPart(showSummary: ShowSummary) {
@@ -124,9 +134,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
     }
 
     private fun updateSeasons(seasons: List<Season>) {
-        if (seasons.isNotEmpty()) {
-            binding.seasonsTextView.visibility = View.VISIBLE
-        }
+        binding.seasonsTextView.isVisible = seasons.isNotEmpty()
         seasonsAdapter.setSeasons(seasons)
     }
 

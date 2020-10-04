@@ -3,4 +3,5 @@
     <string name="TVShows">TV Shows</string>
     <string name="Seasons">Seasons</string>
     <string name="retry">retry</string>
+    <string name="Select_a_show">Select a show</string>
 </resources>
