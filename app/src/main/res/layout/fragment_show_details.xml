@@ -25,7 +25,8 @@
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="48dp"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="36dp"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -73,6 +74,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/the_movie_db_logo" />
 
         </LinearLayout>
 
