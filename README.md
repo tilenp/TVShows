@@ -1,6 +1,6 @@
 # TV Shows
 
-A simple app written using Kotlin and MVVM design pattern. The app shows infinite list of TV shows and their details retrieved from a remote API
+A simple app written using Kotlin and MVVM design pattern. The app shows infinite list of TV shows and their details retrieved from TMDb API.
 
 ## API Key
 
