@@ -3,11 +3,11 @@ package com.example.tvshows.ui.showslist.viewholder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.tvshows.R
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.ViewHolderShowBinding
 import com.example.tvshows.ui.showslist.callback.OnShowClick
-import com.squareup.picasso.Picasso
 
 class ShowSummaryViewHolder(
     private val binding: ViewHolderShowBinding,
@@ -23,7 +23,7 @@ class ShowSummaryViewHolder(
     fun bind(showSummary: ShowSummary) {
         this.showSummary = showSummary
         with(binding) {
-            Picasso
+            Glide
                 .with(imageView.context)
                 .load(showSummary.imagePath?.medium)
                 .into(imageView)

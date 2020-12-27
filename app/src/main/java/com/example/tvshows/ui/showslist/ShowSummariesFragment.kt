@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
@@ -21,6 +22,7 @@ import com.example.tvshows.ui.showslist.callback.OnShowClick
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
+@ExperimentalPagingApi
 class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private var _binding: FragmentShowsBinding? = null

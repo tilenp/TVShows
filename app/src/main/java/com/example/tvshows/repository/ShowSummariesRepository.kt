@@ -1,5 +1,6 @@
 package com.example.tvshows.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -15,6 +16,7 @@ import io.reactivex.Flowable
 import javax.inject.Inject
 import javax.inject.Named
 
+@ExperimentalPagingApi
 class ShowSummariesRepository @Inject constructor(
     private val showSummaryDao: ShowSummaryDao,
     private val showSummariesRemoteMediator: ShowSummariesRemoteMediator,

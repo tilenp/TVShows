@@ -2,7 +2,7 @@ package com.example.tvshows.utilities
 
 /** API **/
 const val BASE_URL = "https://api.themoviedb.org/"
-const val API_KEY = "your_api_key"
+const val API_KEY = "21440930b1350cd8b4d28accce3a4799"
 
 /** paging **/
 const val PAGE_SIZE = "page_size"

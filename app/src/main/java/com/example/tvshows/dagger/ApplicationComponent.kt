@@ -1,6 +1,7 @@
 package com.example.tvshows.dagger
 
 import android.content.Context
+import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.dagger.module.*
 import com.example.tvshows.ui.MainActivity
 import com.example.tvshows.ui.showdetails.ShowDetailsFragment
@@ -25,8 +26,10 @@ interface ApplicationComponent {
         fun create(@BindsInstance applicationContext: Context): ApplicationComponent
     }
 
+    @ExperimentalPagingApi
     fun inject(activity: MainActivity)
 
+    @ExperimentalPagingApi
     fun inject(fragment: ShowSummariesFragment)
     fun inject(fragment: ShowDetailsFragment)
 }

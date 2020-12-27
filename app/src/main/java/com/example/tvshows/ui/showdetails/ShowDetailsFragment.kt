@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
@@ -21,7 +22,6 @@ import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
 import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.utilities.SchedulerProvider
 import com.example.tvshows.utilities.commaFormat
-import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -117,8 +117,8 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     private fun updateSummaryPart(showSummary: ShowSummary) {
         with(binding) {
-            Picasso
-                .with(posterImageView.context)
+            Glide
+                .with(nameTextView.context)
                 .load(showSummary.imagePath?.medium)
                 .into(posterImageView)
             nameTextView.text = showSummary.name

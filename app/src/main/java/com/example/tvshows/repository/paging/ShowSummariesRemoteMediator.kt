@@ -14,7 +14,8 @@ import io.reactivex.Single
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
-@OptIn(ExperimentalPagingApi::class)
+
+@ExperimentalPagingApi
 class ShowSummariesRemoteMediator @Inject constructor(
     private val showSummariesWrapperService: ShowSummariesWrapperService,
     private val database: TVShowsDatabase,
@@ -37,7 +38,7 @@ class ShowSummariesRemoteMediator @Inject constructor(
                         .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
-            .onErrorReturn { MediatorResult.Error(it) }
+            .onErrorResumeNext { error -> Single.error(error) }
             .subscribeOn(schedulerProvider.io())
     }
 

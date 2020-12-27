@@ -3,6 +3,7 @@ package com.example.tvshows.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyApplication
 import com.example.tvshows.databinding.ActivityMainBinding
@@ -15,6 +16,7 @@ import com.example.tvshows.utilities.orientation
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
+@ExperimentalPagingApi
 class MainActivity : AppCompatActivity() {
 
     @Inject

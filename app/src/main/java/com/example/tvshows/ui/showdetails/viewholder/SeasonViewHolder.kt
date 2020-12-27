@@ -3,11 +3,11 @@ package com.example.tvshows.ui.showdetails.viewholder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.tvshows.R
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.databinding.ViewHolderSeasonBinding
 import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
-import com.squareup.picasso.Picasso
 
 class SeasonViewHolder(
     private val binding: ViewHolderSeasonBinding,
@@ -23,7 +23,7 @@ class SeasonViewHolder(
     fun bind(season: Season) {
         this.season = season
         with(binding) {
-            Picasso
+            Glide
                 .with(imageView.context)
                 .load(season.imagePath?.medium)
                 .into(imageView)

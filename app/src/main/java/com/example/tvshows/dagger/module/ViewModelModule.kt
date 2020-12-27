@@ -2,6 +2,7 @@ package com.example.tvshows.dagger.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.dagger.MyViewModelFactory
 import com.example.tvshows.dagger.ViewModelKey
 import com.example.tvshows.ui.ConfigurationViewModel
@@ -25,6 +26,7 @@ abstract class ViewModelModule {
     @ViewModelKey(ConfigurationViewModel::class)
     abstract fun bindConfigurationViewModel(viewModel: ConfigurationViewModel): ViewModel
 
+    @ExperimentalPagingApi
     @Binds
     @IntoMap
     @ViewModelKey(ShowSummariesViewModel::class)
