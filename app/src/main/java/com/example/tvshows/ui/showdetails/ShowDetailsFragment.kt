@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.tvshows.dagger.MyApplication
+import com.example.tvshows.dagger.ComponentProvider
 import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
@@ -43,7 +43,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().applicationContext as MyApplication).appComponent.inject(this)
+        (requireActivity().applicationContext as ComponentProvider).provideAppComponent().inject(this)
     }
 
     override fun onCreateView(

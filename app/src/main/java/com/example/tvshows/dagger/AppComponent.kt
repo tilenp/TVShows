@@ -19,11 +19,11 @@ import javax.inject.Singleton
     MapperModule::class,
     ServiceModule::class,
     ViewModelModule::class])
-interface ApplicationComponent {
+interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance applicationContext: Context): ApplicationComponent
+        fun create(@BindsInstance applicationContext: Context): AppComponent
     }
 
     @ExperimentalPagingApi

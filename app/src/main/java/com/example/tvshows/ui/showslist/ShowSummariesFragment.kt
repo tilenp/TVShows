@@ -12,13 +12,13 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
-import com.example.tvshows.dagger.MyApplication
+import com.example.tvshows.dagger.ComponentProvider
 import com.example.tvshows.databinding.FragmentShowsBinding
-import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.ui.showslist.adapter.LoadingAdapter
 import com.example.tvshows.ui.showslist.adapter.ShowSummariesAdapter
 import com.example.tvshows.ui.showslist.callback.OnRetryClick
 import com.example.tvshows.ui.showslist.callback.OnShowClick
+import com.example.tvshows.utilities.ErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().applicationContext as MyApplication).appComponent.inject(this)
+        (requireActivity().applicationContext as ComponentProvider).provideAppComponent().inject(this)
     }
 
     override fun onCreateView(

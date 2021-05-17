@@ -15,7 +15,7 @@ import javax.inject.Singleton
     MapperModule::class,
     ServiceModule::class,
     TestViewModelModule::class])
-interface TestComponent: ApplicationComponent {
+interface TestComponent: AppComponent {
 
     @Component.Factory
     interface Factory {

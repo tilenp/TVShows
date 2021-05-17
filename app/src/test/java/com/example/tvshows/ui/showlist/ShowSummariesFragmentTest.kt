@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
 import com.example.tvshows.dagger.DaggerTestComponent
-import com.example.tvshows.dagger.MyApplication
+import com.example.tvshows.dagger.TVShowsApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.ui.showslist.ShowSummariesFragment
@@ -34,7 +34,7 @@ class ShowSummariesFragmentTest {
     }
 
     private fun setUpTestComponent() {
-        val myApplication = ApplicationProvider.getApplicationContext<MyApplication>()
+        val myApplication = ApplicationProvider.getApplicationContext<TVShowsApplication>()
         val testComponent = DaggerTestComponent.factory().create(myApplication)
         myApplication.appComponent = testComponent
     }

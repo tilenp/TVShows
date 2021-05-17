@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.R
-import com.example.tvshows.dagger.MyApplication
+import com.example.tvshows.dagger.ComponentProvider
 import com.example.tvshows.databinding.ActivityMainBinding
-import com.example.tvshows.ui.showdetails.ShowDetailsFragment
-import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
 import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_DETAILS_FRAGMENT
+import com.example.tvshows.ui.ConfigurationViewModel.Companion.SHOW_SUMMARIES_FRAGMENT
+import com.example.tvshows.ui.showdetails.ShowDetailsFragment
 import com.example.tvshows.ui.showslist.ShowSummariesFragment
 import com.example.tvshows.utilities.isTablet
 import com.example.tvshows.utilities.orientation
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as MyApplication).appComponent.inject(this)
+        (applicationContext as ComponentProvider).provideAppComponent().inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root

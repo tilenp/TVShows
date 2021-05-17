@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.example.tvshows.R
 import com.example.tvshows.dagger.DaggerTestComponent
-import com.example.tvshows.dagger.MyApplication
+import com.example.tvshows.dagger.TVShowsApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
 import com.example.tvshows.database.model.ImagePath
 import com.example.tvshows.database.model.ShowDetails
@@ -67,7 +67,7 @@ class ShowDetailsFragmentTest {
     }
 
     private fun setUpTestComponent() {
-        val myApplication = ApplicationProvider.getApplicationContext<MyApplication>()
+        val myApplication = ApplicationProvider.getApplicationContext<TVShowsApplication>()
         val testComponent = DaggerTestComponent.factory().create(myApplication)
         myApplication.appComponent = testComponent
         testComponent.inject(this)
