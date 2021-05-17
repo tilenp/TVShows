@@ -7,8 +7,11 @@ import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.network.remoteModel.RemoteGenre
 import com.example.tvshows.network.remoteModel.RemoteSeason
 import com.example.tvshows.network.remoteModel.RemoteShowDetails
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ShowDetailsMapper constructor(
+@Singleton
+class ShowDetailsMapper @Inject constructor(
     private val showContentMapper: Mapper<RemoteShowDetails, ShowContent>,
     private val genreMapper: Mapper<RemoteGenre, Genre>,
     private val seasonMapper: Mapper<RemoteSeason, Season>

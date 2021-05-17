@@ -1,54 +1,34 @@
 package com.example.tvshows.dagger.module
 
 import com.example.tvshows.database.model.ShowDetails
-import com.example.tvshows.database.table.*
+import com.example.tvshows.database.table.Genre
+import com.example.tvshows.database.table.Season
+import com.example.tvshows.database.table.ShowContent
+import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.network.mapper.*
 import com.example.tvshows.network.remoteModel.*
 import com.example.tvshows.repository.paging.ShowSummariesWrapper
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 @Module
-class MapperModule {
+interface MapperModule {
 
-    @Singleton
-    @Provides
-    fun providesShowSummaryMapper(): Mapper<RemoteShowSummary, ShowSummary> {
-        return ShowSummaryMapper()
-    }
+    @Binds
+    fun bindsShowSummaryMapper(showSummaryMapper: ShowSummaryMapper): Mapper<RemoteShowSummary, ShowSummary>
 
-    @Singleton
-    @Provides
-    fun providesShowSummariesWrapperMapper(showSummaryMapper: Mapper<RemoteShowSummary, ShowSummary>): Mapper<RemoteWrapper<List<RemoteShowSummary>>, ShowSummariesWrapper> {
-        return ShowSummariesWrapperMapper(showSummaryMapper)
-    }
+    @Binds
+    fun bindsShowSummariesWrapperMapper(showSummariesWrapperMapper: ShowSummariesWrapperMapper): Mapper<RemoteWrapper<List<@JvmSuppressWildcards RemoteShowSummary>>, ShowSummariesWrapper>
 
-    @Singleton
-    @Provides
-    fun providesShowContentMapper(): Mapper<RemoteShowDetails, ShowContent> {
-        return ShowContentMapper()
-    }
+    @Binds
+    fun bindsShowContentMapper(showContentMapper: ShowContentMapper): Mapper<RemoteShowDetails, ShowContent>
 
-    @Singleton
-    @Provides
-    fun providesGenreMapper(): Mapper<RemoteGenre, Genre> {
-        return GenreMapper()
-    }
+    @Binds
+    fun bindsGenreMapper(genreMapper: GenreMapper): Mapper<RemoteGenre, Genre>
 
-    @Singleton
-    @Provides
-    fun providesSeasonMapper(): Mapper<RemoteSeason, Season> {
-        return SeasonMapper()
-    }
+    @Binds
+    fun bindsSeasonMapper(seasonMapper: SeasonMapper): Mapper<RemoteSeason, Season>
 
-    @Singleton
-    @Provides
-    fun providesShowDetailsMapper(
-        showContentMapper: Mapper<RemoteShowDetails, ShowContent>,
-        genreMapper: Mapper<RemoteGenre, Genre>,
-        seasonMapper: Mapper<RemoteSeason, Season>
-    ): Mapper<RemoteShowDetails, ShowDetails> {
-        return ShowDetailsMapper(showContentMapper, genreMapper, seasonMapper)
-    }
+    @Binds
+    fun bindsShowDetailsMapper(showDetailsMapper: ShowDetailsMapper): Mapper<RemoteShowDetails, ShowDetails>
 }
