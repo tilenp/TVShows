@@ -64,6 +64,8 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         with(binding) {
             val numberOfColumns = resources.getInteger(R.integer.grid_columns)
             showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
+            val itemDecorator = MarginItemDecorator(requireContext().resources.getDimensionPixelSize(R.dimen.show_summary_margin_left_right))
+            showsRecyclerView.addItemDecoration(itemDecorator)
             showsRecyclerView.adapter = adapter.withLoadStateFooter(
                 footer = LoadingAdapter(this@ShowSummariesFragment)
             )
