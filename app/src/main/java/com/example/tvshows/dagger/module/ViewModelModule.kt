@@ -15,25 +15,25 @@ import javax.inject.Singleton
 
 
 @Module
-abstract class ViewModelModule {
+interface ViewModelModule {
 
     @Singleton
     @Binds
-    abstract fun bindViewModelFactory(viewModelFactory: MyViewModelFactory): ViewModelProvider.Factory
+    fun bindViewModelFactory(viewModelFactory: MyViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(ConfigurationViewModel::class)
-    abstract fun bindConfigurationViewModel(viewModel: ConfigurationViewModel): ViewModel
+    fun bindConfigurationViewModel(viewModel: ConfigurationViewModel): ViewModel
 
     @ExperimentalPagingApi
     @Binds
     @IntoMap
     @ViewModelKey(ShowSummariesViewModel::class)
-    abstract fun bindShowsViewModel(viewModel: ShowSummariesViewModel): ViewModel
+    fun bindShowsViewModel(viewModel: ShowSummariesViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ShowDetailsViewModel::class)
-    abstract fun bindShowDetailsViewModel(viewModel: ShowDetailsViewModel): ViewModel
+    fun bindShowDetailsViewModel(viewModel: ShowDetailsViewModel): ViewModel
 }
