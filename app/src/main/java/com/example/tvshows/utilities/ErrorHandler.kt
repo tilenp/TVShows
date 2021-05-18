@@ -28,6 +28,6 @@ class ErrorHandler constructor(
     }
 
     private fun showToast(message: String?) {
-        message?.let { Toast.makeText(context, message, Toast.LENGTH_LONG).show() }
+        message?.let { Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }
     }
 }

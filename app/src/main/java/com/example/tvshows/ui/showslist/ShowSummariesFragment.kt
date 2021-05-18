@@ -46,7 +46,7 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         val view = binding.root
         setUpViewModel()
@@ -72,15 +72,17 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
             adapter.addLoadStateListener { loadState ->
                 val noItems = adapter.itemCount == 0
-                progressBar.isVisible = loadState.source.refresh is LoadState.Loading && noItems
-                val errorState = loadState.mediator?.refresh as? LoadState.Error
-                    ?: loadState.mediator?.append as? LoadState.Error
-                    ?: loadState.mediator?.prepend as? LoadState.Error
+                progressBar.isVisible = loadState.refresh is LoadState.Loading && noItems
+                retryButton.isVisible = loadState.refresh is LoadState.Error && noItems
+                val errorState = loadState.refresh as? LoadState.Error
+                    ?: loadState.append as? LoadState.Error
+                    ?: loadState.prepend as? LoadState.Error
                 errorState?.let { loadStateError ->
                     errorHandler.handleError(loadStateError.error)
                 }
             }
         }
+        binding.retryButton.setOnClickListener { adapter.retry() }
     }
 
     override fun onStart() {
