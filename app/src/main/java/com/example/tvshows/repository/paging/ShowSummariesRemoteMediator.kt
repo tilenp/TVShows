@@ -11,6 +11,8 @@ import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.service.ShowSummariesWrapperService
 import com.example.tvshows.utilities.SchedulerProvider
 import io.reactivex.Single
+import retrofit2.HttpException
+import java.io.IOException
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
@@ -35,10 +37,15 @@ class ShowSummariesRemoteMediator @Inject constructor(
                     showSummariesWrapperService.getShowSummariesWrapper(page = page)
                         .map { wrapper -> updateDatabase(page, loadType, wrapper) }
                         .map { wrapper -> MediatorResult.Success(endOfPaginationReached = wrapper.endOfPaginationReached) as MediatorResult }
-                        .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
-            .onErrorResumeNext { error -> Single.error(error) }
+            .onErrorResumeNext { error ->
+                when (error) {
+                    is IOException -> Single.just(MediatorResult.Error(error))
+                    is HttpException -> Single.just(MediatorResult.Error(error))
+                    else -> Single.error(error)
+                }
+            }
             .subscribeOn(schedulerProvider.io())
     }
 
