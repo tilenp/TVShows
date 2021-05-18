@@ -19,20 +19,11 @@ import javax.inject.Named
 @ExperimentalPagingApi
 class ShowSummariesRepository @Inject constructor(
     private val showSummaryDao: ShowSummaryDao,
-    private val showSummariesRemoteMediator: ShowSummariesRemoteMediator,
-    @Named(PAGE_SIZE) private val pageSize: Int,
-    @Named(MAX_SIZE) private val maxSize: Int,
-    @Named(PREFETCH_DISTANCE) private val prefetchDistance: Int,
-    @Named(INITIAL_LOAD_SIZE) private val initialLoadSize: Int
+    private val showSummariesRemoteMediator: ShowSummariesRemoteMediator
 ){
-    fun getShowSummaries(): Flowable<PagingData<ShowSummary>> {
+    fun getShowSummaries(pagingConfig: PagingConfig): Flowable<PagingData<ShowSummary>> {
         return Pager(
-            config = PagingConfig(
-                pageSize = pageSize,
-                enablePlaceholders = true,
-                maxSize = maxSize,
-                prefetchDistance = prefetchDistance,
-                initialLoadSize = initialLoadSize),
+            config = pagingConfig,
             remoteMediator = showSummariesRemoteMediator,
             pagingSourceFactory = { showSummaryDao.getShowSummaries() }
         ).flowable
