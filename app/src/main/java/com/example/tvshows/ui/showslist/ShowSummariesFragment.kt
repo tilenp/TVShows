@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,7 +40,8 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().applicationContext as ComponentProvider).provideAppComponent().inject(this)
+        (requireActivity().applicationContext as ComponentProvider).provideAppComponent()
+            .inject(this)
     }
 
     override fun onCreateView(
@@ -50,7 +52,8 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         val view = binding.root
         setUpViewModel()
-        setUpRecyclerView()
+        setUpAdapter()
+        setUpUI()
         return view
     }
 
@@ -59,30 +62,41 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         viewModel.setCurrentTag(tag)
     }
 
-    private fun setUpRecyclerView() {
+    private fun setUpAdapter() {
         adapter = ShowSummariesAdapter(this)
+        adapter.addLoadStateListener { loadState ->
+            handleLoadState(loadState)
+            handleError(loadState)
+        }
+    }
+
+    private fun handleLoadState(loadState: CombinedLoadStates) {
+        val noItems = adapter.itemCount == 0
+        with(binding) {
+            progressBar.isVisible = loadState.refresh is LoadState.Loading && noItems
+            retryButton.isVisible = loadState.refresh is LoadState.Error && noItems
+        }
+    }
+
+    private fun handleError(loadState: CombinedLoadStates) {
+        val errorState = loadState.refresh as? LoadState.Error
+            ?: loadState.append as? LoadState.Error
+            ?: loadState.prepend as? LoadState.Error
+        errorState?.let { loadStateError ->
+            errorHandler.handleError(loadStateError.error)
+        }
+    }
+
+    private fun setUpUI() {
         with(binding) {
             val numberOfColumns = resources.getInteger(R.integer.grid_columns)
             showsRecyclerView.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
             val itemDecorator = MarginItemDecorator(requireContext().resources.getDimensionPixelSize(R.dimen.show_summary_margin_left_right))
             showsRecyclerView.addItemDecoration(itemDecorator)
-            showsRecyclerView.adapter = adapter.withLoadStateFooter(
-                footer = LoadingAdapter(this@ShowSummariesFragment)
-            )
-
-            adapter.addLoadStateListener { loadState ->
-                val noItems = adapter.itemCount == 0
-                progressBar.isVisible = loadState.refresh is LoadState.Loading && noItems
-                retryButton.isVisible = loadState.refresh is LoadState.Error && noItems
-                val errorState = loadState.refresh as? LoadState.Error
-                    ?: loadState.append as? LoadState.Error
-                    ?: loadState.prepend as? LoadState.Error
-                errorState?.let { loadStateError ->
-                    errorHandler.handleError(loadStateError.error)
-                }
-            }
+            val loadingAdapter = LoadingAdapter(this@ShowSummariesFragment)
+            showsRecyclerView.adapter = adapter.withLoadStateFooter(loadingAdapter)
+            retryButton.setOnClickListener { adapter.retry() }
         }
-        binding.retryButton.setOnClickListener { adapter.retry() }
     }
 
     override fun onStart() {
