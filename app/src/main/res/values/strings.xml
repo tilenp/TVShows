@@ -4,4 +4,6 @@
     <string name="Seasons">Seasons</string>
     <string name="retry">retry</string>
     <string name="Select_a_show">Select a show</string>
+    <string name="No_data_available">Data not available</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

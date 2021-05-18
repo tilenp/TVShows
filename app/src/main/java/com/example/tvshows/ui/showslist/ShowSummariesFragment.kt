@@ -5,21 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
 import com.example.tvshows.dagger.ComponentProvider
 import com.example.tvshows.databinding.FragmentShowsBinding
+import com.example.tvshows.ui.UIState
 import com.example.tvshows.ui.showslist.adapter.LoadingAdapter
 import com.example.tvshows.ui.showslist.adapter.ShowSummariesAdapter
 import com.example.tvshows.ui.showslist.callback.OnRetryClick
 import com.example.tvshows.ui.showslist.callback.OnShowClick
-import com.example.tvshows.utilities.ErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -32,8 +30,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    @Inject
-    lateinit var errorHandler: ErrorHandler
     private lateinit var viewModel: ShowSummariesViewModel
     private lateinit var adapter: ShowSummariesAdapter
     private val compositeDisposable = CompositeDisposable()
@@ -64,27 +60,7 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private fun setUpAdapter() {
         adapter = ShowSummariesAdapter(this)
-        adapter.addLoadStateListener { loadState ->
-            handleLoadState(loadState)
-            handleError(loadState)
-        }
-    }
-
-    private fun handleLoadState(loadState: CombinedLoadStates) {
-        val noItems = adapter.itemCount == 0
-        with(binding) {
-            progressBar.isVisible = loadState.refresh is LoadState.Loading && noItems
-            retryButton.isVisible = loadState.refresh is LoadState.Error && noItems
-        }
-    }
-
-    private fun handleError(loadState: CombinedLoadStates) {
-        val errorState = loadState.refresh as? LoadState.Error
-            ?: loadState.append as? LoadState.Error
-            ?: loadState.prepend as? LoadState.Error
-        errorState?.let { loadStateError ->
-            errorHandler.handleError(loadStateError.error)
-        }
+        adapter.addLoadStateListener { loadState -> viewModel.processState(loadState, adapter.itemCount) }
     }
 
     private fun setUpUI() {
@@ -107,6 +83,73 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
                     adapter.submitData(lifecycle, it)
                 }, {})
         )
+
+        compositeDisposable.add(
+            viewModel.getUIState()
+                .subscribe({ uiState ->
+                    handleState(uiState)
+                }, {})
+        )
+
+        compositeDisposable.add(
+            viewModel.getMessage()
+                .subscribe({ message ->
+                    handleMessage(message)
+                }, {})
+        )
+    }
+
+    private fun handleState(state: UIState) {
+        when (state) {
+            UIState.Loading -> setLoadingState()
+            UIState.Retry -> setRetryState()
+            UIState.NoItems -> setNoItemsState()
+            UIState.Success -> setSuccessState()
+        }
+    }
+
+    private fun setLoadingState() {
+        with(binding) {
+            showsRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            retryButton.visibility = View.GONE
+            noItemsTextView.visibility = View.GONE
+        }
+    }
+
+    private fun setRetryState() {
+        with(binding) {
+            showsRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            retryButton.visibility = View.VISIBLE
+            noItemsTextView.visibility = View.GONE
+        }
+    }
+
+    private fun setSuccessState() {
+        with(binding) {
+            showsRecyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            retryButton.visibility = View.GONE
+            noItemsTextView.visibility = View.GONE
+        }
+    }
+
+    private fun setNoItemsState() {
+        with(binding) {
+            showsRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            retryButton.visibility = View.GONE
+            noItemsTextView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun handleMessage(message: Any) {
+        val text = when (message) {
+            is Int -> getString(message)
+            else -> message as String
+        }
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {

@@ -50,4 +50,11 @@ class AppModule {
     fun providesInitialLoadSize(context: Context): Int {
         return context.resources.getInteger(R.integer.initial_load_size)
     }
+
+    @Singleton
+    @Provides
+    @Named(UI_STATE_INTERVAL)
+    fun providesUiStateInterval(): Long {
+        return 500
+    }
 }
