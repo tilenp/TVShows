@@ -57,4 +57,11 @@ class AppModule {
     fun providesUiStateInterval(): Long {
         return 1000
     }
+
+    @Singleton
+    @Provides
+    @Named(SPLIT_VIEW)
+    fun providesSplitView(context: Context): Boolean {
+        return context.resources.getBoolean(R.bool.splitView)
+    }
 }

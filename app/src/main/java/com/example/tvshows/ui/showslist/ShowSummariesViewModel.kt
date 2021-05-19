@@ -28,7 +28,8 @@ class ShowSummariesViewModel @Inject constructor(
     @Named(MAX_SIZE) private val maxSize: Int,
     @Named(PREFETCH_DISTANCE) private val prefetchDistance: Int,
     @Named(INITIAL_LOAD_SIZE) private val initialLoadSize: Int,
-    @Named(UI_STATE_INTERVAL) private val uiStateInterval: Long
+    @Named(UI_STATE_INTERVAL) private val uiStateInterval: Long,
+    @Named(SPLIT_VIEW) private val splitView: Boolean
 ) : ViewModel() {
 
     private val pagingConfig = PagingConfig(
@@ -90,7 +91,9 @@ class ShowSummariesViewModel @Inject constructor(
 
     fun onShowSelected(showId: Int) {
         eventAggregator.onShowSelected(showId)
-        navigationSubject.onNext(R.id.action_showSummariesFragment_to_showDetailsFragment)
+        if (!splitView) {
+            navigationSubject.onNext(R.id.action_showSummariesFragment_to_showDetailsFragment)
+        }
     }
 
     fun getNavigation(): Observable<Int> {

@@ -14,9 +14,11 @@
             android:id="@+id/action_showSummariesFragment_to_showDetailsFragment"
             app:destination="@id/showDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/showDetailsFragment"
         android:name="com.example.tvshows.ui.showdetails.ShowDetailsFragment"
         android:label="ShowDetailsFragment"
-        tools:layout="@layout/fragment_show_details"/>
+        tools:layout="@layout/fragment_show_details" />
+
 </navigation>
