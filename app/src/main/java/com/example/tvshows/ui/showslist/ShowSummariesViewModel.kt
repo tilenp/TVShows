@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import androidx.paging.rxjava2.cachedIn
+import com.example.tvshows.R
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.ShowSummariesRepository
 import com.example.tvshows.ui.EventAggregator
@@ -12,6 +13,7 @@ import com.example.tvshows.utilities.*
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -29,7 +31,6 @@ class ShowSummariesViewModel @Inject constructor(
     @Named(UI_STATE_INTERVAL) private val uiStateInterval: Long
 ) : ViewModel() {
 
-    private val uiStateSubject = BehaviorSubject.create<Pair<CombinedLoadStates, Int>>()
     private val pagingConfig = PagingConfig(
         pageSize = pageSize,
         enablePlaceholders = true,
@@ -40,10 +41,8 @@ class ShowSummariesViewModel @Inject constructor(
     private val showSummariesFlowable: Flowable<PagingData<ShowSummary>> = showSummariesRepository
         .getShowSummaries(pagingConfig)
         .cachedIn(viewModelScope)
-
-    fun setCurrentTag(currentTag: String?) {
-        currentTag?.let { eventAggregator.setCurrentTag(it) }
-    }
+    private val uiStateSubject = BehaviorSubject.create<Pair<CombinedLoadStates, Int>>()
+    private val navigationSubject = PublishSubject.create<Int>()
 
     fun processState(loadState: CombinedLoadStates, itemCount: Int) {
         uiStateSubject.onNext(Pair(loadState, itemCount))
@@ -91,5 +90,10 @@ class ShowSummariesViewModel @Inject constructor(
 
     fun onShowSelected(showId: Int) {
         eventAggregator.onShowSelected(showId)
+        navigationSubject.onNext(R.id.action_showSummariesFragment_to_showDetailsFragment)
+    }
+
+    fun getNavigation(): Observable<Int> {
+        return navigationSubject
     }
 }

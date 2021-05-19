@@ -50,7 +50,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
         setUpViewModel()
@@ -60,7 +60,6 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowDetailsViewModel::class.java)
-        viewModel.setCurrentTag(tag)
     }
 
     private fun setUpUI() {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tvshows.R
@@ -55,7 +56,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ShowSummariesViewModel::class.java)
-        viewModel.setCurrentTag(tag)
     }
 
     private fun setUpAdapter() {
@@ -95,6 +95,13 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
             viewModel.getMessage()
                 .subscribe({ message ->
                     handleMessage(message)
+                }, {})
+        )
+
+        compositeDisposable.add(
+            viewModel.getNavigation()
+                .subscribe({
+                    navigate(it)
                 }, {})
         )
     }
@@ -137,6 +144,10 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
             else -> message as String
         }
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigate(actionId: Int) {
+        findNavController().navigate(actionId)
     }
 
     override fun onStop() {

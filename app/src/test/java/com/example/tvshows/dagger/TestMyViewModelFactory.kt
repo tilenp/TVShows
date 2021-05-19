@@ -2,7 +2,6 @@ package com.example.tvshows.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.tvshows.ui.ConfigurationViewModel
 import com.example.tvshows.ui.showdetails.ShowDetailsViewModel
 import com.example.tvshows.ui.showslist.ShowSummariesViewModel
 import javax.inject.Inject
@@ -11,9 +10,6 @@ import javax.inject.Inject
 class TestMyViewModelFactory @Inject constructor(): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ConfigurationViewModel::class.java)) {
-            return configurationViewModel as T
-        }
         if (modelClass.isAssignableFrom(ShowSummariesViewModel::class.java)) {
             return showSummariesViewModel as T
         }
@@ -24,7 +20,6 @@ class TestMyViewModelFactory @Inject constructor(): ViewModelProvider.Factory {
     }
 
     companion object {
-        lateinit var configurationViewModel: ConfigurationViewModel
         lateinit var showSummariesViewModel: ShowSummariesViewModel
         lateinit var showDetailsViewModel: ShowDetailsViewModel
     }

@@ -88,6 +88,10 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:2.25.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
+    /** Navigation component **/
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+
     /** OkHttp **/
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 

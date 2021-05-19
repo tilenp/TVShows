@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/showSummariesFragment">
+
+    <fragment
+        android:id="@+id/showSummariesFragment"
+        android:name="com.example.tvshows.ui.showslist.ShowSummariesFragment"
+        android:label="ShowSummariesFragment"
+        tools:layout="@layout/fragment_shows">
+        <action
+            android:id="@+id/action_showSummariesFragment_to_showDetailsFragment"
+            app:destination="@id/showDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showDetailsFragment"
+        android:name="com.example.tvshows.ui.showdetails.ShowDetailsFragment"
+        android:label="ShowDetailsFragment"
+        tools:layout="@layout/fragment_show_details"/>
+</navigation>
