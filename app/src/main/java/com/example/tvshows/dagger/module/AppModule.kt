@@ -55,6 +55,6 @@ class AppModule {
     @Provides
     @Named(UI_STATE_INTERVAL)
     fun providesUiStateInterval(): Long {
-        return 500
+        return 1000
     }
 }

@@ -103,7 +103,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         when (state) {
             UIState.Loading -> setLoadingState()
             UIState.Retry -> setRetryState()
-            UIState.NoItems -> setNoItemsState()
             UIState.Success -> setSuccessState()
         }
     }
@@ -113,7 +112,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
             showsRecyclerView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
             retryButton.visibility = View.GONE
-            noItemsTextView.visibility = View.GONE
         }
     }
 
@@ -122,7 +120,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
             showsRecyclerView.visibility = View.GONE
             progressBar.visibility = View.GONE
             retryButton.visibility = View.VISIBLE
-            noItemsTextView.visibility = View.GONE
         }
     }
 
@@ -131,16 +128,6 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
             showsRecyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
             retryButton.visibility = View.GONE
-            noItemsTextView.visibility = View.GONE
-        }
-    }
-
-    private fun setNoItemsState() {
-        with(binding) {
-            showsRecyclerView.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            retryButton.visibility = View.GONE
-            noItemsTextView.visibility = View.VISIBLE
         }
     }
 

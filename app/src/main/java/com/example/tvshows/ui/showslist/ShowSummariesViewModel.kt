@@ -57,7 +57,6 @@ class ShowSummariesViewModel @Inject constructor(
                 when {
                     loadState.refresh is LoadState.Loading -> UIState.Loading
                     loadState.refresh is LoadState.Error && noItems -> UIState.Retry
-                    loadState.refresh is LoadState.NotLoading && noItems -> UIState.NoItems
                     loadState.refresh is LoadState.NotLoading -> UIState.Success
                     loadState.append is LoadState.NotLoading -> UIState.Success
                     loadState.prepend is LoadState.NotLoading -> UIState.Success
