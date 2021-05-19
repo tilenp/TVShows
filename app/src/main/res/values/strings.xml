@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TVShows</string>
-    <string name="TVShows">TV Shows</string>
+    <string name="TV_Shows">TV Shows</string>
+    <string name="Details">Details</string>
     <string name="Seasons">Seasons</string>
     <string name="retry">retry</string>
     <string name="Select_a_show">Select a show</string>
