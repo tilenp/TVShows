@@ -12,10 +12,7 @@ const val INITIAL_LOAD_SIZE = "initial_load_size"
 
 /** image **/
 const val IMAGE_URL = "https://image.tmdb.org/t/p"
-const val SMALL = "/w92/"
 const val MEDIUM = "/w185/"
-const val LARGE = "w342/"
-const val ORIGINAL = "/original/"
 
 /** database **/
 const val DATABASE_NAME = "TV_SHOWS_DATABASE"
