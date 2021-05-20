@@ -19,12 +19,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesErrorHandler(context: Context): ErrorHandler {
-        return ErrorHandler(context)
-    }
-
-    @Singleton
-    @Provides
     @Named(PAGE_SIZE)
     fun providesPageSize(context: Context): Int {
         return context.resources.getInteger(R.integer.page_size)

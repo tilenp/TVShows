@@ -17,9 +17,9 @@ import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.databinding.FragmentShowDetailsBinding
+import com.example.tvshows.ui.UIState
 import com.example.tvshows.ui.showdetails.adapter.SeasonsAdapter
 import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
-import com.example.tvshows.utilities.ErrorHandler
 import com.example.tvshows.utilities.SchedulerProvider
 import com.example.tvshows.utilities.commaFormat
 import io.reactivex.disposables.CompositeDisposable
@@ -32,8 +32,6 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject
-    lateinit var errorHandler: ErrorHandler
     @Inject
     lateinit var schedulerProvider: SchedulerProvider
     private lateinit var viewModel: ShowDetailsViewModel
@@ -77,21 +75,25 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     private fun updateUI() {
         compositeDisposable.add(
+            viewModel.getUIState()
+                .observeOn(schedulerProvider.main())
+                .subscribe({ uiState ->
+                    handleState(uiState)
+                }, {})
+        )
+
+        compositeDisposable.add(
             viewModel.getShowSummary()
-                .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .subscribe({ showSummary ->
-                    setContentVisibility()
                     updateSummaryPart(showSummary)
                 }, {})
         )
 
         compositeDisposable.add(
             viewModel.getShowDetails()
-                .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .subscribe({ showDetails ->
-                    setContentVisibility()
                     updateGenres(showDetails.genres)
                     updateShowContent(showDetails.showContent)
                     updateSeasons(showDetails.seasons)
@@ -99,16 +101,32 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
         )
 
         compositeDisposable.add(
-            viewModel.getErrors()
+            viewModel.getMessage()
                 .observeOn(schedulerProvider.main())
-                .subscribe({ error ->
-                    errorHandler.handleError(error)
+                .subscribe({ message ->
+                    handleMessage(message)
                 }, {})
         )
     }
 
-    private fun setContentVisibility() {
+    private fun handleState(state: UIState) {
+        when (state) {
+            UIState.Loading -> setLoadingState()
+            UIState.Success -> setSuccessState()
+        }
+    }
+
+    private fun setLoadingState() {
         with(binding) {
+            progressBar.isVisible = true
+            selectShowTextView.isVisible = false
+            showDetailsContainer.isVisible = false
+        }
+    }
+
+    private fun setSuccessState() {
+        with(binding) {
+            progressBar.isVisible = false
             selectShowTextView.isVisible = false
             showDetailsContainer.isVisible = true
         }
@@ -135,6 +153,14 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
     private fun updateSeasons(seasons: List<Season>) {
         binding.seasonsTextView.isVisible = seasons.isNotEmpty()
         seasonsAdapter.setSeasons(seasons)
+    }
+
+    private fun handleMessage(message: Any) {
+        val text = when (message) {
+            is Int -> getString(message)
+            else -> message as String
+        }
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSeasonClick(seasonName: String) {

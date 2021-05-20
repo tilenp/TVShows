@@ -20,7 +20,6 @@ import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
-import com.example.tvshows.utilities.ErrorHandler
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.subjects.PublishSubject
 import org.junit.Assert.assertEquals
@@ -30,14 +29,11 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowToast
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 class ShowDetailsFragmentTest {
 
-    @Inject
-    lateinit var errorHandler: ErrorHandler
     private val showDetailsViewModel: ShowDetailsViewModel = mock()
     private val showSummarySubject = PublishSubject.create<ShowSummary>()
     private val showDetailsSubject = PublishSubject.create<ShowDetails>()
@@ -76,7 +72,7 @@ class ShowDetailsFragmentTest {
     private fun setUpViewModel() {
         whenever(showDetailsViewModel.getShowSummary()).thenReturn(showSummarySubject)
         whenever(showDetailsViewModel.getShowDetails()).thenReturn(showDetailsSubject)
-        whenever(showDetailsViewModel.getErrors()).thenReturn(errorSubject)
+        whenever(showDetailsViewModel.getMessage()).thenReturn(errorSubject)
         TestMyViewModelFactory.showDetailsViewModel = showDetailsViewModel
     }
 

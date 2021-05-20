@@ -38,7 +38,7 @@ class ShowDetailsViewModelTest {
         // arrange
         val error = Throwable()
         setConditions(updateShowDetailsCompletable = Completable.error(error))
-        val errorObserver = viewModel.getErrors().test()
+        val errorObserver = viewModel.getMessage().test()
 
         // act
         showSelectedSubject.onNext(showId)
