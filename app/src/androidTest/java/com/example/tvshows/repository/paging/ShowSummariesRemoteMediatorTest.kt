@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import java.io.InvalidObjectException
 
+@ExperimentalPagingApi
 @RunWith(AndroidJUnit4::class)
 class ShowSummariesRemoteMediatorTest {
 
