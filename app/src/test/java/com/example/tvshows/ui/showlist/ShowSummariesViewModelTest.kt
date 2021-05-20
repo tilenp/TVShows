@@ -1,45 +1,47 @@
 package com.example.tvshows.ui.showlist
 
+import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.repository.ShowSummariesRepository
 import com.example.tvshows.ui.EventAggregator
 import com.example.tvshows.ui.showslist.ShowSummariesViewModel
+import com.example.tvshows.utilities.ErrorParser
+import com.example.tvshows.utilities.TestSchedulerProvider
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalPagingApi
 class ShowSummariesViewModelTest {
 
     private val showSummariesRepository: ShowSummariesRepository = mock()
     private val eventAggregator: EventAggregator = mock()
+    private val errorParser: ErrorParser = mock()
+    private val pageSize = 1
+    private val maxSize = 2
+    private val prefetchDistance = 3
+    private val initialLoadSize = 4
+    private val uiStateInterval = 5L
+    private val splitView = true
     private lateinit var viewModel: ShowSummariesViewModel
 
-    private val tag = "tag"
     private val showId = 1
 
     @Before
     fun setUp() {
-        viewModel = ShowSummariesViewModel(showSummariesRepository = showSummariesRepository,  eventAggregator = eventAggregator)
-    }
-
-    @Test
-    fun when_currentTag_is_not_null_currentTag_is_set() {
-        // act
-        viewModel.setCurrentTag(tag)
-
-        // assert
-        verify(eventAggregator, times(1)).setCurrentTag(tag)
-    }
-
-    @Test
-    fun when_currentTag_is_null_currentTag_is_not_set() {
-        // act
-        viewModel.setCurrentTag(null)
-
-        // assert
-        verifyZeroInteractions(eventAggregator)
+        viewModel = ShowSummariesViewModel(
+            showSummariesRepository = showSummariesRepository,
+            eventAggregator = eventAggregator,
+            schedulerProvider = TestSchedulerProvider(),
+            errorParser = errorParser,
+            pageSize = pageSize,
+            maxSize = maxSize,
+            prefetchDistance = prefetchDistance,
+            initialLoadSize = initialLoadSize,
+            uiStateInterval = uiStateInterval,
+            splitView = splitView
+        )
     }
 
     @Test

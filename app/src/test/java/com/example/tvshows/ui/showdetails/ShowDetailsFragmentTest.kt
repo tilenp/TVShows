@@ -8,10 +8,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.example.tvshows.R
-import com.example.tvshows.dagger.DaggerTestComponent
 import com.example.tvshows.dagger.TVShowsApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
 import com.example.tvshows.database.model.ImagePath
@@ -30,6 +30,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowToast
 
+@ExperimentalPagingApi
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 class ShowDetailsFragmentTest {
@@ -37,7 +38,7 @@ class ShowDetailsFragmentTest {
     private val showDetailsViewModel: ShowDetailsViewModel = mock()
     private val showSummarySubject = PublishSubject.create<ShowSummary>()
     private val showDetailsSubject = PublishSubject.create<ShowDetails>()
-    private val errorSubject = PublishSubject.create<Throwable>()
+    private val messageSubject = PublishSubject.create<Any>()
 
     private val showName = "showName"
     private val showSummary = ShowSummary(id = 1, showId = 1, name = showName, imagePath = null)
@@ -64,24 +65,14 @@ class ShowDetailsFragmentTest {
 
     private fun setUpTestComponent() {
         val myApplication = ApplicationProvider.getApplicationContext<TVShowsApplication>()
-        val testComponent = DaggerTestComponent.factory().create(myApplication)
-        myApplication.appComponent = testComponent
-        testComponent.inject(this)
+        //val testComponent = DaggerTestComponent.factory().create(myApplication)
     }
 
     private fun setUpViewModel() {
         whenever(showDetailsViewModel.getShowSummary()).thenReturn(showSummarySubject)
         whenever(showDetailsViewModel.getShowDetails()).thenReturn(showDetailsSubject)
-        whenever(showDetailsViewModel.getMessage()).thenReturn(errorSubject)
+        whenever(showDetailsViewModel.getMessage()).thenReturn(messageSubject)
         TestMyViewModelFactory.showDetailsViewModel = showDetailsViewModel
-    }
-
-    @Test
-    fun when_fragment_is_created_current_tag_is_set() {
-        scenario().onFragment {
-            // assert
-            verify(showDetailsViewModel, times(1)).setCurrentTag(any())
-        }
     }
 
     @Test
@@ -136,17 +127,6 @@ class ShowDetailsFragmentTest {
             assertEquals(summary, summaryTextView?.text?.toString())
             assertEquals(View.VISIBLE, seasonsTextView?.visibility)
             assertEquals(seasons.size, recyclerView?.adapter?.itemCount)
-        }
-    }
-
-    @Test
-    fun when_error_is_emitted_it_is_handled_correctly() {
-        scenario().onFragment { fragment ->
-            // act
-            errorSubject.onNext(Throwable())
-
-            // assert
-            verify(errorHandler, times(1)).handleError(any())
         }
     }
 

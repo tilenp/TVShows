@@ -4,6 +4,7 @@ import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.ShowDetailsRepository
 import com.example.tvshows.ui.EventAggregator
+import com.example.tvshows.utilities.ErrorParser
 import com.example.tvshows.utilities.TestSchedulerProvider
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
@@ -15,12 +16,12 @@ class ShowDetailsViewModelTest {
 
     private val eventAggregator: EventAggregator = mock()
     private val showDetailsRepository: ShowDetailsRepository = mock()
+    private val errorParser: ErrorParser = mock()
     private val showSelectedSubject = PublishSubject.create<Int>()
     private val showSummary: ShowSummary = mock()
     private val showDetails: ShowDetails = mock()
     private lateinit var viewModel: ShowDetailsViewModel
 
-    private val tag = "tag"
     private val showId = 1
 
     private fun setConditions(
@@ -30,7 +31,12 @@ class ShowDetailsViewModelTest {
         whenever(showDetailsRepository.updateShowDetails(any())).thenReturn(updateShowDetailsCompletable)
         whenever(showDetailsRepository.getShowSummary(any())).thenReturn(Observable.just(showSummary))
         whenever(showDetailsRepository.getShowDetails(any())).thenReturn(Observable.just(showDetails))
-        viewModel = ShowDetailsViewModel(eventAggregator = eventAggregator,  showDetailsRepository = showDetailsRepository, schedulerProvider = TestSchedulerProvider())
+        viewModel = ShowDetailsViewModel(
+            eventAggregator = eventAggregator,
+            showDetailsRepository = showDetailsRepository,
+            errorParser = errorParser,
+            schedulerProvider = TestSchedulerProvider()
+        )
     }
 
     @Test
@@ -47,30 +53,6 @@ class ShowDetailsViewModelTest {
         errorObserver
             .assertValue(error)
             .dispose()
-    }
-
-    @Test
-    fun when_currentTag_is_not_null_currentTag_is_set() {
-        // arrange
-        setConditions()
-
-        // act
-        viewModel.setCurrentTag(tag)
-
-        // assert
-        verify(eventAggregator, times(1)).setCurrentTag(tag)
-    }
-
-    @Test
-    fun when_currentTag_is_null_currentTag_is_not_set() {
-        // arrange
-        setConditions()
-
-        // act
-        viewModel.setCurrentTag(null)
-
-        // assert
-        verify(eventAggregator, times(0)).setCurrentTag(any())
     }
 
     @Test

@@ -2,10 +2,12 @@ package com.example.tvshows.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.ExperimentalPagingApi
 import com.example.tvshows.ui.showdetails.ShowDetailsViewModel
 import com.example.tvshows.ui.showslist.ShowSummariesViewModel
 import javax.inject.Inject
 
+@ExperimentalPagingApi
 @Suppress("UNCHECKED_CAST")
 class TestMyViewModelFactory @Inject constructor(): ViewModelProvider.Factory {
 

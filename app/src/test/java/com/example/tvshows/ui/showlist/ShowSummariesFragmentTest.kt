@@ -4,9 +4,9 @@ import android.os.Build
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
-import com.example.tvshows.dagger.DaggerTestComponent
 import com.example.tvshows.dagger.TVShowsApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
 import com.example.tvshows.database.table.ShowSummary
@@ -20,6 +20,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@ExperimentalPagingApi
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 class ShowSummariesFragmentTest {
@@ -35,21 +36,12 @@ class ShowSummariesFragmentTest {
 
     private fun setUpTestComponent() {
         val myApplication = ApplicationProvider.getApplicationContext<TVShowsApplication>()
-        val testComponent = DaggerTestComponent.factory().create(myApplication)
-        myApplication.appComponent = testComponent
+        //val testComponent = DaggerTestComponent.factory().create(myApplication)
     }
 
     private fun setUpViewModel() {
         whenever(showSummariesViewModel.getShowSummaries()).thenReturn(showSummariesSubject)
         TestMyViewModelFactory.showSummariesViewModel = showSummariesViewModel
-    }
-
-    @Test
-    fun when_fragment_is_created_current_tag_is_set() {
-        scenario().onFragment {
-            // assert
-            verify(showSummariesViewModel, times(1)).setCurrentTag(any())
-        }
     }
 
     @Test
