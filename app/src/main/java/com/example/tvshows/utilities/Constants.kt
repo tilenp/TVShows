@@ -17,8 +17,5 @@ const val MEDIUM = "/w185/"
 /** database **/
 const val DATABASE_NAME = "TV_SHOWS_DATABASE"
 
-/** ui state interval **/
-const val UI_STATE_INTERVAL = "ui_state_interval"
-
 /** Config **/
 const val SPLIT_VIEW = "split_view"

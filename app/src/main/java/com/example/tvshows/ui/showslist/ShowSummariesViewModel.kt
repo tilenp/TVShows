@@ -1,5 +1,6 @@
 package com.example.tvshows.ui.showslist
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
@@ -28,7 +29,6 @@ class ShowSummariesViewModel @Inject constructor(
     @Named(MAX_SIZE) private val maxSize: Int,
     @Named(PREFETCH_DISTANCE) private val prefetchDistance: Int,
     @Named(INITIAL_LOAD_SIZE) private val initialLoadSize: Int,
-    @Named(UI_STATE_INTERVAL) private val uiStateInterval: Long,
     @Named(SPLIT_VIEW) private val splitView: Boolean
 ) : ViewModel() {
 
@@ -78,7 +78,7 @@ class ShowSummariesViewModel @Inject constructor(
                 }
             }
             .filter { message -> message.isNotEmpty() }
-            .throttleFirst(uiStateInterval, TimeUnit.MILLISECONDS, schedulerProvider.interval())
+            .throttleFirst(MESSAGE_INTERVAL, TimeUnit.MILLISECONDS, schedulerProvider.interval())
     }
 
     private fun parseError(errorState: LoadState.Error): String {
@@ -98,5 +98,9 @@ class ShowSummariesViewModel @Inject constructor(
 
     fun getNavigation(): Observable<Int> {
         return navigationSubject
+    }
+
+    companion object {
+        @VisibleForTesting const val MESSAGE_INTERVAL = 1000L
     }
 }
