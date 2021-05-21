@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class PagingKeys(
     @PrimaryKey
-    val elementId: Int,
-    val prevKey: Int?,
-    val nextKey: Int?
+    val elementId: Int = 0,
+    val prevKey: Int? = 0,
+    val nextKey: Int? = 0
 )

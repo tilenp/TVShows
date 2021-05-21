@@ -8,11 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    ApiModule::class,
     TestApplicationModule::class,
-    DatabaseModule::class,
-    MapperModule::class,
-    ServiceModule::class,
     TestViewModelModule::class])
 interface TestComponent: AppComponent {
 

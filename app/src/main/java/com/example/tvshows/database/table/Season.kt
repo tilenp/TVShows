@@ -17,9 +17,9 @@ import com.example.tvshows.database.model.ImagePath
 )
 data class Season(
     @PrimaryKey
-    var id: Int,
+    var id: Int = 0,
     var showId: Int = 0,
-    var name: String,
-    var seasonNumber: Int,
-    var imagePath: ImagePath?
+    var name: String = "",
+    var seasonNumber: Int = 0,
+    var imagePath: ImagePath? = null
 )

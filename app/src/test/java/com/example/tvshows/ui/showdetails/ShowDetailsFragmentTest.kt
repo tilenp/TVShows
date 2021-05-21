@@ -1,8 +1,8 @@
 package com.example.tvshows.ui.showdetails
 
 import android.os.Build
-import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.testing.FragmentScenario
@@ -10,20 +10,19 @@ import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider
 import com.example.tvshows.R
-import com.example.tvshows.dagger.TVShowsApplication
+import com.example.tvshows.dagger.MyTestApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
-import com.example.tvshows.database.model.ImagePath
 import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
-import com.nhaarman.mockitokotlin2.*
-import io.reactivex.subjects.PublishSubject
+import com.example.tvshows.ui.UIState
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Observable
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -32,112 +31,195 @@ import org.robolectric.shadows.ShadowToast
 
 @ExperimentalPagingApi
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P])
+@Config(application = MyTestApplication::class, sdk = [Build.VERSION_CODES.P])
 class ShowDetailsFragmentTest {
 
     private val showDetailsViewModel: ShowDetailsViewModel = mock()
-    private val showSummarySubject = PublishSubject.create<ShowSummary>()
-    private val showDetailsSubject = PublishSubject.create<ShowDetails>()
-    private val messageSubject = PublishSubject.create<String>()
 
-    private val showName = "showName"
-    private val showSummary = ShowSummary(id = 1, showId = 1, name = showName, imagePath = null)
-    private val summary = "summary"
-    private val showContent = ShowContent(1, summary)
-    private val genreName1 = "genreName1"
-    private val genreName2 = "genreName2"
-    private val genre1 = Genre(id = 1, showId = 1, name = genreName1)
-    private val genre2 = Genre(id = 2, showId = 2, name = genreName2)
-    private val genres = listOf(genre1, genre2)
-    private val seasonName1 = "seasonName1"
-    private val seasonName2 = "seasonName2"
-    private val season1 = Season(id = 1, showId = 1, name = seasonName1, seasonNumber = 1, imagePath = ImagePath("posterPath1"))
-    private val season2 = Season(id = 2, showId = 2, name = seasonName2, seasonNumber = 2, imagePath = ImagePath("posterPath2"))
-    private val seasons = listOf(season1, season2)
-    private val showDetails = ShowDetails(showContent = showContent, genres = genres, seasons = seasons)
-    private val genresString = "$genreName1, $genre2"
-
-    @Before
-    fun setUp() {
-        setUpTestComponent()
-        setUpViewModel()
-    }
-
-    private fun setUpTestComponent() {
-        val myApplication = ApplicationProvider.getApplicationContext<TVShowsApplication>()
-        //val testComponent = DaggerTestComponent.factory().create(myApplication)
-    }
-
-    private fun setUpViewModel() {
-        whenever(showDetailsViewModel.getShowSummary()).thenReturn(showSummarySubject)
-        whenever(showDetailsViewModel.getShowDetails()).thenReturn(showDetailsSubject)
-        whenever(showDetailsViewModel.getMessage()).thenReturn(messageSubject)
+    private fun setUp(
+        uiState: UIState = UIState.Default,
+        showSummary: ShowSummary = ShowSummary(),
+        showDetails: ShowDetails = ShowDetails(),
+        message: String = ""
+    ) {
+        whenever(showDetailsViewModel.getUIState()).thenReturn(Observable.just(uiState))
+        whenever(showDetailsViewModel.getShowSummary()).thenReturn(Observable.just(showSummary))
+        whenever(showDetailsViewModel.getShowDetails()).thenReturn(Observable.just(showDetails))
+        whenever(showDetailsViewModel.getMessage()).thenReturn(Observable.just(message))
         TestMyViewModelFactory.showDetailsViewModel = showDetailsViewModel
     }
 
     @Test
     fun when_show_is_not_selected_yet_state_is_correct() {
-        scenario().onFragment {fragment ->
-            // arrange
+        // arrange
+        setUp(uiState = UIState.Default)
+
+        scenario().onFragment { fragment ->
+
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
 
             // assert
+            assertEquals(false, progressBar?.isVisible)
             assertEquals(true, selectShowTextView?.isVisible)
             assertEquals(false, showDetailsContainer?.isVisible)
         }
     }
 
     @Test
-    fun when_showSummary_is_emitted_showSummary_is_set() {
+    fun loading_state_is_handled_correctly() {
+        // arrange
+        setUp(uiState = UIState.Loading)
+
         scenario().onFragment { fragment ->
-            // arrange
+
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
-            val nameTextView = fragment.view?.findViewById<TextView>(R.id.name_text_view)
-
-            // act
-            showSummarySubject.onNext(showSummary)
 
             // assert
+            assertEquals(true, progressBar?.isVisible)
             assertEquals(false, selectShowTextView?.isVisible)
-            assertEquals(true, showDetailsContainer?.isVisible)
-            assertEquals(showName, nameTextView?.text?.toString())
+            assertEquals(false, showDetailsContainer?.isVisible)
         }
     }
 
     @Test
-    fun when_showDetails_is_emitted_show_details_are_set() {
+    fun success_state_is_handled_correctly() {
+        // arrange
+        setUp(uiState = UIState.Success)
+
         scenario().onFragment { fragment ->
-            // arrange
+
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
-            val genreTextView = fragment.view?.findViewById<TextView>(R.id.genre_text_view)
-            val summaryTextView = fragment.view?.findViewById<TextView>(R.id.summary_text_view)
-            val seasonsTextView = fragment.view?.findViewById<TextView>(R.id.seasons_text_view)
-            val recyclerView = fragment.view?.findViewById<RecyclerView>(R.id.seasons_recycler_view)
-
-            // act
-            showDetailsSubject.onNext(showDetails)
 
             // assert
+            assertEquals(false, progressBar?.isVisible)
             assertEquals(false, selectShowTextView?.isVisible)
             assertEquals(true, showDetailsContainer?.isVisible)
-            assertEquals(genresString, genreTextView?.text?.toString())
+        }
+    }
+
+    @Test
+    fun title_is_updated_correctly() {
+        // arrange
+        val name = "show name"
+        setUp(showSummary = ShowSummary(name = name))
+
+        scenario().onFragment { fragment ->
+
+            val nameTextView = fragment.view?.findViewById<TextView>(R.id.name_text_view)
+
+            // assert
+            assertEquals(name, nameTextView?.text?.toString())
+        }
+    }
+
+    @Test
+    fun genres_are_updated_correctly() {
+        // arrange
+        val genreName1 = "genreName1"
+        val genreName2 = "genreName2"
+        val genre1 = Genre(id = 1, showId = 1, name = genreName1)
+        val genre2 = Genre(id = 2, showId = 2, name = genreName2)
+        setUp(showDetails = ShowDetails(genres = listOf(genre1, genre2)))
+
+        scenario().onFragment { fragment ->
+
+            val genreTextView = fragment.view?.findViewById<TextView>(R.id.genre_text_view)
+
+            // assert
+            assertEquals("$genreName1, $genreName2", genreTextView?.text?.toString())
+        }
+    }
+
+    @Test
+    fun show_content_is_updated_correctly() {
+        // arrange
+        val summary = "summary"
+        val showContent = ShowContent(summary = summary)
+        setUp(showDetails = ShowDetails(showContent = showContent))
+
+        scenario().onFragment { fragment ->
+
+            val summaryTextView = fragment.view?.findViewById<TextView>(R.id.summary_text_view)
+
+            // assert
             assertEquals(summary, summaryTextView?.text?.toString())
-            assertEquals(View.VISIBLE, seasonsTextView?.visibility)
-            assertEquals(seasons.size, recyclerView?.adapter?.itemCount)
+        }
+    }
+
+    @Test
+    fun seasons_are_updated_correctly() {
+        // arrange
+        val seasons = listOf(Season())
+        setUp(showDetails = ShowDetails(seasons = listOf(Season())))
+
+        scenario().onFragment { fragment ->
+
+            val seasonsRecyclerView = fragment.view?.findViewById<RecyclerView>(R.id.seasons_recycler_view)
+
+            // assert
+            assertEquals(seasons.size, seasonsRecyclerView?.adapter?.itemCount)
+        }
+    }
+
+    @Test
+    fun when_seasons_exist_seasons_text_view_is_visible() {
+        // arrange
+        setUp(showDetails = ShowDetails(seasons = listOf(Season())))
+
+        scenario().onFragment { fragment ->
+
+            val seasonsTextView = fragment.view?.findViewById<TextView>(R.id.seasons_text_view)
+
+            // assert
+            assertEquals(true, seasonsTextView?.isVisible)
+        }
+    }
+
+    @Test
+    fun when_there_is_no_seasons_seasons_text_view_is_visible() {
+        // arrange
+        setUp(showDetails = ShowDetails(seasons = emptyList()))
+
+        scenario().onFragment { fragment ->
+
+            val seasonsTextView = fragment.view?.findViewById<TextView>(R.id.seasons_text_view)
+
+            // assert
+            assertEquals(false, seasonsTextView?.isVisible)
+        }
+    }
+
+    @Test
+    fun message_is_handled_correctly() {
+        // arrange
+        val message = "message"
+        setUp(message = message)
+
+        scenario().onFragment { fragment ->
+
+            // assert
+            assertEquals(message, ShadowToast.getTextOfLatestToast())
         }
     }
 
     @Test
     fun when_season_is_selected_toast_is_shown() {
+        // arrange
+        val seasonName = "seasonName"
+        setUp()
+
         scenario().onFragment { fragment ->
             // act
-            fragment.onSeasonClick(seasonName1)
+            fragment.onSeasonClick(seasonName)
 
             // assert
-            assertEquals(seasonName1, ShadowToast.getTextOfLatestToast())
+            assertEquals(seasonName, ShadowToast.getTextOfLatestToast())
         }
     }
 
