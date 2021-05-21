@@ -1,0 +1,67 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/jeruqNWhqRqOR1QyqdQdHunrvU5.jpg",
+      "first_air_date": "2014-10-07",
+      "genre_ids": [
+        18,
+        10765
+      ],
+      "id": 60735,
+      "name": "The Flash",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Flash",
+      "overview": "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
+      "popularity": 1163.68,
+      "poster_path": "/lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg",
+      "vote_average": 7.7,
+      "vote_count": 7640
+    },
+    {
+      "backdrop_path": "/pLG4ihU1d2XkQbASQDjsFu9U7d9.jpg",
+      "first_air_date": "2021-03-24",
+      "genre_ids": [
+        18,
+        80,
+        9648
+      ],
+      "id": 120168,
+      "name": "Who Killed Sara?",
+      "origin_country": [
+        "MX"
+      ],
+      "original_language": "es",
+      "original_name": "¿Quién mató a Sara?",
+      "overview": "Hell-bent on exacting revenge and proving he was framed for his sister's murder, Álex sets out to unearth much more than the crime's real culprit.",
+      "popularity": 1091.185,
+      "poster_path": "/o7uk5ChRt3quPIv8PcvPfzyXdMw.jpg",
+      "vote_average": 7.8,
+      "vote_count": 610
+    },
+    {
+      "backdrop_path": "/mZjZgY6ObiKtVuKVDrnS9VnuNlE.jpg",
+      "first_air_date": "2017-09-25",
+      "genre_ids": [
+        18
+      ],
+      "id": 71712,
+      "name": "The Good Doctor",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Good Doctor",
+      "overview": "A young surgeon with Savant syndrome is recruited into the surgical unit of a prestigious hospital. The question will arise: can a person who doesn't have the ability to relate to people actually save their lives",
+      "popularity": 1041.947,
+      "poster_path": "/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg",
+      "vote_average": 8.6,
+      "vote_count": 8423
+    }
+  ],
+  "total_pages": 500,
+  "total_results": 10000
+}
