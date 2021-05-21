@@ -25,7 +25,7 @@ class ShowDetailsViewModel @Inject constructor(
 
     private val uiStateDispatcherSubject = PublishSubject.create<UIState>()
     private val uiStateSubject = BehaviorSubject.create<UIState>()
-    private val messageSubject = PublishSubject.create<Any>().toSerialized()
+    private val messageSubject = PublishSubject.create<String>().toSerialized()
     private val showIdObservable = eventAggregator.observeSelectedShowId()
         .distinctUntilChanged()
     private val compositeDisposable = CompositeDisposable()
@@ -98,7 +98,7 @@ class ShowDetailsViewModel @Inject constructor(
         messageSubject.onNext(message)
     }
 
-    fun getMessage(): Observable<Any> {
+    fun getMessage(): Observable<String> {
         return messageSubject
     }
 

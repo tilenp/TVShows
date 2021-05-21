@@ -104,7 +104,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
             viewModel.getMessage()
                 .observeOn(schedulerProvider.main())
                 .subscribe({ message ->
-                    handleMessage(message)
+                    showMessage(message)
                 }, {})
         )
     }
@@ -155,16 +155,12 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
         seasonsAdapter.setSeasons(seasons)
     }
 
-    private fun handleMessage(message: Any) {
-        val text = when (message) {
-            is Int -> getString(message)
-            else -> message as String
-        }
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSeasonClick(seasonName: String) {
-        Toast.makeText(context, seasonName, Toast.LENGTH_SHORT).show()
+        showMessage(seasonName)
     }
 
     override fun onStop() {

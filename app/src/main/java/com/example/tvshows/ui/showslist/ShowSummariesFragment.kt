@@ -94,7 +94,7 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         compositeDisposable.add(
             viewModel.getMessage()
                 .subscribe({ message ->
-                    handleMessage(message)
+                    showMessage(message)
                 }, {})
         )
 
@@ -138,12 +138,8 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
         }
     }
 
-    private fun handleMessage(message: Any) {
-        val text = when (message) {
-            is Int -> getString(message)
-            else -> message as String
-        }
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigate(actionId: Int) {

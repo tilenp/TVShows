@@ -66,7 +66,7 @@ class ShowSummariesViewModel @Inject constructor(
             .filter { state -> state != UIState.Default }
     }
 
-    fun getMessage(): Observable<Any> {
+    fun getMessage(): Observable<String> {
         return uiStateSubject
             .map { data ->
                 val loadState = data.first
@@ -77,11 +77,11 @@ class ShowSummariesViewModel @Inject constructor(
                     else -> ""
                 }
             }
-            .filter { message -> (message as? String)?.isNotEmpty() ?: true }
+            .filter { message -> message.isNotEmpty() }
             .throttleFirst(uiStateInterval, TimeUnit.MILLISECONDS, schedulerProvider.interval())
     }
 
-    private fun parseError(errorState: LoadState.Error): Any {
+    private fun parseError(errorState: LoadState.Error): String {
         return errorParser.parseError(errorState.error)
     }
 
