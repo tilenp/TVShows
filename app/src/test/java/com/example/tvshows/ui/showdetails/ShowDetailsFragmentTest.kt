@@ -38,7 +38,7 @@ class ShowDetailsFragmentTest {
     private val showDetailsViewModel: ShowDetailsViewModel = mock()
     private val showSummarySubject = PublishSubject.create<ShowSummary>()
     private val showDetailsSubject = PublishSubject.create<ShowDetails>()
-    private val messageSubject = PublishSubject.create<Any>()
+    private val messageSubject = PublishSubject.create<String>()
 
     private val showName = "showName"
     private val showSummary = ShowSummary(id = 1, showId = 1, name = showName, imagePath = null)

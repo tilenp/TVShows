@@ -1,5 +1,6 @@
 package com.example.tvshows.ui.showdetails
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.table.ShowSummary
@@ -52,7 +53,7 @@ class ShowDetailsViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())
                 .doOnNext { uiStateDispatcherSubject.onNext(UIState.Loading) }
-                .flatMapCompletable { showId ->
+                .switchMapCompletable { showId ->
                     showDetailsRepository.updateShowDetails(showId)
                         .doOnError { error -> reportError(error) }
                         .onErrorResumeNext { Completable.complete() }
@@ -108,6 +109,6 @@ class ShowDetailsViewModel @Inject constructor(
     }
 
     companion object {
-        private const val LOADING_INTERVAL = 500L
+        @VisibleForTesting const val LOADING_INTERVAL = 500L
     }
 }
