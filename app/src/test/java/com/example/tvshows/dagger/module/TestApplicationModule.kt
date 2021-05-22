@@ -12,6 +12,10 @@ class TestApplicationModule {
     @Singleton
     @Provides
     fun providesSchedulerProvider(): SchedulerProvider {
-        return TestSchedulerProvider()
+        return schedulerProvider
+    }
+
+    companion object {
+        lateinit var schedulerProvider: SchedulerProvider
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +24,9 @@ import com.example.tvshows.ui.showdetails.adapter.SeasonsAdapter
 import com.example.tvshows.ui.showdetails.callback.OnSeasonClick
 import com.example.tvshows.utilities.SchedulerProvider
 import com.example.tvshows.utilities.commaFormat
+import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.disposables.CompositeDisposable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ShowDetailsFragment : Fragment(), OnSeasonClick {
@@ -111,28 +114,48 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
                     showMessage(message)
                 }, {})
         )
+
+        compositeDisposable.add(
+            RxView.clicks(binding.retryButton)
+                .throttleFirst(RETRY_CLICK_INTERVAL, TimeUnit.MILLISECONDS, schedulerProvider.interval())
+                .subscribe({
+                    viewModel.retry()
+                }, {})
+        )
     }
 
     private fun handleState(state: UIState) {
         when (state) {
             UIState.Loading -> setLoadingState()
             UIState.Success -> setSuccessState()
+            UIState.Retry -> setRetryState()
         }
     }
 
     private fun setLoadingState() {
         with(binding) {
-            progressBar.isVisible = true
             selectShowTextView.isVisible = false
+            progressBar.isVisible = true
+            retryButton.isVisible = false
             showDetailsContainer.isVisible = false
         }
     }
 
     private fun setSuccessState() {
         with(binding) {
-            progressBar.isVisible = false
             selectShowTextView.isVisible = false
+            progressBar.isVisible = false
+            retryButton.isVisible = false
             showDetailsContainer.isVisible = true
+        }
+    }
+
+    private fun setRetryState() {
+        with(binding) {
+            selectShowTextView.isVisible = false
+            progressBar.isVisible = false
+            retryButton.isVisible = true
+            showDetailsContainer.isVisible = false
         }
     }
 
@@ -176,5 +199,9 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        @VisibleForTesting const val RETRY_CLICK_INTERVAL = 1000L
     }
 }

@@ -1,6 +1,7 @@
 package com.example.tvshows.ui.showdetails
 
 import android.os.Build
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -13,27 +14,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvshows.R
 import com.example.tvshows.dagger.MyTestApplication
 import com.example.tvshows.dagger.TestMyViewModelFactory
+import com.example.tvshows.dagger.module.TestApplicationModule
 import com.example.tvshows.database.model.ShowDetails
 import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
 import com.example.tvshows.database.table.ShowContent
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.ui.UIState
+import com.example.tvshows.ui.showdetails.ShowDetailsFragment.Companion.RETRY_CLICK_INTERVAL
+import com.example.tvshows.utilities.TestSchedulerProvider
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
+import io.reactivex.schedulers.TestScheduler
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowToast
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(application = MyTestApplication::class, sdk = [Build.VERSION_CODES.P])
 class ShowDetailsFragmentTest {
 
+    private val testScheduler = TestScheduler()
+    private val schedulerProvider = TestSchedulerProvider(testScheduler)
     private val showDetailsViewModel: ShowDetailsViewModel = mock()
 
     private fun setUp(
@@ -47,6 +57,7 @@ class ShowDetailsFragmentTest {
         whenever(showDetailsViewModel.getShowDetails()).thenReturn(Observable.just(showDetails))
         whenever(showDetailsViewModel.getMessage()).thenReturn(Observable.just(message))
         TestMyViewModelFactory.showDetailsViewModel = showDetailsViewModel
+        TestApplicationModule.schedulerProvider = schedulerProvider
     }
 
     @Test
@@ -56,13 +67,15 @@ class ShowDetailsFragmentTest {
 
         scenario().onFragment { fragment ->
 
-            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
+            val retryButton = fragment.view?.findViewById<Button>(R.id.retry_button)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
 
             // assert
-            assertEquals(false, progressBar?.isVisible)
             assertEquals(true, selectShowTextView?.isVisible)
+            assertEquals(false, progressBar?.isVisible)
+            assertEquals(false, retryButton?.isVisible)
             assertEquals(false, showDetailsContainer?.isVisible)
         }
     }
@@ -74,13 +87,15 @@ class ShowDetailsFragmentTest {
 
         scenario().onFragment { fragment ->
 
-            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
+            val retryButton = fragment.view?.findViewById<Button>(R.id.retry_button)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
 
             // assert
-            assertEquals(true, progressBar?.isVisible)
             assertEquals(false, selectShowTextView?.isVisible)
+            assertEquals(true, progressBar?.isVisible)
+            assertEquals(false, retryButton?.isVisible)
             assertEquals(false, showDetailsContainer?.isVisible)
         }
     }
@@ -92,14 +107,36 @@ class ShowDetailsFragmentTest {
 
         scenario().onFragment { fragment ->
 
-            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
             val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
+            val retryButton = fragment.view?.findViewById<Button>(R.id.retry_button)
             val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
 
             // assert
-            assertEquals(false, progressBar?.isVisible)
             assertEquals(false, selectShowTextView?.isVisible)
+            assertEquals(false, progressBar?.isVisible)
+            assertEquals(false, retryButton?.isVisible)
             assertEquals(true, showDetailsContainer?.isVisible)
+        }
+    }
+
+    @Test
+    fun retry_state_is_handled_correctly() {
+        // arrange
+        setUp(uiState = UIState.Retry)
+
+        scenario().onFragment { fragment ->
+
+            val selectShowTextView = fragment.view?.findViewById<TextView>(R.id.select_show_textView)
+            val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progress_bar)
+            val retryButton = fragment.view?.findViewById<Button>(R.id.retry_button)
+            val showDetailsContainer = fragment.view?.findViewById<LinearLayout>(R.id.show_details_container)
+
+            // assert
+            assertEquals(false, selectShowTextView?.isVisible)
+            assertEquals(false, progressBar?.isVisible)
+            assertEquals(true, retryButton?.isVisible)
+            assertEquals(false, showDetailsContainer?.isVisible)
         }
     }
 
@@ -220,6 +257,46 @@ class ShowDetailsFragmentTest {
 
             // assert
             assertEquals(seasonName, ShadowToast.getTextOfLatestToast())
+        }
+    }
+
+    @Test
+    fun when_retry_is_clicked_view_model_is_notified() {
+        // arrange
+        setUp(showDetails = ShowDetails(seasons = emptyList()))
+
+        scenario().onFragment { fragment ->
+
+            // act
+            fragment.view?.findViewById<Button>(R.id.retry_button)?.performClick()
+
+            // assert
+            verify(showDetailsViewModel, times(1)).retry()
+        }
+    }
+
+    @Test
+    fun retry_is_click_is_throttled_correctly() {
+        // arrange
+        setUp(showDetails = ShowDetails(seasons = emptyList()))
+
+        scenario().onFragment { fragment ->
+
+            val retryButton = fragment.view?.findViewById<Button>(R.id.retry_button)
+
+            // act 1
+            retryButton?.performClick()
+            retryButton?.performClick()
+
+            // assert 1
+            verify(showDetailsViewModel, times(1)).retry()
+
+            // act 2
+            testScheduler.advanceTimeBy(RETRY_CLICK_INTERVAL, TimeUnit.MILLISECONDS)
+            retryButton?.performClick()
+
+            // assert 2
+            verify(showDetailsViewModel, times(2)).retry()
         }
     }
 

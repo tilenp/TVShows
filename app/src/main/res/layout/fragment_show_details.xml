@@ -10,6 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/select_show_textView"
+            style="@style/TitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/Select_a_show" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyle"
@@ -19,13 +27,16 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/select_show_textView"
-            style="@style/TitleText"
+        <Button
+            android:id="@+id/retry_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/Select_a_show" />
+            android:background="@color/colorAccent"
+            android:text="@string/Retry"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/show_details_container"

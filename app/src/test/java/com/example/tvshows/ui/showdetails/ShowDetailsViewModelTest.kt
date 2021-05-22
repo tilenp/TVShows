@@ -11,7 +11,7 @@ import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.BehaviorSubject
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
@@ -22,7 +22,7 @@ class ShowDetailsViewModelTest {
     private val errorParser: ErrorParser = mock()
     private val testScheduler = TestScheduler()
     private val schedulerProvider = TestSchedulerProvider(testScheduler)
-    private val showSelectedSubject = PublishSubject.create<Int>()
+    private val showSelectedSubject = BehaviorSubject.create<Int>()
     private val showSummary: ShowSummary = mock()
     private val showDetails: ShowDetails = mock()
     private lateinit var viewModel: ShowDetailsViewModel
@@ -53,7 +53,7 @@ class ShowDetailsViewModelTest {
     fun ui_states_are_dispatched_with_correct_delay() {
         // arrange
         setConditions()
-        val summaryObservable = viewModel.getShowSummary()
+        val showDetailsObservable = viewModel.getShowDetails()
             .test()
         val uiStateObservable = viewModel.getUIState()
             .test()
@@ -75,7 +75,7 @@ class ShowDetailsViewModelTest {
             .assertValueAt(1, UIState.Success)
 
         // clean up
-        summaryObservable.dispose()
+        showDetailsObservable.dispose()
         uiStateObservable.dispose()
     }
 
@@ -138,6 +138,29 @@ class ShowDetailsViewModelTest {
     }
 
     @Test
+    fun when_database_update_throws_an_error_retry_state_is_set() {
+        // arrange
+        setConditions(
+            updateShowDetailsCompletable = Completable.error(Throwable(error))
+        )
+        val uiStateObservable = viewModel.getUIState()
+            .test()
+
+        // act
+        showSelectedSubject.onNext(showId1)
+
+        // assert
+        testScheduler.advanceTimeBy(ShowDetailsViewModel.LOADING_INTERVAL, TimeUnit.MILLISECONDS)
+        uiStateObservable
+            .assertValueCount(2)
+            .assertValueAt(0, UIState.Loading)
+            .assertValueAt(1, UIState.Retry)
+
+        // clean up
+        uiStateObservable.dispose()
+    }
+
+    @Test
     fun when_database_update_throws_an_error_client_is_notified() {
         // arrange
         setConditions(
@@ -152,7 +175,9 @@ class ShowDetailsViewModelTest {
         // assert
         messageSubject
             .assertValue(error)
-            .dispose()
+
+        // clean up
+        messageSubject.dispose()
     }
 
     @Test
@@ -199,8 +224,10 @@ class ShowDetailsViewModelTest {
         // assert
         showSummaryObservable
             .assertValue(showSummary)
-            .dispose()
         verify(showDetailsRepository, times(1)).getShowSummary(showId1)
+
+        // clean up
+        showSummaryObservable.dispose()
     }
 
     @Test
@@ -240,10 +267,11 @@ class ShowDetailsViewModelTest {
         showSelectedSubject.onNext(showId2)
 
         // assert
-        showSummaryObservable
-            .dispose()
         verify(showDetailsRepository, times(1)).getShowSummary(showId1)
         verify(showDetailsRepository, times(1)).getShowSummary(showId2)
+
+        // clean up
+        showSummaryObservable.dispose()
     }
 
     @Test
@@ -261,8 +289,10 @@ class ShowDetailsViewModelTest {
         // assert
         showDetailsObservable
             .assertValue(showDetails)
-            .dispose()
         verify(showDetailsRepository, times(1)).getShowDetails(showId1)
+
+        // clean up
+        showDetailsObservable.dispose()
     }
 
     @Test
@@ -302,9 +332,49 @@ class ShowDetailsViewModelTest {
         showSelectedSubject.onNext(showId2)
 
         // assert
-        showDetailsObservable
-            .dispose()
         verify(showDetailsRepository, times(1)).getShowDetails(showId1)
         verify(showDetailsRepository, times(1)).getShowDetails(showId2)
+
+        // clean up
+        showDetailsObservable.dispose()
+    }
+
+    @Test
+    fun when_get_show_details_succeeds_success_state_is_set() {
+        // arrange
+        setConditions(
+            showDetailsObservable = Observable.just(showDetails)
+        )
+        val uiStateObservable = viewModel.getUIState()
+            .test()
+        val showDetailsObservable = viewModel.getShowDetails()
+            .test()
+
+        // act
+        showSelectedSubject.onNext(showId1)
+
+        // assert
+        testScheduler.advanceTimeBy(ShowDetailsViewModel.LOADING_INTERVAL, TimeUnit.MILLISECONDS)
+        uiStateObservable
+            .assertValueCount(2)
+            .assertValueAt(0, UIState.Loading)
+            .assertValueAt(1, UIState.Success)
+
+        // clean up
+        uiStateObservable.dispose()
+        showDetailsObservable.dispose()
+    }
+
+    @Test
+    fun when_retry_is_clicked_repository_updates_database() {
+        // arrange
+        setConditions()
+        showSelectedSubject.onNext(showId1)
+
+        // act
+        viewModel.retry()
+
+        // assert
+        verify(showDetailsRepository, times(2)).updateShowDetails(showId1)
     }
 }

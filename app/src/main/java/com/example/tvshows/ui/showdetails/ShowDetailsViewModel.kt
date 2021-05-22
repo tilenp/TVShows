@@ -55,7 +55,10 @@ class ShowDetailsViewModel @Inject constructor(
                 .doOnNext { uiStateDispatcherSubject.onNext(UIState.Loading) }
                 .switchMapCompletable { showId ->
                     showDetailsRepository.updateShowDetails(showId)
-                        .doOnError { error -> reportError(error) }
+                        .doOnError { error ->
+                            reportError(error)
+                            uiStateDispatcherSubject.onNext(UIState.Retry)
+                        }
                         .onErrorResumeNext { Completable.complete() }
                 }
                 .subscribe({
@@ -79,7 +82,6 @@ class ShowDetailsViewModel @Inject constructor(
                     .doOnError { error -> reportError(error) }
                     .onErrorResumeNext(Observable.just(ShowSummary()))
             }
-            .doOnNext { uiStateDispatcherSubject.onNext(UIState.Success) }
     }
 
     fun getShowDetails(): Observable<ShowDetails> {
@@ -101,6 +103,12 @@ class ShowDetailsViewModel @Inject constructor(
 
     fun getMessage(): Observable<String> {
         return messageSubject
+            .throttleFirst(MESSAGE_INTERVAL, TimeUnit.MILLISECONDS, schedulerProvider.interval())
+    }
+
+    fun retry() {
+        compositeDisposable.clear()
+        updateShowDetails()
     }
 
     override fun onCleared() {
@@ -110,5 +118,6 @@ class ShowDetailsViewModel @Inject constructor(
 
     companion object {
         @VisibleForTesting const val LOADING_INTERVAL = 500L
+        @VisibleForTesting const val MESSAGE_INTERVAL = 1000L
     }
 }
