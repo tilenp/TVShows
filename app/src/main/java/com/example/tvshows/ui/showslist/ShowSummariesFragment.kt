@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -116,25 +117,25 @@ class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private fun setLoadingState() {
         with(binding) {
-            showsRecyclerView.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
-            retryButton.visibility = View.GONE
+            showsRecyclerView.isVisible = false
+            progressBar.isVisible = true
+            retryButton.isVisible = false
         }
     }
 
     private fun setRetryState() {
         with(binding) {
-            showsRecyclerView.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            retryButton.visibility = View.VISIBLE
+            showsRecyclerView.isVisible = false
+            progressBar.isVisible = false
+            retryButton.isVisible = true
         }
     }
 
     private fun setSuccessState() {
         with(binding) {
-            showsRecyclerView.visibility = View.VISIBLE
-            progressBar.visibility = View.GONE
-            retryButton.visibility = View.GONE
+            showsRecyclerView.isVisible = true
+            progressBar.isVisible = false
+            retryButton.isVisible = false
         }
     }
 
