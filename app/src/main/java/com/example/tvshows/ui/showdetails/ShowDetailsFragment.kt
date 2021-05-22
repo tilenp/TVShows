@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.tvshows.R
 import com.example.tvshows.dagger.ComponentProvider
 import com.example.tvshows.database.table.Genre
 import com.example.tvshows.database.table.Season
@@ -32,6 +33,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var schedulerProvider: SchedulerProvider
     private lateinit var viewModel: ShowDetailsViewModel
@@ -64,6 +66,8 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
         seasonsAdapter = SeasonsAdapter(this)
         binding.seasonsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val itemDecorator = CarouselItemDecorator(requireContext().resources.getDimensionPixelSize(R.dimen.season_margin_left_right))
+            addItemDecoration(itemDecorator)
             adapter = seasonsAdapter
         }
     }

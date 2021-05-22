@@ -5,4 +5,5 @@
     <dimen name="content_text_size">14sp</dimen>
     <dimen name="show_summary_item_height">280dp</dimen>
     <dimen name="show_summary_margin_left_right">3dp</dimen>
+    <dimen name="season_margin_left_right">5dp</dimen>
 </resources>
