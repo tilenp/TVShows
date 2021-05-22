@@ -26,6 +26,7 @@ class SeasonViewHolder(
             Glide
                 .with(imageView.context)
                 .load(season.imagePath?.medium)
+                .error(R.drawable.image_not_available)
                 .into(imageView)
         }
     }

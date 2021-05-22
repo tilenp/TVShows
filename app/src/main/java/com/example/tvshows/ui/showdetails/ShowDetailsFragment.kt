@@ -141,6 +141,7 @@ class ShowDetailsFragment : Fragment(), OnSeasonClick {
             Glide
                 .with(nameTextView.context)
                 .load(showSummary.imagePath?.medium)
+                .error(R.drawable.image_not_available)
                 .into(posterImageView)
             nameTextView.text = showSummary.name
         }

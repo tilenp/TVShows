@@ -3,8 +3,12 @@
     <string name="TV_Shows">TV Shows</string>
     <string name="Details">Details</string>
     <string name="Seasons">Seasons</string>
-    <string name="retry">retry</string>
+    <string name="Retry">Retry</string>
     <string name="Select_a_show">Select a show</string>
     <string name="No_data_available">Data not available</string>
-    <string name="unknown_error">Unknown error</string>
+    <string name="Unknown_error">Unknown error</string>
+    <string name="Title_not_available">Title not available</string>
+    <string name="Genres_not_available">Genres not available</string>
+    <string name="Summary_not_available">Summary not available</string>
+    <string name="Season_name_not_available">Season name not available</string>
 </resources>

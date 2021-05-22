@@ -12,4 +12,28 @@ class ExtensionsTest {
 
         assertEquals(result, list.commaFormat())
     }
+
+    @Test
+    fun non_null_string_is_mapped_correctly() {
+        val string = "string"
+        val fallback = "fallback"
+
+        assertEquals(string, mapString(string, fallback))
+    }
+
+    @Test
+    fun null_string_is_mapped_correctly() {
+        val string = null
+        val fallback = "fallback"
+
+        assertEquals(fallback, mapString(string, fallback))
+    }
+
+    @Test
+    fun blank_string_is_mapped_correctly() {
+        val string = " "
+        val fallback = "fallback"
+
+        assertEquals(fallback, mapString(string, fallback))
+    }
 }

@@ -15,7 +15,7 @@ class ErrorParser @Inject constructor(
     fun parseError(throwable: Throwable): String {
         return when (throwable) {
             is HttpException -> handleHttpException(throwable)
-            else -> throwable.message ?: context.getString(R.string.unknown_error)
+            else -> throwable.message ?: context.getString(R.string.Unknown_error)
         }
     }
 
@@ -27,6 +27,6 @@ class ErrorParser @Inject constructor(
             } catch (e: Exception) {
             }
         }
-        return context.getString(R.string.unknown_error)
+        return context.getString(R.string.Unknown_error)
     }
 }

@@ -26,6 +26,7 @@ class ShowSummaryViewHolder(
             Glide
                 .with(imageView.context)
                 .load(showSummary.imagePath?.medium)
+                .error(R.drawable.image_not_available)
                 .into(imageView)
             textView.text = showSummary.name
         }

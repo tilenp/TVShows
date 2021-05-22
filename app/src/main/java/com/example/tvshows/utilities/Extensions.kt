@@ -12,3 +12,10 @@ fun <T> List<T>.commaFormat(): String {
     }
     return stringBuilder.toString()
 }
+
+fun mapString(string: String?, fallback: String): String {
+    return when {
+        string.isNullOrBlank() -> fallback
+        else -> string
+    }
+}

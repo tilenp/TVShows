@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/colorAccent"
-        android:text="@string/retry" />
+        android:text="@string/Retry" />
 
 </FrameLayout>
