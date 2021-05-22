@@ -2,6 +2,7 @@ package com.example.tvshows.dagger.module
 
 import android.content.Context
 import com.example.tvshows.R
+import com.example.tvshows.database.table.Season
 import com.example.tvshows.utilities.*
 import dagger.Module
 import dagger.Provides
@@ -50,5 +51,12 @@ class AppModule {
     @Named(SPLIT_VIEW)
     fun providesSplitView(context: Context): Boolean {
         return context.resources.getBoolean(R.bool.splitView)
+    }
+
+    @Singleton
+    @Provides
+    @Named(SEASON_NUMBER_COMPARATOR)
+    fun providesSeasonNumberComparator(): Comparator<Season?> {
+        return SeasonNumberComparator()
     }
 }

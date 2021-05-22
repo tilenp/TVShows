@@ -19,3 +19,4 @@ const val DATABASE_NAME = "TV_SHOWS_DATABASE"
 
 /** Config **/
 const val SPLIT_VIEW = "split_view"
+const val SEASON_NUMBER_COMPARATOR = "season_number_comparator"
