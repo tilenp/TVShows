@@ -17,7 +17,7 @@ import java.io.InvalidObjectException
 import javax.inject.Inject
 
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class ShowSummariesRemoteMediator @Inject constructor(
     private val showSummariesWrapperService: ShowSummariesWrapperService,
     private val database: TVShowsDatabase,

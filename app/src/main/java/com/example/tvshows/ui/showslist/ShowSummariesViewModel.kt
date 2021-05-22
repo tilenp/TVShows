@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class ShowSummariesViewModel @Inject constructor(
     showSummariesRepository: ShowSummariesRepository,
     private val eventAggregator: EventAggregator,

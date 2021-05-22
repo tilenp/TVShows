@@ -23,7 +23,7 @@ import com.example.tvshows.ui.showslist.callback.OnShowClick
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class ShowSummariesFragment : Fragment(), OnShowClick, OnRetryClick {
 
     private var _binding: FragmentShowsBinding? = null

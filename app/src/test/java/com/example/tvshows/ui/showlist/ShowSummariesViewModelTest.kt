@@ -17,7 +17,7 @@ import io.reactivex.schedulers.TestScheduler
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class ShowSummariesViewModelTest {
 
     private val showSummariesRepository: ShowSummariesRepository = mock()

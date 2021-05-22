@@ -1,10 +1,7 @@
 package com.example.tvshows.repository.paging
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.LoadType
-import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import androidx.paging.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.tvshows.database.TVShowsDatabase
 import com.example.tvshows.database.dao.PagingKeysDao
@@ -24,7 +21,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import java.io.InvalidObjectException
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 @RunWith(AndroidJUnit4::class)
 class ShowSummariesRemoteMediatorTest {
 

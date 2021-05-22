@@ -25,7 +25,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowToast
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(application = MyTestApplication::class, sdk = [Build.VERSION_CODES.P])
 class ShowSummariesFragmentTest {

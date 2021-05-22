@@ -8,19 +8,16 @@ import androidx.paging.rxjava2.flowable
 import com.example.tvshows.database.dao.ShowSummaryDao
 import com.example.tvshows.database.table.ShowSummary
 import com.example.tvshows.repository.paging.ShowSummariesRemoteMediator
-import com.example.tvshows.utilities.INITIAL_LOAD_SIZE
-import com.example.tvshows.utilities.MAX_SIZE
-import com.example.tvshows.utilities.PAGE_SIZE
-import com.example.tvshows.utilities.PREFETCH_DISTANCE
 import io.reactivex.Flowable
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
-import javax.inject.Named
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class ShowSummariesRepository @Inject constructor(
     private val showSummaryDao: ShowSummaryDao,
     private val showSummariesRemoteMediator: ShowSummariesRemoteMediator
-){
+) {
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun getShowSummaries(pagingConfig: PagingConfig): Flowable<PagingData<ShowSummary>> {
         return Pager(
             config = pagingConfig,

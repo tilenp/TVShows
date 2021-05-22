@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Module
 abstract class TestViewModelModule {
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     @Singleton
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: TestMyViewModelFactory): ViewModelProvider.Factory

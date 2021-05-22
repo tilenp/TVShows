@@ -26,10 +26,9 @@ interface AppComponent {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
 
-    @ExperimentalPagingApi
     fun inject(activity: MainActivity)
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     fun inject(fragment: ShowSummariesFragment)
     fun inject(fragment: ShowDetailsFragment)
 }

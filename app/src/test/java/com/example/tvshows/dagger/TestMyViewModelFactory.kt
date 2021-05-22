@@ -7,7 +7,7 @@ import com.example.tvshows.ui.showdetails.ShowDetailsViewModel
 import com.example.tvshows.ui.showslist.ShowSummariesViewModel
 import javax.inject.Inject
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 @Suppress("UNCHECKED_CAST")
 class TestMyViewModelFactory @Inject constructor(): ViewModelProvider.Factory {
 

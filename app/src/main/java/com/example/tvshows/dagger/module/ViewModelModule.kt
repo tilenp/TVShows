@@ -20,7 +20,7 @@ interface ViewModelModule {
     @Binds
     fun bindViewModelFactory(viewModelFactory: MyViewModelFactory): ViewModelProvider.Factory
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     @Binds
     @IntoMap
     @ViewModelKey(ShowSummariesViewModel::class)
