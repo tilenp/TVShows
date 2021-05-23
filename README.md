@@ -5,14 +5,16 @@ A simple app written using Kotlin and MVVM design pattern. The app shows infinit
 ## Libraries
 
 - Dagger 2
+- Glide
+- JUnit
+- Mockito
+- MockWebServer
+- Navigation Component
+- Paging 3
 - Retrofit
 - Room
-- Paging 3
 - RxJava 2
-- Picasso
-- Mockito
-- JUnit
-- MockWebServer
+
 
 ## Testing
 
